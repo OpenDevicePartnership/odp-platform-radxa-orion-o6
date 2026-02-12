@@ -3,7 +3,7 @@
 set -e
 
 export WORKSPACE="$PWD/uefi"
-export PACKAGES_PATH=$WORKSPACE/edk2:$WORKSPACE/platform:$WORKSPACE/silicon/edk2-platforms-cix-odp:$WORKSPACE/silicon/edk2-non-osi-cix-odp
+export PACKAGES_PATH=$WORKSPACE/edk2:$WORKSPACE/platform:$TOOLCHAIN_WORKSPACE/common/edk2-platforms-cix-odp:$TOOLCHAIN_WORKSPACE/common/edk2-non-osi-cix-odp
 cd ${WORKSPACE}
 
 if [ ! -e edk2/BaseTools/Source/C/bin/VolInfo ]; then
