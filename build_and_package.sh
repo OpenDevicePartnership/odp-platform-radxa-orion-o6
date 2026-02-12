@@ -10,8 +10,6 @@ export  CYAN="\e[36m"
 
 export TOOLCHAIN_WORKSPACE=$PWD
 export PATH_OUT="${TOOLCHAIN_WORKSPACE}/output"
-export PATH_OUT_PR="${TOOLCHAIN_WORKSPACE}/output/pr"
-export PATH_OUT_PR2="${TOOLCHAIN_WORKSPACE}/output/pr2"
 
 export ARM_TOOLCHAIN_ELF="arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf"
 export GCC5_AARCH64_PREFIX="${TOOLCHAIN_WORKSPACE}/tools/${ARM_TOOLCHAIN_ELF}/bin/aarch64-none-elf-"
@@ -75,32 +73,24 @@ build_pmcfg(){
 }
 
 exec_cix_mkimage() {
+    export PATH_OUT_PR="${PATH_OUT}/pr"
 
-    if [ $# != 1 ]; then
-        echo "Error input parameter for mkimage"
-		exit 1
-	fi
+    mkdir -p "${PATH_OUT_PR}"
+    mkdir -p "${PATH_OUT_PR}/Firmwares"
+    mkdir -p "${PATH_OUT_PR}/Keys"
+    mkdir -p "${PATH_OUT_PR}/certs"
 
     local build_key_type=$1
     local path_out_temp
     local flash_all_file_name
     local flash_ota_file_name
 
-    if [[ "${build_key_type}" == "pr" ]]; then
-        path_out_temp="${PATH_OUT_PR}"
-        flash_all_file_name="cix_flash_all"
-        flash_ota_file_name="cix_flash_ota"
-        cp -f "${PATH_PACKAGE_TOOL}/Firmwares/bootloader1.img" "${path_out_temp}/Firmwares/bootloader1.img"
-        cp -f "${PATH_PACKAGE_TOOL}/Firmwares/bootloader2.img" "${path_out_temp}/Firmwares/bootloader2.img"
-        cp -f "${PATH_PACKAGE_TOOL}/certs/trusted_key_no.crt" "${path_out_temp}/certs/trusted_key_no.crt"
-    else
-        path_out_temp="${PATH_OUT_PR2}"
-        flash_all_file_name="cix_flash_all2"
-        flash_ota_file_name="cix_flash_ota2"
-        cp -f "${PATH_PACKAGE_TOOL}/Firmwares2/bootloader1.img" "${path_out_temp}/Firmwares/bootloader1.img"
-        cp -f "${PATH_PACKAGE_TOOL}/Firmwares2/bootloader2.img" "${path_out_temp}/Firmwares/bootloader2.img"
-        cp -f "${PATH_PACKAGE_TOOL}/certs2/trusted_key_no.crt" "${path_out_temp}/certs/trusted_key_no.crt"
-    fi
+    path_out_temp="${PATH_OUT_PR}"
+    flash_all_file_name="cix_flash_all"
+    flash_ota_file_name="cix_flash_ota"
+    cp -f "${PATH_PACKAGE_TOOL}/Firmwares/bootloader1.img" "${path_out_temp}/Firmwares/bootloader1.img"
+    cp -f "${PATH_PACKAGE_TOOL}/Firmwares/bootloader2.img" "${path_out_temp}/Firmwares/bootloader2.img"
+    cp -f "${PATH_PACKAGE_TOOL}/certs/trusted_key_no.crt" "${path_out_temp}/certs/trusted_key_no.crt"
     cp -f "${PATH_PACKAGE_TOOL}/cert_create_rsa" "${path_out_temp}"
 
     local path_out_firmwares="${path_out_temp}/Firmwares"
@@ -225,17 +215,9 @@ exec_cix_mkimage() {
 
 }
 
+# Force a full build each time
 rm -rf "${PATH_OUT}"
-
 mkdir -p "${PATH_OUT}"
-mkdir -p "${PATH_OUT_PR}"
-mkdir -p "${PATH_OUT_PR}/Firmwares"
-mkdir -p "${PATH_OUT_PR}/Keys"
-mkdir -p "${PATH_OUT_PR}/certs"
-mkdir -p "${PATH_OUT_PR2}"
-mkdir -p "${PATH_OUT_PR2}/Firmwares"
-mkdir -p "${PATH_OUT_PR2}/Keys"
-mkdir -p "${PATH_OUT_PR2}/certs"
 
 echo "Build UEFI Project Orion O6"
 
@@ -246,5 +228,4 @@ set -e
 ./tf-a/build.sh
 
 cd ${TOOLCHAIN_WORKSPACE}
-exec_cix_mkimage pr
-exec_cix_mkimage pr2
+exec_cix_mkimage
