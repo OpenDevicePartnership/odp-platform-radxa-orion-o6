@@ -3,7 +3,7 @@
 set -e
 
 export WORKSPACE="$PWD/uefi"
-export PACKAGES_PATH=$WORKSPACE/edk2:$WORKSPACE/platform:$WORKSPACE/silicon
+export PACKAGES_PATH=$WORKSPACE/edk2:$WORKSPACE/platform:$WORKSPACE/silicon/edk2-platforms-cix-odp:$WORKSPACE/silicon/edk2-non-osi-cix-odp
 cd ${WORKSPACE}
 
 if [ ! -e edk2/BaseTools/Source/C/bin/VolInfo ]; then
@@ -20,7 +20,7 @@ COMMIT_HASH=`git rev-parse --short=12 HEAD`
 build \
     -a AARCH64 \
     -t GCC5 \
-    -p Platform/Radxa/Orion/O6/O6.dsc \
+    -p platform/O6.dsc \
     -b DEBUG \
     -D BOARD_NAME=evb \
     -D BUILD_DATE=$BUILD_DATE \

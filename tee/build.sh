@@ -7,7 +7,7 @@ export PLATFORM=cix
 export PLATFORM_FLAVOR=sky1
 export CFG_STMM_PATH=${PATH_PACKAGE_TOOL}/Firmwares/BL32_AP_EFI_STMM.fd
 
-cd tee/op-tee
+cd tee/op-tee-cix-odp
 make -j${PARALLELISM} \
     O="${PATH_OUT}/tee" \
     ARCH=arm \

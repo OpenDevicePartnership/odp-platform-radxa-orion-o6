@@ -4,7 +4,7 @@ set -e
 
 export CROSS_COMPILE="$GCC5_AARCH64_PREFIX"
 
-cd tf-a/arm-trusted-firmware
+cd tf-a/arm-trusted-firmware-cix-odp
 make -j$PARALLELISM \
     PLAT=sky1 \
     SPD=opteed \

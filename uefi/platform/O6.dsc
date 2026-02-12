@@ -272,7 +272,7 @@
 ### TODO - This should be in the .inf to pull in the proper .dec
 !if $(LINUX_ACPI_CONFIG_OVERRIDE) == TRUE
   GCC:*_*_*_ASLPP_FLAGS           = -DLINUX_ACPI_CONFIG_OVERRIDE
-  GCC:*_*_*_ASLPP_FLAGS           = -I$(WORKSPACE)/platform/Platform/Radxa/Orion/O6/Drivers
+  GCC:*_*_*_ASLPP_FLAGS           = -I$(WORKSPACE)/platform/Drivers
 !endif
 
 !if $(STMM_SUPPORT) == TRUE

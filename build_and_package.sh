@@ -16,7 +16,7 @@ export PATH_OUT_PR2="${TOOLCHAIN_WORKSPACE}/output/pr2"
 export ARM_TOOLCHAIN_ELF="arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf"
 export GCC5_AARCH64_PREFIX="${TOOLCHAIN_WORKSPACE}/tools/${ARM_TOOLCHAIN_ELF}/bin/aarch64-none-elf-"
 export IASL_PREFIX="${TOOLCHAIN_WORKSPACE}/tools/acpica/generate/unix/bin/"
-export PATH_PACKAGE_TOOL="${TOOLCHAIN_WORKSPACE}/uefi/silicon/Platform/CIX/Sky1/PackageTool"
+export PATH_PACKAGE_TOOL="${TOOLCHAIN_WORKSPACE}/uefi/silicon/edk2-non-osi-cix-odp/Platform/CIX/Sky1/PackageTool"
 export MBEDTLS_PATH="${TOOLCHAIN_WORKSPACE}/tools/mbedtls"
 export PATH_PROJECT="${TOOLCHAIN_WORKSPACE}/uefi/platform"
 export PATH_FIRMARES="${PATH_OUT}/Firmwares"
@@ -140,7 +140,7 @@ exec_cix_mkimage() {
 
     # update project specific spi flash layout
     if [[ -e "${PATH_PROJECT}/spi_flash_config_all.json" ]]; then
-        echo -e "${GREEN} XXXXXXXXXXXXXXXXX found project specific ${PATH_PROJECT}/spi_flash_config_all.json${NORMAL}"
+        echo -e "${GREEN} found project specific ${PATH_PROJECT}/spi_flash_config_all.json${NORMAL}"
         cp ${PATH_PROJECT}/spi_flash_config_all.json ${path_out_temp}
     fi
 
