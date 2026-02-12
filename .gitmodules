@@ -13,9 +13,9 @@
 [submodule "tools/mbedtls"]
 	path = tools/mbedtls
 	url = https://github.com/Mbed-TLS/mbedtls.git
-[submodule "common/edk2-platforms-cix-odp"]
-	path = common/edk2-platforms-cix-odp
+[submodule "edk2-platforms-cix-odp"]
+	path = uefi/silicon/edk2-platforms-cix-odp
 	url = https://github.com/cixtech/edk2-platforms-cix-odp.git
-[submodule "common/edk2-non-osi-cix-odp"]
-	path = common/edk2-non-osi-cix-odp
+[submodule "edk2-non-osi-cix-odp"]
+	path = uefi/silicon/edk2-non-osi-cix-odp
 	url = https://github.com/cixtech/edk2-non-osi-cix-odp.git
