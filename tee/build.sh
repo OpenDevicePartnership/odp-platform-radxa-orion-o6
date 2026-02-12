@@ -9,7 +9,7 @@ export CFG_STMM_PATH=${PATH_PACKAGE_TOOL}/Firmwares/BL32_AP_EFI_STMM.fd
 
 cd tee/op-tee-cix-odp
 make -j${PARALLELISM} \
-    O="${PATH_OUT}/tee" \
+    O="${PATH_BUILD_OUTPUT}/tee" \
     ARCH=arm \
     CROSS_COMPILE64="${GCC5_AARCH64_PREFIX}" \
     CFG_ARM64_core=y \
@@ -17,4 +17,4 @@ make -j${PARALLELISM} \
     LDFLAGS="--no-warn-rwx-segments" \
     all
 
-cp -f "${PATH_OUT}/tee/core/tee-raw.bin" "${PATH_OUT}/tee.bin"
+cp -f "${PATH_BUILD_OUTPUT}/tee/core/tee-raw.bin" "${PATH_BUILD_OUTPUT}/tee.bin"

@@ -21,7 +21,7 @@
   PLATFORM_GUID                  = 53cfca21-0399-4802-a3c0-e86437a42183
   PLATFORM_VERSION               = 1.0
   DSC_SPECIFICATION              = 0x0001001A
-  OUTPUT_DIRECTORY               = ../output/uefi
+  OUTPUT_DIRECTORY               = $(PATH_BUILD_OUTPUT)/uefi
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT

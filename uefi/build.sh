@@ -23,6 +23,7 @@ build \
     -p platform/O6.dsc \
     -b DEBUG \
     -D BOARD_NAME=evb \
+    -D PATH_BUILD_OUTPUT=$PATH_BUILD_OUTPUT \
     -D BUILD_DATE=$BUILD_DATE \
     -D COMMIT_HASH=$COMMIT_HASH \
     -D SMP_ENABLE=1 \
@@ -32,4 +33,4 @@ build \
     -D STANDARD_MM=TRUE \
     -D SYSTEM_LOADER=common
 
-cp ../output/uefi/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd ${PATH_OUT}
+cp ${PATH_BUILD_OUTPUT}/uefi/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd ${PATH_BUILD_OUTPUT}

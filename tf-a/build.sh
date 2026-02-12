@@ -3,13 +3,14 @@
 set -e
 
 export CROSS_COMPILE="$GCC5_AARCH64_PREFIX"
+export MBEDTLS_PATH="${TOOLCHAIN_WORKSPACE}/tf-a/mbedtls"
 
 cd tf-a/arm-trusted-firmware-cix-odp
 make -j$PARALLELISM \
     PLAT=sky1 \
     SPD=opteed \
     DEBUG=1 \
-    BUILD_BASE="${PATH_OUT}/tf-a" \
+    BUILD_BASE="${PATH_BUILD_OUTPUT}/tf-a" \
     CIX_BOARD=evb \
     SMP=1 \
     MBEDTLS_DIR="${MBEDTLS_PATH}" \
@@ -20,5 +21,5 @@ make -j$PARALLELISM \
     LDFLAGS="--no-warn-rwx-segments" \
     bl31
 
-cp -f "${PATH_OUT}/tf-a/sky1/debug/bl31.bin" "${PATH_OUT}/tf-a.bin"
-cp -f "${PATH_OUT}/tf-a/sky1/debug/bl31/bl31.elf" "${PATH_OUT}/bl31.elf"
+cp -f "${PATH_BUILD_OUTPUT}/tf-a/sky1/debug/bl31.bin" "${PATH_BUILD_OUTPUT}/tf-a.bin"
+cp -f "${PATH_BUILD_OUTPUT}/tf-a/sky1/debug/bl31/bl31.elf" "${PATH_BUILD_OUTPUT}/bl31.elf"

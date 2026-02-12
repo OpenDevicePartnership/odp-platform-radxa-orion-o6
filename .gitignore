@@ -1,7 +1,4 @@
-/output/
-/uefi/Build/
-/tools/
-/Platform/Radxa/Orion/O6/pm_config/csu_pm_config.bin
+/Build/
+/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/
 **/target
 **/Cargo.lock
-
