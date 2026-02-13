@@ -1,5 +1,8 @@
 SHELL := /bin/bash
 
+BUILD_OUTPUT ?= $(CURDIR)/Build
+BINS_DIR ?= $(CURDIR)/Build
+
 .PHONY: all
 
 all:
@@ -7,7 +10,7 @@ all:
 	test -e edk2/BaseTools/Source/C/bin/VolInfo || $(MAKE) -C edk2/BaseTools
 
 	# Build IASL if needed
-	test -e $(TOOLCHAIN_WORKSPACE)/uefi/tools/acpica/generate/unix/bin/iasl || $(MAKE) -C $(TOOLCHAIN_WORKSPACE)/uefi/tools/acpica
+	test -e tools/acpica/generate/unix/bin/iasl || $(MAKE) -C tools/acpica
 
 	# Build UEFI firmware
 	export WORKSPACE=$(CURDIR) && \

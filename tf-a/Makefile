@@ -1,3 +1,6 @@
+BUILD_OUTPUT ?= $(CURDIR)/Build
+BINS_DIR ?= $(CURDIR)/Build
+
 .PHONY: all
 
 all:

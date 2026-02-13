@@ -1,3 +1,5 @@
+BINS_DIR ?= $(CURDIR)/Build
+
 .PHONY: all
 
 all:
