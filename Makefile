@@ -1,40 +1,42 @@
-export TOOLCHAIN_WORKSPACE := $(CURDIR)
-export GCC5_AARCH64_PREFIX := $(TOOLCHAIN_WORKSPACE)/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
-export PATH_PACKAGE_TOOL := $(TOOLCHAIN_WORKSPACE)/common/edk2-non-osi-cix-odp/Platform/CIX/Sky1/PackageTool
-export PATH_CIX_BASE_PROJECT := $(TOOLCHAIN_WORKSPACE)/common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6
+# PLATFORM NOTE:
+# This build needs code that is provided in a monolithic delivery that can not be easily divided into
+# submodules that reside under individual component folders.  Therefore, the PATH_PACKAGE_TOOL and
+# PATH_CIX_REFERENCE_PROJECT environment variables will be used in other makefiles to reach outside
+# the component folders and into the common folder.
+export PATH_PACKAGE_TOOL := $(CURDIR)/common/edk2-non-osi-cix-odp/Platform/CIX/Sky1/PackageTool
+export PATH_CIX_REFERENCE_PROJECT := $(CURDIR)/common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6
 
-BUILD_OUTPUT := $(TOOLCHAIN_WORKSPACE)/Build
+export GCC5_AARCH64_PREFIX := $(CURDIR)/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+BUILD_OUTPUT := $(CURDIR)/Build
 BINS := $(BUILD_OUTPUT)/Firmwares
 OEM_PRIVATE_KEY := $(PATH_PACKAGE_TOOL)/Keys/oem_privatekey.pem
 
 .PHONY: all prebuilt uefi tee tf-a mem_config pm_config bootloader2 bootloader3 flash clean
 
 all: prebuilt uefi tee tf-a mem_config pm_config bootloader2 bootloader3
-
 	cd $(BINS) && \
 	$(PATH_PACKAGE_TOOL)/X86_64/cix_package_tool \
-		-c $(TOOLCHAIN_WORKSPACE)/common/spi_flash_config_all.json \
+		-c $(CURDIR)/common/spi_flash_config_all.json \
 		-o $(BUILD_OUTPUT)/cix_flash_all.bin
-	
 	cd $(BINS) && \
 	$(PATH_PACKAGE_TOOL)/X86_64/cix_package_tool \
-		-c $(TOOLCHAIN_WORKSPACE)/common/spi_flash_config_ota.json \
+		-c $(CURDIR)/common/spi_flash_config_ota.json \
 		-O $(BUILD_OUTPUT)/cix_flash_ota.bin
 
 prebuilt:
 	mkdir -p $(BINS)
 	cp -f $(PATH_PACKAGE_TOOL)/Firmwares/* $(BINS)/
-	cp -f $(PATH_CIX_BASE_PROJECT)/Firmwares/* $(BINS)/
+	cp -f $(PATH_CIX_REFERENCE_PROJECT)/Firmwares/* $(BINS)/
 	head -c 8192 /dev/zero | tr '\000' '\377' > $(BINS)/dummy.bin
 
 uefi:
-	$(MAKE) -C uefi BINS_DIR=$(BINS) BUILD_OUTPUT=$(BUILD_OUTPUT)
+	$(MAKE) -C uefi BINS_DIR=$(BINS) BUILD_OUTPUT=$(BUILD_OUTPUT)/uefi
 
 tee: prebuilt
-	$(MAKE) -C tee BINS_DIR=$(BINS) BUILD_OUTPUT=$(BUILD_OUTPUT)
+	$(MAKE) -C tee BINS_DIR=$(BINS) BUILD_OUTPUT=$(BUILD_OUTPUT)/tee
 
 tf-a:
-	$(MAKE) -C tf-a BINS_DIR=$(BINS) BUILD_OUTPUT=$(BUILD_OUTPUT)
+	$(MAKE) -C tf-a BINS_DIR=$(BINS) BUILD_OUTPUT=$(BUILD_OUTPUT)/tf-a
 
 mem_config:
 	$(MAKE) -C mem_config BINS_DIR=$(BINS)
