@@ -12,6 +12,7 @@ export GCC5_AARCH64_PREFIX="${TOOLCHAIN_WORKSPACE}/tools/${ARM_TOOLCHAIN_ELF}/bi
 export PATH_PACKAGE_TOOL="${TOOLCHAIN_WORKSPACE}/common/edk2-non-osi-cix-odp/Platform/CIX/Sky1/PackageTool"
 export PATH_CIX_BASE_PROJECT="${TOOLCHAIN_WORKSPACE}/common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6"
 export PATH_BUILD_OUTPUT="${TOOLCHAIN_WORKSPACE}/Build"
+
 mkdir -p "${PATH_BUILD_OUTPUT}"
 
 #
@@ -20,6 +21,7 @@ mkdir -p "${PATH_BUILD_OUTPUT}"
 
 export PATH_BUILD_BOOTCHAIN_BINS="${PATH_BUILD_OUTPUT}/Firmwares"
 mkdir -p "${PATH_BUILD_BOOTCHAIN_BINS}"
+
 cp -f "${PATH_PACKAGE_TOOL}/Firmwares/"* "${PATH_BUILD_BOOTCHAIN_BINS}"
 cp -f "${PATH_CIX_BASE_PROJECT}/Firmwares/"* "${PATH_BUILD_BOOTCHAIN_BINS}"
 head -c 8192 /dev/zero | tr $'\x00' $'\xFF' > "${PATH_BUILD_BOOTCHAIN_BINS}/dummy.bin"
@@ -47,11 +49,11 @@ head -c 8192 /dev/zero | tr $'\x00' $'\xFF' > "${PATH_BUILD_BOOTCHAIN_BINS}/dumm
     --trusted-world-key ${PATH_PACKAGE_TOOL}/Keys/oem_privatekey.pem \
     --soc-fw-key ${PATH_PACKAGE_TOOL}/Keys/oem_privatekey.pem \
     --tos-fw-key ${PATH_PACKAGE_TOOL}/Keys/oem_privatekey.pem \
-    --trusted-key-cert ${PATH_PACKAGE_TOOL}/certs/trusted_key.crt \
-    --soc-fw-key-cert ${PATH_PACKAGE_TOOL}/certs/bl31_fw_key.crt \
-    --tos-fw-key-cert ${PATH_PACKAGE_TOOL}/certs/tos_fw_key.crt \
-    --soc-fw-cert ${PATH_PACKAGE_TOOL}/certs/bl31_fw_content.crt \
-    --tos-fw-cert ${PATH_PACKAGE_TOOL}/certs/tos_fw_cert.crt \
+    --trusted-key-cert ${PATH_BUILD_BOOTCHAIN_BINS}/trusted_key.crt \
+    --soc-fw-key-cert ${PATH_BUILD_BOOTCHAIN_BINS}/bl31_fw_key.crt \
+    --tos-fw-key-cert ${PATH_BUILD_BOOTCHAIN_BINS}/tos_fw_key.crt \
+    --soc-fw-cert ${PATH_BUILD_BOOTCHAIN_BINS}/bl31_fw_content.crt \
+    --tos-fw-cert ${PATH_BUILD_BOOTCHAIN_BINS}/tos_fw_cert.crt \
     --soc-fw ${PATH_BUILD_BOOTCHAIN_BINS}/bl31.bin \
     --tos-fw ${PATH_BUILD_BOOTCHAIN_BINS}/tee-raw.bin
 
@@ -59,11 +61,11 @@ head -c 8192 /dev/zero | tr $'\x00' $'\xFF' > "${PATH_BUILD_BOOTCHAIN_BINS}/dumm
     create \
     --soc-fw ${PATH_BUILD_BOOTCHAIN_BINS}/bl31.bin \
     --tos-fw ${PATH_BUILD_BOOTCHAIN_BINS}/tee-raw.bin \
-    --trusted-key-cert ${PATH_PACKAGE_TOOL}/certs/trusted_key.crt \
-    --soc-fw-key-cert ${PATH_PACKAGE_TOOL}/certs/bl31_fw_key.crt \
-    --tos-fw-key-cert ${PATH_PACKAGE_TOOL}/certs/tos_fw_key.crt \
-    --soc-fw-cert ${PATH_PACKAGE_TOOL}/certs/bl31_fw_content.crt \
-    --tos-fw-cert ${PATH_PACKAGE_TOOL}/certs/tos_fw_cert.crt \
+    --trusted-key-cert ${PATH_BUILD_BOOTCHAIN_BINS}/trusted_key.crt \
+    --soc-fw-key-cert ${PATH_BUILD_BOOTCHAIN_BINS}/bl31_fw_key.crt \
+    --tos-fw-key-cert ${PATH_BUILD_BOOTCHAIN_BINS}/tos_fw_key.crt \
+    --soc-fw-cert ${PATH_BUILD_BOOTCHAIN_BINS}/bl31_fw_content.crt \
+    --tos-fw-cert ${PATH_BUILD_BOOTCHAIN_BINS}/tos_fw_cert.crt \
     "${PATH_BUILD_BOOTCHAIN_BINS}/bootloader2.img"
 
 #
@@ -73,7 +75,7 @@ head -c 8192 /dev/zero | tr $'\x00' $'\xFF' > "${PATH_BUILD_BOOTCHAIN_BINS}/dumm
 "${PATH_PACKAGE_TOOL}/cix_regen_trusted_key_cert" \
     -p ${PATH_PACKAGE_TOOL}/Keys/oem_publickey.pem \
     -s ${PATH_PACKAGE_TOOL}/Keys/oem_privatekey.pem \
-    -o ${PATH_PACKAGE_TOOL}/certs/trusted_key_no.crt
+    -o ${PATH_BUILD_BOOTCHAIN_BINS}/trusted_key_no.crt
 
 "${PATH_PACKAGE_TOOL}/X86_64/cert_uefi_create_rsa" \
     --key-alg rsa \
@@ -81,17 +83,17 @@ head -c 8192 /dev/zero | tr $'\x00' $'\xFF' > "${PATH_BUILD_BOOTCHAIN_BINS}/dumm
     --hash-alg sha256 \
     -p \
     --ntfw-nvctr 223 \
-    --nt-fw-cert ${PATH_PACKAGE_TOOL}/certs/nt_fw_cert.crt \
-    --nt-fw-key-cert ${PATH_PACKAGE_TOOL}/certs/nt_fw_key.crt \
+    --nt-fw-cert ${PATH_BUILD_BOOTCHAIN_BINS}/nt_fw_cert.crt \
+    --nt-fw-key-cert ${PATH_BUILD_BOOTCHAIN_BINS}/nt_fw_key.crt \
     --nt-fw-key ${PATH_PACKAGE_TOOL}/Keys/oem_privatekey.pem \
     --non-trusted-world-key ${PATH_PACKAGE_TOOL}/Keys/oem_privatekey.pem \
     --nt-fw ${PATH_BUILD_BOOTCHAIN_BINS}/SKY1_BL33_UEFI.fd
 
 "${PATH_PACKAGE_TOOL}/X86_64/fiptool" \
     create \
-    --trusted-key-cert ${PATH_PACKAGE_TOOL}/certs/trusted_key_no.crt \
-    --nt-fw-key-cert ${PATH_PACKAGE_TOOL}/certs/nt_fw_key.crt \
-    --nt-fw-cert ${PATH_PACKAGE_TOOL}/certs/nt_fw_cert.crt \
+    --trusted-key-cert ${PATH_BUILD_BOOTCHAIN_BINS}/trusted_key_no.crt \
+    --nt-fw-key-cert ${PATH_BUILD_BOOTCHAIN_BINS}/nt_fw_key.crt \
+    --nt-fw-cert ${PATH_BUILD_BOOTCHAIN_BINS}/nt_fw_cert.crt \
     --nt-fw ${PATH_BUILD_BOOTCHAIN_BINS}/SKY1_BL33_UEFI.fd \
     ${PATH_BUILD_BOOTCHAIN_BINS}/bootloader3.img
 
