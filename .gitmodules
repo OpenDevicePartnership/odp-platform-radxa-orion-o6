@@ -8,7 +8,7 @@
 	path = tf-a/arm-trusted-firmware-cix-odp
 	url = https://github.com/cixtech/arm-trusted-firmware-cix-odp
 [submodule "ACPI_Component_Architecture"]
-	path = tools/acpica
+	path = uefi/tools/acpica
 	url = https://github.com/acpica/acpica.git
 [submodule "Mbed_TLS"]
 	path = tf-a/mbedtls
