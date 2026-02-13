@@ -21,5 +21,5 @@ make -j$PARALLELISM \
     LDFLAGS="--no-warn-rwx-segments" \
     bl31
 
-cp -f "${PATH_BUILD_OUTPUT}/tf-a/sky1/debug/bl31.bin" "${PATH_BUILD_OUTPUT}/tf-a.bin"
-cp -f "${PATH_BUILD_OUTPUT}/tf-a/sky1/debug/bl31/bl31.elf" "${PATH_BUILD_OUTPUT}/bl31.elf"
+cp -f "${PATH_BUILD_OUTPUT}/tf-a/sky1/debug/bl31.bin" "${PATH_BUILD_BOOTCHAIN_BINS}"
+cp -f "${PATH_BUILD_OUTPUT}/tf-a/sky1/debug/bl31/bl31.elf" "${PATH_BUILD_BOOTCHAIN_BINS}"
