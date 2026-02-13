@@ -7,12 +7,12 @@ all:
 	test -e edk2/BaseTools/Source/C/bin/VolInfo || $(MAKE) -C edk2/BaseTools
 
 	# Build IASL if needed
-	test -e $(TOOLCHAIN_WORKSPACE)/tools/acpica/generate/unix/bin/iasl || $(MAKE) -C $(TOOLCHAIN_WORKSPACE)/tools/acpica
+	test -e $(TOOLCHAIN_WORKSPACE)/uefi/tools/acpica/generate/unix/bin/iasl || $(MAKE) -C $(TOOLCHAIN_WORKSPACE)/uefi/tools/acpica
 
 	# Build UEFI firmware
 	export WORKSPACE=$(CURDIR) && \
 	export PACKAGES_PATH=$(CURDIR)/edk2:$(CURDIR)/platform:$(TOOLCHAIN_WORKSPACE)/common/edk2-platforms-cix-odp:$(TOOLCHAIN_WORKSPACE)/common/edk2-non-osi-cix-odp && \
-	export IASL_PREFIX=$(TOOLCHAIN_WORKSPACE)/tools/acpica/generate/unix/bin/ && \
+	export IASL_PREFIX=$(TOOLCHAIN_WORKSPACE)/uefi/tools/acpica/generate/unix/bin/ && \
 	. edk2/edksetup.sh --reconfig && \
 	build \
 		-a AARCH64 \
