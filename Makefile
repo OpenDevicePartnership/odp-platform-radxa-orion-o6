@@ -2,9 +2,9 @@ export TOOLCHAIN_WORKSPACE := $(CURDIR)
 export GCC5_AARCH64_PREFIX := $(TOOLCHAIN_WORKSPACE)/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
 export PATH_PACKAGE_TOOL := $(TOOLCHAIN_WORKSPACE)/common/edk2-non-osi-cix-odp/Platform/CIX/Sky1/PackageTool
 export PATH_CIX_BASE_PROJECT := $(TOOLCHAIN_WORKSPACE)/common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6
-export PATH_BUILD_OUTPUT := $(TOOLCHAIN_WORKSPACE)/Build
-BINS := $(PATH_BUILD_OUTPUT)/Firmwares
 
+BUILD_OUTPUT := $(TOOLCHAIN_WORKSPACE)/Build
+BINS := $(BUILD_OUTPUT)/Firmwares
 OEM_PRIVATE_KEY := $(PATH_PACKAGE_TOOL)/Keys/oem_privatekey.pem
 
 .PHONY: all prebuilt uefi tee tf-a mem_config pm_config bootloader2 bootloader3 flash clean
@@ -14,12 +14,12 @@ all: prebuilt uefi tee tf-a mem_config pm_config bootloader2 bootloader3
 	cd $(BINS) && \
 	$(PATH_PACKAGE_TOOL)/X86_64/cix_package_tool \
 		-c $(TOOLCHAIN_WORKSPACE)/common/spi_flash_config_all.json \
-		-o $(PATH_BUILD_OUTPUT)/cix_flash_all.bin
+		-o $(BUILD_OUTPUT)/cix_flash_all.bin
 	
 	cd $(BINS) && \
 	$(PATH_PACKAGE_TOOL)/X86_64/cix_package_tool \
 		-c $(TOOLCHAIN_WORKSPACE)/common/spi_flash_config_ota.json \
-		-O $(PATH_BUILD_OUTPUT)/cix_flash_ota.bin
+		-O $(BUILD_OUTPUT)/cix_flash_ota.bin
 
 prebuilt:
 	mkdir -p $(BINS)
@@ -28,13 +28,13 @@ prebuilt:
 	head -c 8192 /dev/zero | tr '\000' '\377' > $(BINS)/dummy.bin
 
 uefi:
-	$(MAKE) -C uefi BINS_DIR=$(BINS)
+	$(MAKE) -C uefi BINS_DIR=$(BINS) BUILD_OUTPUT=$(BUILD_OUTPUT)
 
 tee: prebuilt
-	$(MAKE) -C tee BINS_DIR=$(BINS)
+	$(MAKE) -C tee BINS_DIR=$(BINS) BUILD_OUTPUT=$(BUILD_OUTPUT)
 
 tf-a:
-	$(MAKE) -C tf-a BINS_DIR=$(BINS)
+	$(MAKE) -C tf-a BINS_DIR=$(BINS) BUILD_OUTPUT=$(BUILD_OUTPUT)
 
 mem_config:
 	$(MAKE) -C mem_config BINS_DIR=$(BINS)
@@ -93,4 +93,4 @@ bootloader3: uefi prebuilt
 		$(BINS)/bootloader3.img
 
 clean:
-	rm -rf $(PATH_BUILD_OUTPUT)
+	rm -rf $(BUILD_OUTPUT)

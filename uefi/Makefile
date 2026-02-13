@@ -20,7 +20,7 @@ all:
 		-p platform/O6.dsc \
 		-b DEBUG \
 		-D BOARD_NAME=evb \
-		-D PATH_BUILD_OUTPUT=$(PATH_BUILD_OUTPUT) \
+		-D PATH_BUILD_OUTPUT=$(BUILD_OUTPUT) \
 		-D BUILD_DATE=$$(date +%VM%y%m%d%H%M%SN) \
 		-D COMMIT_HASH=$$(git rev-parse --short=12 HEAD) \
 		-D SMP_ENABLE=1 \
@@ -29,4 +29,4 @@ all:
 		-D VARIABLE_TYPE=SPI \
 		-D STANDARD_MM=TRUE \
 		-D SYSTEM_LOADER=common
-	cp $(PATH_BUILD_OUTPUT)/uefi/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(BINS_DIR)/
+	cp $(BUILD_OUTPUT)/uefi/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(BINS_DIR)/
