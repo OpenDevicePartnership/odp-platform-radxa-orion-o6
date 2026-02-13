@@ -16,5 +16,5 @@ all:
 		ROT_KEY=plat/arm/board/common/rotpk/arm_rotprivk_rsa.pem \
 		LDFLAGS="--no-warn-rwx-segments" \
 		bl31
-	cp -f $(PATH_BUILD_OUTPUT)/tf-a/sky1/debug/bl31.bin $(PATH_BUILD_BOOTCHAIN_BINS)/
-	cp -f $(PATH_BUILD_OUTPUT)/tf-a/sky1/debug/bl31/bl31.elf $(PATH_BUILD_BOOTCHAIN_BINS)/
+	cp -f $(PATH_BUILD_OUTPUT)/tf-a/sky1/debug/bl31.bin $(BINS_DIR)/
+	cp -f $(PATH_BUILD_OUTPUT)/tf-a/sky1/debug/bl31/bl31.elf $(BINS_DIR)/
