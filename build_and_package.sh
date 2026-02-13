@@ -12,14 +12,12 @@ export GCC5_AARCH64_PREFIX="${TOOLCHAIN_WORKSPACE}/tools/${ARM_TOOLCHAIN_ELF}/bi
 export PATH_PACKAGE_TOOL="${TOOLCHAIN_WORKSPACE}/common/edk2-non-osi-cix-odp/Platform/CIX/Sky1/PackageTool"
 export PATH_CIX_BASE_PROJECT="${TOOLCHAIN_WORKSPACE}/common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6"
 export PATH_BUILD_OUTPUT="${TOOLCHAIN_WORKSPACE}/Build"
-
-mkdir -p "${PATH_BUILD_OUTPUT}"
-
-#
-# Copy prebuilt binaries and certificates to the output folder
-#
-
 export PATH_BUILD_BOOTCHAIN_BINS="${PATH_BUILD_OUTPUT}/Firmwares"
+
+#
+# Copy prebuilt binaries and certificates to the output binaries folder
+#
+
 mkdir -p "${PATH_BUILD_BOOTCHAIN_BINS}"
 
 cp -f "${PATH_PACKAGE_TOOL}/Firmwares/"* "${PATH_BUILD_BOOTCHAIN_BINS}"
@@ -27,7 +25,7 @@ cp -f "${PATH_CIX_BASE_PROJECT}/Firmwares/"* "${PATH_BUILD_BOOTCHAIN_BINS}"
 head -c 8192 /dev/zero | tr $'\x00' $'\xFF' > "${PATH_BUILD_BOOTCHAIN_BINS}/dummy.bin"
 
 #
-# Build individual component binaries
+# Run individual build scripts for each component (places output in the bins folder)
 #
 
 ./uefi/build.sh
@@ -37,7 +35,7 @@ head -c 8192 /dev/zero | tr $'\x00' $'\xFF' > "${PATH_BUILD_BOOTCHAIN_BINS}/dumm
 ./pm_config/build.sh
 
 #
-# Generate bootloader2 image
+# Generate bootloader2 image (tf-a and tee)
 #
 
 "${PATH_PACKAGE_TOOL}/cert_create_rsa" \
@@ -69,7 +67,7 @@ head -c 8192 /dev/zero | tr $'\x00' $'\xFF' > "${PATH_BUILD_BOOTCHAIN_BINS}/dumm
     "${PATH_BUILD_BOOTCHAIN_BINS}/bootloader2.img"
 
 #
-# Generate bootloader3 image
+# Generate bootloader3 image (uefi)
 #
 
 "${PATH_PACKAGE_TOOL}/cix_regen_trusted_key_cert" \
@@ -102,6 +100,8 @@ head -c 8192 /dev/zero | tr $'\x00' $'\xFF' > "${PATH_BUILD_BOOTCHAIN_BINS}/dumm
 #
 
 cd "${PATH_BUILD_BOOTCHAIN_BINS}" # Json files use relative paths from working directory
+
 "${PATH_PACKAGE_TOOL}/X86_64/cix_package_tool" -c "${TOOLCHAIN_WORKSPACE}/common/spi_flash_config_all.json" -o "${PATH_BUILD_OUTPUT}/cix_flash_all.bin"
 "${PATH_PACKAGE_TOOL}/X86_64/cix_package_tool" -c "${TOOLCHAIN_WORKSPACE}/common/spi_flash_config_ota.json" -O "${PATH_BUILD_OUTPUT}/cix_flash_ota.bin"
+
 cd -
