@@ -99,26 +99,8 @@ ArmPlatformGetVirtualMemoryMap (
 
   ARM_MEMORY_REGION_DESCRIPTOR  *VirtualMemoryTable;
   EFI_RESOURCE_ATTRIBUTE_TYPE   ResourceAttributes;
-  EFI_RESOURCE_ATTRIBUTE_TYPE   SystemMemResourceAttributes;
 
   ResourceAttributes = (
-                        EFI_RESOURCE_ATTRIBUTE_PRESENT |
-                        EFI_RESOURCE_ATTRIBUTE_INITIALIZED |
-                        EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE |
-                        EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE |
-                        EFI_RESOURCE_ATTRIBUTE_WRITE_THROUGH_CACHEABLE |
-                        EFI_RESOURCE_ATTRIBUTE_WRITE_BACK_CACHEABLE |
-                        EFI_RESOURCE_ATTRIBUTE_TESTED
-                        );
-
-  //
-  // System memory (DRAM) should not advertise UC capability. On AArch64,
-  // EFI_MEMORY_UC maps to Device-nGnRnE memory which requires strict
-  // alignment and will fault on unaligned accesses. Omitting UC forces
-  // DMA buffer allocators to select EFI_MEMORY_WC (Normal Non-cacheable)
-  // instead, which is the correct mapping for DRAM-backed DMA buffers.
-  //
-  SystemMemResourceAttributes = (
                         EFI_RESOURCE_ATTRIBUTE_PRESENT |
                         EFI_RESOURCE_ATTRIBUTE_INITIALIZED |
                         EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE |
@@ -129,30 +111,9 @@ ArmPlatformGetVirtualMemoryMap (
 
   DramHigh = ReportDramHighSpace (&DramHighSize);
 
-
-/*
-#define EFI_RESOURCE_SYSTEM_MEMORY          0x00000000
-#define EFI_RESOURCE_MEMORY_MAPPED_IO       0x00000001
-#define EFI_RESOURCE_IO                     0x00000002
-#define EFI_RESOURCE_FIRMWARE_DEVICE        0x00000003
-#define EFI_RESOURCE_MEMORY_MAPPED_IO_PORT  0x00000004
-#define EFI_RESOURCE_MEMORY_RESERVED        0x00000005
-#define EFI_RESOURCE_IO_RESERVED            0x00000006
-#define EFI_RESOURCE_MAX_MEMORY_TYPE        0x00000007
-
-
-  DEBUG:  This was first tried to allow using a NULL pointer, but causes the memory manager to not load properly in Patina
-  BuildResourceDescriptorHob_V2 (
-    EFI_RESOURCE_MEMORY_RESERVED,
-    ResourceAttributes,
-    0, 0x1000, EFI_MEMORY_WB);
-
-*/
-
-
   BuildResourceDescriptorHob_V2 (
     EFI_RESOURCE_MEMORY_MAPPED_IO,
-    ResourceAttributes,
+    ResourceAttributes | EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE,
     0x00810000,                 // 0x00810000 is the address immediately after SPI MMIO which is declared in NorFlashStmmRuntimeDxe.c
     0x80000000 - 0x00810000,
     EFI_MEMORY_UC);
@@ -164,7 +125,7 @@ ArmPlatformGetVirtualMemoryMap (
     ResourceAttributes,
     PcdGet32 (PcdReservedSecureMemoryBase),
     PcdGet32 (PcdReservedSecureMemorySize),
-    EFI_MEMORY_UC
+    EFI_MEMORY_WC
     );
 
   // Reserved share memory
@@ -173,13 +134,13 @@ ArmPlatformGetVirtualMemoryMap (
     ResourceAttributes,
     PcdGet32 (PcdReservedShareMemoryBase),
     PcdGet32 (PcdReservedShareMemorySize),
-    EFI_MEMORY_UC
+    EFI_MEMORY_WC
     );
 
   // Create the System Memory HOB for the firmware
   BuildResourceDescriptorHob_V2 (
     EFI_RESOURCE_SYSTEM_MEMORY,
-    SystemMemResourceAttributes,
+    ResourceAttributes,
     PcdGet64 (PcdFdBaseAddress),
     PcdGet32 (PcdFdSize),
     EFI_MEMORY_WB
@@ -191,13 +152,13 @@ ArmPlatformGetVirtualMemoryMap (
     ResourceAttributes,
     PcdGet64 (PcdArmLcdDdrFrameBufferBase),
     PcdGet32 (PcdArmLcdDdrFrameBufferSize),
-    EFI_MEMORY_UC
+    EFI_MEMORY_WC
     );
 
   // Create initial Base Hob for system memory.
   BuildResourceDescriptorHob_V2 (
     EFI_RESOURCE_SYSTEM_MEMORY,
-    SystemMemResourceAttributes,
+    ResourceAttributes,
     FixedPcdGet64 (PcdArmLcdDdrFrameBufferBase) + FixedPcdGet32 (PcdArmLcdDdrFrameBufferSize),
     mSystemMemoryEnd + 1 - (FixedPcdGet64 (PcdArmLcdDdrFrameBufferBase) + FixedPcdGet32 (PcdArmLcdDdrFrameBufferSize)),
     EFI_MEMORY_WB
@@ -205,23 +166,18 @@ ArmPlatformGetVirtualMemoryMap (
 
 
   if (DramHigh) {
-    ASSERT(FALSE);
     BuildResourceDescriptorHob_V2 (
       EFI_RESOURCE_SYSTEM_MEMORY,
-      SystemMemResourceAttributes,
+      ResourceAttributes,
       FixedPcdGet64 (PcdDramHighSpaceBase),
       DramHighSize,
       EFI_MEMORY_WB
       );
   }
 
-
-
-
-  
   BuildResourceDescriptorHob_V2 (
     EFI_RESOURCE_MEMORY_MAPPED_IO,
-    ResourceAttributes,
+    ResourceAttributes | EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE,
     0x0000000480000000,
     0x000000FB80000000,
     EFI_MEMORY_UC);
@@ -244,15 +200,6 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Length       = 0x80000000;
   VirtualMemoryTable[Index++].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
 
-  /*
-    BuildResourceDescriptorHob_V2 (
-        EFI_RESOURCE_MEMORY_MAPPED_IO,
-        EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE,
-        VirtualMemoryTable[Index].VirtualBase,
-        VirtualMemoryTable[Index].Length,
-        EFI_MEMORY_WB
-    );
-  */
   // reserved 0x80000000 ~ 0x824fffff secure memory
   VirtualMemoryTable[Index].PhysicalBase = FixedPcdGet32 (PcdReservedSecureMemoryBase);
   VirtualMemoryTable[Index].VirtualBase  = FixedPcdGet32 (PcdReservedSecureMemoryBase);
