@@ -153,7 +153,7 @@
 !endif
 
 #  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
-##APRIORI##  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
+##APRIORI##  INF Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
   INF MdeModulePkg/Universal/EbcDxe/EbcDxe.inf
 
 !if $(SOC_GPIO_INTR_ENABLE) == TRUE
@@ -172,7 +172,7 @@
   INF Platform/CIX/Sky1/Drivers/RamLogDumpDxe/RamLogDumpDxe.inf
 !endif
 !if $(SOC_I2C_ENABLE) == TRUE
-  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/I2cDxe/I2cDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/I2cDxe/I2cDxe.inf
   !if $(I2C_EC_ENABLE) == TRUE
   INF Platform/CIX/Sky1/Drivers/EcPlatformDxe/EcPlatformDxe.inf
   !endif

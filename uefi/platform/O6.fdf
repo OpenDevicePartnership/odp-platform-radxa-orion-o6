@@ -126,7 +126,7 @@ READ_LOCK_STATUS   = TRUE
 !endif
 #### NOT NEEDED BY PATINA ####    INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX ArmPkg/Drivers/TimerDxe/TimerDxe.inf
-  INF RuleOverride = COMPILE_TRUE_DEPEX platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
+  INF RuleOverride = COMPILE_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
 !if $(CFG_PARAM_MANAGE_ENABLE) == TRUE
   INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf

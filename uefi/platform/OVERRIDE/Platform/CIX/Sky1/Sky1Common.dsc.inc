@@ -746,7 +746,7 @@
 
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   #MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
-  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
+  Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
   MdeModulePkg/Universal/EbcDxe/EbcDxe.inf
   #
   # FAT filesystem + GPT/MBR partitioning
@@ -809,7 +809,7 @@
 !endif
 
 !if $(SOC_I2C_ENABLE) == TRUE
-  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/I2cDxe/I2cDxe.inf
+  Silicon/CIX/Sky1/Drivers/I2cDxe/I2cDxe.inf
   !if $(I2C_EC_ENABLE) == TRUE
   Platform/CIX/Sky1/Drivers/EcPlatformDxe/EcPlatformDxe.inf
   !endif
