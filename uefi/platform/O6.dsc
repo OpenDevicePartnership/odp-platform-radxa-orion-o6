@@ -171,7 +171,7 @@
 # Network stack
   !include NetworkPkg/Network.dsc.inc
 
-  platform/OVERRIDE/Platform/CIX/Sky1/PrePi/PeiUniCore.inf
+  Platform/CIX/Sky1/PrePi/PeiUniCore.inf
 !if $(SHELL_EMBEDDED_ENABLE) == TRUE
   ShellPkg/Application/Shell/Shell.inf {
     <LibraryClasses>

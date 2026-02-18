@@ -185,7 +185,7 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
-  INF platform/OVERRIDE/Platform/CIX/Sky1/PrePi/PeiUniCore.inf
+  INF Platform/CIX/Sky1/PrePi/PeiUniCore.inf
   !if $(FW_VERSION_ENABLE) == TRUE
   INF Platform/CIX/Sky1/Drivers/FwVersionDxe/FwVersionDxe.inf
   !endif
@@ -264,27 +264,9 @@ READ_LOCK_STATUS   = TRUE
     RAW          ASL   Optional               |.aml
   }
 
-#### NEEDED BY PATINA ####
-[Rule.Common.DXE_DRIVER.COMPILE_TRUE_DEPEX]
-  FILE DRIVER = $(NAMED_GUID) {
-    DXE_DEPEX    DXE_DEPEX              $(WORKSPACE)/platform/True.depex
-    PE32         PE32                   $(INF_OUTPUT)/$(MODULE_NAME).efi
-    UI           STRING="$(MODULE_NAME)" Optional
-    RAW          ACPI  Optional               |.acpi
-    RAW          ASL   Optional               |.aml
-  }
-
 [Rule.Common.DXE_RUNTIME_DRIVER]
   FILE DRIVER = $(NAMED_GUID) {
     DXE_DEPEX    DXE_DEPEX              Optional $(INF_OUTPUT)/$(MODULE_NAME).depex
-    PE32         PE32                   $(INF_OUTPUT)/$(MODULE_NAME).efi
-    UI           STRING="$(MODULE_NAME)" Optional
-  }
-
-#### NEEDED BY PATINA ####
-[Rule.Common.DXE_RUNTIME_DRIVER.COMPILE_TRUE_DEPEX]
-  FILE DRIVER = $(NAMED_GUID) {
-    DXE_DEPEX    DXE_DEPEX              $(WORKSPACE)/platform/True.depex
     PE32         PE32                   $(INF_OUTPUT)/$(MODULE_NAME).efi
     UI           STRING="$(MODULE_NAME)" Optional
   }
@@ -328,25 +310,9 @@ READ_LOCK_STATUS   = TRUE
     UI        STRING="$(MODULE_NAME)" Optional
   }
 
-#### NEEDED BY PATINA ####
-[Rule.Common.DXE_DRIVER.BINARY_TRUE_DEPEX]
-  FILE DRIVER = $(NAMED_GUID) {
-    DXE_DEPEX DXE_DEPEX               $(WORKSPACE)/platform/True.depex
-    PE32      PE32                    |.efi
-    UI        STRING="$(MODULE_NAME)" Optional
-  }
-
 [Rule.Common.DXE_RUNTIME_DRIVER.BINARY]
   FILE DRIVER = $(NAMED_GUID) {
     DXE_DEPEX DXE_DEPEX Optional      |.depex
-    PE32      PE32                    |.efi
-    UI        STRING="$(MODULE_NAME)" Optional
-  }
-
-#### NEEDED BY PATINA ####
-[Rule.Common.DXE_RUNTIME_DRIVER.BINARY_TRUE_DEPEX]
-  FILE DRIVER = $(NAMED_GUID) {
-    DXE_DEPEX DXE_DEPEX               $(WORKSPACE)/platform/True.depex
     PE32      PE32                    |.efi
     UI        STRING="$(MODULE_NAME)" Optional
   }
@@ -362,3 +328,39 @@ READ_LOCK_STATUS   = TRUE
     UI  STRING="$(MODULE_NAME)" Optional
     RAW BIN                |.bin
   }
+
+#### PATINA ####
+#
+# The following rules are to allow overriding the dependency expression binary in a FFS file with a flat TRUE expression
+#
+
+[Rule.Common.DXE_DRIVER.COMPILE_TRUE_DEPEX]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX    DXE_DEPEX              $(WORKSPACE)/platform/True.depex
+    PE32         PE32                   $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI           STRING="$(MODULE_NAME)" Optional
+    RAW          ACPI  Optional               |.acpi
+    RAW          ASL   Optional               |.aml
+  }
+
+[Rule.Common.DXE_RUNTIME_DRIVER.COMPILE_TRUE_DEPEX]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX    DXE_DEPEX              $(WORKSPACE)/platform/True.depex
+    PE32         PE32                   $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI           STRING="$(MODULE_NAME)" Optional
+  }
+
+[Rule.Common.DXE_RUNTIME_DRIVER.BINARY_TRUE_DEPEX]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX DXE_DEPEX               $(WORKSPACE)/platform/True.depex
+    PE32      PE32                    |.efi
+    UI        STRING="$(MODULE_NAME)" Optional
+  }
+
+[Rule.Common.DXE_DRIVER.BINARY_TRUE_DEPEX]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX DXE_DEPEX               $(WORKSPACE)/platform/True.depex
+    PE32      PE32                    |.efi
+    UI        STRING="$(MODULE_NAME)" Optional
+  }
+
