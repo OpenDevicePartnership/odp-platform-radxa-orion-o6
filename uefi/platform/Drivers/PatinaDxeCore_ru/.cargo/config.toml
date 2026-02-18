@@ -1,0 +1,20 @@
+[build]
+target = "aarch64-unknown-uefi"
+
+[unstable]
+build-std = ["core", "compiler_builtins", "alloc"]
+build-std-features = ["compiler-builtins-mem"]
+
+[net]
+git-fetch-with-cli = true
+
+# This tells cargo to consider the MSV of rust for our crate vs our dependencies.
+[resolver]
+incompatible-rust-versions = "fallback"
+
+[target.aarch64-unknown-uefi]
+rustflags = [
+    "-C", "link-arg=/base:0x0",
+    "-C", "link-arg=/subsystem:efi_boot_service_driver",
+    "-C", "force-unwind-tables", # Generates .pdata section for stack tracing
+]

@@ -87,61 +87,66 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
 
-  APRIORI DXE {
-    INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
-    INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-    INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+
+###
+### APRIORI MODULES - BEGIN
+###
+### Patina does not support an apriori, but does follow the same pattern as EDK II where drivers
+### with a depex of TRUE are executed in the order placed in the FDF file.  Therefore, this section
+### uses RuleOverride to force the depex of all original apriori drivers to TRUE and they are kept 
+### at the beginning of the FvMain section.
+###
+
+  INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+#### NOT NEEDED BY PATINA ####    INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+  INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
 !if $(SOC_PWR_CLK_RST_ENABLE) == TRUE
-    # SCMI Driver
-    INF Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
-    # power
-    INF Silicon/CIX/Sky1/Drivers/PowerDxe/PowerDxe.inf
-    # clock
-    INF Silicon/CIX/Sky1/Drivers/ClockDxe/ClockDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
+    INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/PowerDxe/PowerDxe.inf
+    INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/ClockDxe/ClockDxe.inf
 !endif
-    # reset
-    INF Silicon/CIX/Sky1/Drivers/ResetDxe/ResetDxe.inf
-    INF Platform/CIX/Sky1/Drivers/S3SaveStateDxe/S3SaveStateDxe.inf
-    INF Silicon/CIX/Sky1/Drivers/SocDxe/SocDxe.inf
+    INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/ResetDxe/ResetDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/S3SaveStateDxe/S3SaveStateDxe.inf
+    INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/SocDxe/SocDxe.inf
 !if $(STMM_SUPPORT) == TRUE
-    INF Platform/CIX/Sky1/Drivers/MmCommunicationDxe/ArmMmCommunication.inf
+    INF RuleOverride = BINARY_TRUE_DEPEX Platform/CIX/Sky1/Drivers/MmCommunicationDxe/ArmMmCommunication.inf
 !endif
 !if $(STMM_SUPPORT) == TRUE
-    INF Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
 !else
-    INF Silicon/CIX/Sky1/Drivers/NorFlashDxe/NorFlashDxe.inf
+    INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/NorFlashDxe/NorFlashDxe.inf
 !endif
 !if $(VARIABLE_SUPPORT) == "SPI" && $(STMM_SUPPORT) == FALSE
-    INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+  INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
 !endif
 !if $(VARIABLE_SUPPORT) == "SPI" && $(STMM_SUPPORT) == TRUE
-    INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
+  INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
 !else
-    INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 !endif
-
-  INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
+#### NOT NEEDED BY PATINA ####    INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  INF RuleOverride = COMPILE_TRUE_DEPEX ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+  INF RuleOverride = COMPILE_TRUE_DEPEX platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
 !if $(CFG_PARAM_MANAGE_ENABLE) == TRUE
-    INF Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
-    INF Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
+  INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
+  INF RuleOverride = COMPILE_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
 !endif
 !if $(TOKEN_SETUP_SUPPORT) == FALSE
-    INF Platform/CIX/Sky1/Drivers/PlatformSetupVariableInitDxe/PlatformSetupVariableInitDxe.inf
-    INF Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
+  INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
 !endif
-  }
+
+
+
 
 # inf file list has be move to Sky1Common.fdf.inc
 # please put xxx.inf to Sky1Common.fdf.inc
-!include Platform/CIX/Sky1/Sky1Common.fdf.inc
+!include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.fdf.inc
 !include Platform/Radxa/Platforms/CIX/Sky1/Sky1Common.fdf.inc
   INF Platform/CIX/Sky1/Drivers/DtbUpdateDxeSi/DtbUpdateDxe.inf
 
 !if $(ACPI_ENABLE) == TRUE
-  INF RuleOverride = ACPITABLE2 Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/AcpiPlatfomTables.inf
-  INF Platform/Radxa/Orion/O6/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  INF RuleOverride = ACPITABLE2 platform/Drivers/AcpiPlatfomTables/AcpiPlatfomTables.inf
+  INF platform/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
 !endif
 
   #
@@ -155,12 +160,12 @@ READ_LOCK_STATUS   = TRUE
       SECTION RAW = Platform/CIX/Sky1/Bin/ntroot.cer //root pubkey
   }
 !if $(SMBIOS_ENABLE) == TRUE
-  INF Platform/Radxa/Orion/O6/Drivers/PlatformSmbios/PlatformSmbios.inf
+  INF platform/Drivers/PlatformSmbios/PlatformSmbios.inf
 !endif
 
   INF Platform/Radxa/Drivers/RTL8126/RtkUndiDxe.inf
 
-  INF Platform/Radxa/Orion/O6/DeviceTree/DeviceTree.inf
+  INF platform/DeviceTree/DeviceTree.inf
 
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 16
@@ -180,7 +185,7 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
-  INF Platform/CIX/Sky1/PrePi/PeiUniCore.inf
+  INF platform/OVERRIDE/Platform/CIX/Sky1/PrePi/PeiUniCore.inf
   !if $(FW_VERSION_ENABLE) == TRUE
   INF Platform/CIX/Sky1/Drivers/FwVersionDxe/FwVersionDxe.inf
   !endif
@@ -259,9 +264,27 @@ READ_LOCK_STATUS   = TRUE
     RAW          ASL   Optional               |.aml
   }
 
+#### NEEDED BY PATINA ####
+[Rule.Common.DXE_DRIVER.COMPILE_TRUE_DEPEX]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX    DXE_DEPEX              $(WORKSPACE)/platform/True.depex
+    PE32         PE32                   $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI           STRING="$(MODULE_NAME)" Optional
+    RAW          ACPI  Optional               |.acpi
+    RAW          ASL   Optional               |.aml
+  }
+
 [Rule.Common.DXE_RUNTIME_DRIVER]
   FILE DRIVER = $(NAMED_GUID) {
     DXE_DEPEX    DXE_DEPEX              Optional $(INF_OUTPUT)/$(MODULE_NAME).depex
+    PE32         PE32                   $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI           STRING="$(MODULE_NAME)" Optional
+  }
+
+#### NEEDED BY PATINA ####
+[Rule.Common.DXE_RUNTIME_DRIVER.COMPILE_TRUE_DEPEX]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX    DXE_DEPEX              $(WORKSPACE)/platform/True.depex
     PE32         PE32                   $(INF_OUTPUT)/$(MODULE_NAME).efi
     UI           STRING="$(MODULE_NAME)" Optional
   }
@@ -305,10 +328,25 @@ READ_LOCK_STATUS   = TRUE
     UI        STRING="$(MODULE_NAME)" Optional
   }
 
+#### NEEDED BY PATINA ####
+[Rule.Common.DXE_DRIVER.BINARY_TRUE_DEPEX]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX DXE_DEPEX               $(WORKSPACE)/platform/True.depex
+    PE32      PE32                    |.efi
+    UI        STRING="$(MODULE_NAME)" Optional
+  }
 
 [Rule.Common.DXE_RUNTIME_DRIVER.BINARY]
   FILE DRIVER = $(NAMED_GUID) {
     DXE_DEPEX DXE_DEPEX Optional      |.depex
+    PE32      PE32                    |.efi
+    UI        STRING="$(MODULE_NAME)" Optional
+  }
+
+#### NEEDED BY PATINA ####
+[Rule.Common.DXE_RUNTIME_DRIVER.BINARY_TRUE_DEPEX]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX DXE_DEPEX               $(WORKSPACE)/platform/True.depex
     PE32      PE32                    |.efi
     UI        STRING="$(MODULE_NAME)" Optional
   }
