@@ -18,12 +18,16 @@
 #include <Library/ShMemLib.h>
 #include <Protocol/MemOutputBuffer.h>
 
-extern UINT64  mSystemMemoryEnd;
+//// PATINA
+//
+// This entire file was re-written to support the ArmPlatformGetVirtualMemoryMap function
+// which was updated to produce version 2 of the resource descriptor HOBs that cover the
+// entire memory layout of the platform.
+//
+
 
 // The total number of descriptors, including the final "end-of-table" descriptor.
 #define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS  11
-
-
 
 // BuildResourceDescriptorHob_V2 is a copy of BuildResourceDescriptorHob from
 // EmbeddedPkg\Library\PrePiHobLib\Hob.c with additional MemoryType parameter
@@ -56,6 +60,7 @@ VOID EFIAPI BuildResourceDescriptorHob_V2 (
   Hob->MemoryType        = MemoryType;
 }
 
+// Original function provided by the CIX reference code to report if high DRAM space was used
 BOOLEAN
 ReportDramHighSpace (
   IN OUT UINT64  *DramHighSize
@@ -79,18 +84,7 @@ ReportDramHighSpace (
   return FALSE;
 }
 
-/**
-  Return the Virtual Memory Map of your platform
-
-  This Virtual Memory Map is used by MemoryInitPei Module to initialize the MMU
-  on your platform.
-
-  @param[out]   VirtualMemoryMap    Array of ARM_MEMORY_REGION_DESCRIPTOR
-                                    describing a Physical-to-Virtual Memory
-                                    mapping. This array must be ended by a
-                                    zero-filled entry
-
-**/
+// Standard library call to return the platform virtual memory map
 VOID
 ArmPlatformGetVirtualMemoryMap (
   IN ARM_MEMORY_REGION_DESCRIPTOR  **VirtualMemoryMap

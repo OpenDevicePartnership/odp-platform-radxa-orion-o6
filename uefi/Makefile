@@ -1,7 +1,7 @@
 # PLATFORM NOTE:
 # This build needs code that is provided in a monolithic delivery that can not be easily divided into
-# a submodules that reside under this component.  Therefore, the COMMON_DISTRIBUTION_COMPONENTS path
-# is being used to reach outside this component folder and into the common folder.
+# a submodules that reside under this component.  Therefore, the 'COMMON' path is being used to reach
+# outside this component folder and into the common folder.
 
 SHELL        := /bin/bash
 COMMON       := $(CURDIR)/../common
@@ -46,6 +46,6 @@ all: PatinaDxeCore_ru
 PatinaDxeCore_ru:
 	cd platform/Drivers/PatinaDxeCore_ru && cargo build --target-dir $(RUST_OUT)/Drivers/PatinaDxeCore_ru
 
-# The clean target
+# Clean target
 clean:
 	rm -rf $(BUILD_OUTPUT)

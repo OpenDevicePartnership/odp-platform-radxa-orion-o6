@@ -217,7 +217,7 @@
 !endif
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
-  ArmPlatformLib|platform/OVERRIDE/Platform/CIX/Sky1/Library/PlatformLib/PlatformLib.inf
+  ArmPlatformLib|platform/OVERRIDE/Platform/CIX/Sky1/Library/PlatformLib/PlatformLib.inf    #### PATINA
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
@@ -281,7 +281,7 @@
 [LibraryClasses.common.SEC]
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
-  MemoryInitPeiLib|platform/OVERRIDE/Platform/CIX/Sky1/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf
+  MemoryInitPeiLib|Platform/CIX/Sky1/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf
   PlatformPeiLib|ArmPlatformPkg/PlatformPei/PlatformPeiLib.inf
   ExtractGuidedSectionLib|EmbeddedPkg/Library/PrePiExtractGuidedSectionLib/PrePiExtractGuidedSectionLib.inf
   LzmaDecompressLib|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
@@ -666,7 +666,7 @@
   #
   # Architectural Protocols
   #
-########    ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+#### PATINA    ArmPkg/Drivers/CpuDxe/CpuDxe.inf
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
   Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
@@ -683,7 +683,7 @@
   }
 !endif
 !if $(STMM_SUPPORT) == TRUE
-  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
+  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf    #### PATINA
 !else
   Silicon/CIX/Sky1/Drivers/NorFlashDxe/NorFlashDxe.inf
 !endif
@@ -738,11 +738,11 @@
 !endif
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
-########    !if $(DIAGS_KERNEL_ENABLE) == TRUE
-########      Edk2OverridePkg/ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-########    !else
-########      ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-########    !endif
+#### PATINA    !if $(DIAGS_KERNEL_ENABLE) == TRUE
+#### PATINA      Edk2OverridePkg/ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+#### PATINA    !else
+#### PATINA      ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+#### PATINA    !endif
 
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   #MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
@@ -886,7 +886,7 @@
        DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
   }
 
-  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf {
+  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf {    #### PATINA
     <LibraryClasses>
       DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
   }

@@ -28,7 +28,7 @@
   FLASH_DEFINITION               = platform/O6.fdf
   PCD_DYNAMIC_AS_DYNAMICEX       = TRUE
 
-!include  platform/OVERRIDE/Platform/CIX/Sky1/Sky1Define.dsc.inc
+!include  Platform/CIX/Sky1/Sky1Define.dsc.inc
 !include  Platform/Radxa/RadxaDefine.dsc.inc
 !include  Platform/Radxa/Platforms/CIX/Sky1/Sky1Define.dsc.inc
 
@@ -42,6 +42,9 @@
 ##################################################
 # Define override here for evb
 ##################################################
+
+  DEFINE DEBUG_PRINT_ERROR_LEVEL    = 0x800000CF          #### PATINA
+
   DEFINE DTB_UPDATE_ENABLE          = FALSE
   DEFINE SMBIOS_ENABLE              = FALSE
   DEFINE ACPI_ENABLE                = FALSE
@@ -134,7 +137,7 @@
 
   DEFINE LINUX_ACPI_CONFIG_OVERRIDE = TRUE
 
-!include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.dsc.inc
+!include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.dsc.inc    #### PATINA
 !include Platform/Radxa/RadxaCommon.dsc.inc
 !include Platform/Radxa/Platforms/CIX/Sky1/Sky1Common.dsc.inc
 !include NetworkPkg/NetworkDefines.dsc.inc

@@ -88,17 +88,14 @@ READ_LOCK_STATUS   = TRUE
 
 
 
-###
-### APRIORI MODULES - BEGIN
-###
-### Patina does not support an apriori, but does follow the same pattern as EDK II where drivers
-### with a depex of TRUE are executed in the order placed in the FDF file.  Therefore, this section
-### uses RuleOverride to force the depex of all original apriori drivers to TRUE and they are kept 
-### at the beginning of the FvMain section.
-###
+#### PATINA - BEGIN
+##   Patina does not support an apriori, but does follow the same pattern as EDK II where drivers with a depex of TRUE
+##   are executed in the order placed in the FDF file.  Therefore, this section which was the original APRIORI has been
+##   changed so that each driver has a new rule to force the depex section in the FFS to TRUE and they are kept at the
+##   beginning of the FvMain section.
 
   INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
-#### NOT NEEDED BY PATINA ####    INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+  #### PATINA    INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
 !if $(SOC_PWR_CLK_RST_ENABLE) == TRUE
     INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
@@ -124,7 +121,7 @@ READ_LOCK_STATUS   = TRUE
 !else
   INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 !endif
-#### NOT NEEDED BY PATINA ####    INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  #### PATINA    INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
 !if $(CFG_PARAM_MANAGE_ENABLE) == TRUE
@@ -135,12 +132,13 @@ READ_LOCK_STATUS   = TRUE
   INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
 !endif
 
+#### PATINA - END
 
 
 
 # inf file list has be move to Sky1Common.fdf.inc
 # please put xxx.inf to Sky1Common.fdf.inc
-!include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.fdf.inc
+!include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.fdf.inc    #### PATINA
 !include Platform/Radxa/Platforms/CIX/Sky1/Sky1Common.fdf.inc
   INF Platform/CIX/Sky1/Drivers/DtbUpdateDxeSi/DtbUpdateDxe.inf
 
@@ -330,9 +328,8 @@ READ_LOCK_STATUS   = TRUE
   }
 
 #### PATINA ####
-#
-# The following rules are to allow overriding the dependency expression binary in a FFS file with a flat TRUE expression
-#
+##   The following rules are to allow overriding the dependency expression binary in a FFS
+##   file with a flat TRUE expression
 
 [Rule.Common.DXE_DRIVER.COMPILE_TRUE_DEPEX]
   FILE DRIVER = $(NAMED_GUID) {

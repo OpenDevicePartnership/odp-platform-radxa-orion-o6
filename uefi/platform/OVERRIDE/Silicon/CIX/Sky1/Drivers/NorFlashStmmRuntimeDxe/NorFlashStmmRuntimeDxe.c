@@ -125,6 +125,32 @@ FlashMemoryInitEventNotify (
   //       even if we only use the small block region of the NOR Flash.
   //       The reason is when the NOR Flash memory is set into program mode, the command
   //       is written as the base of the flash region (ie: Instance->DeviceBaseAddress)
+
+//// PATINA - BEGIN
+//// This section is being removed due to conflicting with the initial HOBs declaring the memory regions
+/*
+  Status = gDS->AddMemorySpace (
+                  EfiGcdMemoryTypeMemoryMappedIo,
+                  NorFlashDevices->DeviceBaseAddress,
+                  NorFlashDevices->DeviceSize,
+                  EFI_MEMORY_UC | EFI_MEMORY_RUNTIME
+                  );
+  if (EFI_ERROR (Status)) {
+    DebugPrint (
+      DEBUG_ERROR,
+      "%a: fail to add memory space base 0x%x, size 0x%x, status %r\n",
+      __FUNCTION__,
+      NorFlashDevices->DeviceBaseAddress,
+      NorFlashDevices->DeviceSize,
+      Status
+      );
+    ASSERT_EFI_ERROR (Status);
+  }
+
+  DEBUG ((DEBUG_INFO, "%a: add flash space base 0x%x, length 0x%x to memory space\n", __FUNCTION__, NorFlashDevices->DeviceBaseAddress, NorFlashDevices->DeviceSize));
+*/
+//// PATINA - END
+
   Status = gDS->SetMemorySpaceAttributes (
                   NorFlashDevices->DeviceBaseAddress,
                   NorFlashDevices->DeviceSize,

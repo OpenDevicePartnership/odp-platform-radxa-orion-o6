@@ -6,61 +6,52 @@
 #
 ##
 
-!if $(DIAGS_KERNEL_ENABLE) == TRUE
-  INF Edk2OverridePkg/MdeModulePkg/Core/Dxe/DxeMain.inf
-!else
 
-
-
-#########################################################################
-### Patina DXE core
-########    INF MdeModulePkg/Core/Dxe/DxeMain.inf
+#### PATINA - BEGIN ####
+# Remove DxeMain.inf, add the bin from the rust build
   FILE DXE_CORE = 23C9322F-2AF2-476A-BC4C-26BC88266C71 {
     SECTION PE32 = Drivers/PatinaDxeCore_ru/aarch64-unknown-uefi/debug/dxe_core.efi
     SECTION UI = "DxeCore"
   }
-#########################################################################
+#### PATINA - END ####
 
 
-
-!endif
-
-##APRIORI##  INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+#### PATINA   INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
   #
   # PI DXE Drivers producing Architectural Protocols (EFI Services)
   #
-##APRIORI##  INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-##APRIORI##  INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
-##APRIORI##  INF Platform/CIX/Sky1/Drivers/S3SaveStateDxe/S3SaveStateDxe.inf
+#### PATINA   INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+#### PATINA   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+#### PATINA   INF Platform/CIX/Sky1/Drivers/S3SaveStateDxe/S3SaveStateDxe.inf
 !if $(CFG_PARAM_MANAGE_ENABLE) == TRUE
-##APRIORI##  INF Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
-##APRIORI##  INF Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
+#### PATINA   INF Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
+#### PATINA   INF Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
 !endif
 !if $(TOKEN_SETUP_SUPPORT) == TRUE
   INF Platform/CIX/Sky1/Drivers/PlatformSetupVariableInitDxe/PlatformSetupVariableInitDxe.inf
 !endif
-##APRIORI##  INF Silicon/CIX/Sky1/Drivers/SocDxe/SocDxe.inf
-##APRIORI##  INF Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
+#### PATINA   INF Silicon/CIX/Sky1/Drivers/SocDxe/SocDxe.inf
+#### PATINA   INF Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
   INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
 !if $(SOC_PWR_CLK_RST_ENABLE) == TRUE
   # SCMI Driver
-##APRIORI##  INF Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
+#### PATINA   INF Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
   # power
 !if $(DIAGS_KERNEL_ENABLE) == TRUE
-##APRIORI##  INF CixDiagsKernelPkg/Sky1/Drivers/PowerDxe/PowerDxe.inf
+#### PATINA   INF CixDiagsKernelPkg/Sky1/Drivers/PowerDxe/PowerDxe.inf
 !else
-##APRIORI##  INF Silicon/CIX/Sky1/Drivers/PowerDxe/PowerDxe.inf
+#### PATINA   INF Silicon/CIX/Sky1/Drivers/PowerDxe/PowerDxe.inf
 !endif
   # clock
 !if $(DIAGS_KERNEL_ENABLE) == TRUE
-##APRIORI##  INF CixDiagsKernelPkg/Sky1/Drivers/ClockDxe/ClockDxe.inf
+#### PATINA   INF CixDiagsKernelPkg/Sky1/Drivers/ClockDxe/ClockDxe.inf
 !else
-##APRIORI##  INF Silicon/CIX/Sky1/Drivers/ClockDxe/ClockDxe.inf
+#### PATINA   INF Silicon/CIX/Sky1/Drivers/ClockDxe/ClockDxe.inf
 !endif
 !endif
   # reset
-##APRIORI##  INF Silicon/CIX/Sky1/Drivers/ResetDxe/ResetDxe.inf
+#### PATINA   INF Silicon/CIX/Sky1/Drivers/ResetDxe/ResetDxe.inf
 
 !if $(SOC_CDNSP_ENABLE) == TRUE || $(SOC_CDNSP_HOST_ENABLE) == TRUE
   INF Silicon/CIX/Sky1/Drivers/TypecPhyDxe/TypecPhyDxe.inf
@@ -94,20 +85,20 @@
 !endif
 
 !if $(STMM_SUPPORT) == TRUE
-##APRIORI##  INF Platform/CIX/Sky1/Drivers/MmCommunicationDxe/ArmMmCommunication.inf
+#### PATINA   INF Platform/CIX/Sky1/Drivers/MmCommunicationDxe/ArmMmCommunication.inf
 !endif
 !if $(STMM_SUPPORT) == TRUE
-##APRIORI##  INF Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
+#### PATINA   INF Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
 !else
-##APRIORI##  INF Silicon/CIX/Sky1/Drivers/NorFlashDxe/NorFlashDxe.inf
+#### PATINA   INF Silicon/CIX/Sky1/Drivers/NorFlashDxe/NorFlashDxe.inf
 !endif
 !if $(VARIABLE_SUPPORT) == "SPI" && $(STMM_SUPPORT) == FALSE
-##APRIORI##  INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+#### PATINA   INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
 !endif
 !if $(VARIABLE_SUPPORT) == "SPI" && $(STMM_SUPPORT) == TRUE
-##APRIORI##  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
+#### PATINA   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
 !else
-##APRIORI##  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+#### PATINA   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 !endif
 !if $(PCIE_HOST_ENABLE) == TRUE
   INF Silicon/CIX/Sky1/Drivers/PcieInitDxe/PcieInitDxe.inf
@@ -140,11 +131,11 @@
 !endif
 
 !if $(DIAGS_KERNEL_ENABLE) == TRUE
-##APRIORI##INF Edk2OverridePkg/ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+#### PATINA   INF Edk2OverridePkg/ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
 !else
-##APRIORI##INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+#### PATINA   INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
 !endif
-##APRIORI##  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+#### PATINA   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 !if $(POWER_BUTTON_ENABLE) == TRUE
   INF Platform/CIX/Sky1/Drivers/PowerButtonDxe/PowerButtonDxe.inf
 !endif
@@ -153,7 +144,7 @@
 !endif
 
 #  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
-##APRIORI##  INF Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
+#### PATINA   INF Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
   INF MdeModulePkg/Universal/EbcDxe/EbcDxe.inf
 
 !if $(SOC_GPIO_INTR_ENABLE) == TRUE
@@ -197,7 +188,7 @@
   #
 
   INF Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
-  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
+  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf    #### PATINA
 
   #
   # TianoCore logo (splash screen)
