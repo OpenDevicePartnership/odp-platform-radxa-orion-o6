@@ -9,9 +9,11 @@
 
 [Defines]
   DEC_SPECIFICATION              = 0x0001001A
-  PACKAGE_NAME                   = Hym8563RealTimeClockLib
+  PACKAGE_NAME                   = O6Pkg
   PACKAGE_GUID                   = 14425a81-70e3-44ed-bd7c-236a14525a2d
-  PACKAGE_VERSION                = 0.1
+  PACKAGE_VERSION                = 1.08
+
+[Includes]
 
 [Guids]
   gHym8563RealTimeClockLibTokenSpaceGuid = {0xb0cab1ac, 0xa6b5, 0x40bd, {0x84, 0x11, 0x1b, 0xbe, 0x81, 0x84, 0x9f, 0x79}}
