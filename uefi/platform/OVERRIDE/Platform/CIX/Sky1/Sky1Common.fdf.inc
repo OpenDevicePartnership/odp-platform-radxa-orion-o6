@@ -196,8 +196,8 @@
   # GOP Support
   #
 
-  INF Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
+  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
+  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
 
   #
   # TianoCore logo (splash screen)

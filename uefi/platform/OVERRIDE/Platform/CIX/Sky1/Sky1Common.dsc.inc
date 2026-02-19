@@ -205,7 +205,7 @@
   NetLib|NetworkPkg/Library/DxeNetLib/DxeNetLib.inf
 
 !if $(SOC_GOP_ENABLE) == TRUE
-  DpuDxe|Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
+  DpuDxe|platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
   DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
 !endif
 
@@ -281,7 +281,7 @@
 [LibraryClasses.common.SEC]
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
-  MemoryInitPeiLib|Platform/CIX/Sky1/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf
+  MemoryInitPeiLib|platform/OVERRIDE/Platform/CIX/Sky1/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf
   PlatformPeiLib|ArmPlatformPkg/PlatformPei/PlatformPeiLib.inf
   ExtractGuidedSectionLib|EmbeddedPkg/Library/PrePiExtractGuidedSectionLib/PrePiExtractGuidedSectionLib.inf
   LzmaDecompressLib|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
@@ -683,7 +683,7 @@
   }
 !endif
 !if $(STMM_SUPPORT) == TRUE
-  Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
+  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
 !else
   Silicon/CIX/Sky1/Drivers/NorFlashDxe/NorFlashDxe.inf
 !endif
@@ -881,12 +881,12 @@
 !endif
 
 !if $(SOC_GOP_ENABLE) == TRUE
-  Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf {
+  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf {
     <LibraryClasses>
        DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
   }
 
-  Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf {
+  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf {
     <LibraryClasses>
       DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
   }

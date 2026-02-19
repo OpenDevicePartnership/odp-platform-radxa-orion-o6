@@ -29,6 +29,16 @@ extern UINT64  mSystemMemoryEnd;
 // EmbeddedPkg\Library\PrePiHobLib\Hob.c with additional MemoryType parameter
 #define EFI_HOB_TYPE_RESOURCE_DESCRIPTOR_V2 0x000D
 VOID* CreateHob (UINT16 HobType, UINT16 HobLength);
+typedef struct {
+  EFI_HOB_GENERIC_HEADER         Header;
+  EFI_GUID                       Owner;
+  EFI_RESOURCE_TYPE              ResourceType;
+  EFI_RESOURCE_ATTRIBUTE_TYPE    ResourceAttribute;
+  EFI_PHYSICAL_ADDRESS           PhysicalStart;
+  UINT64                         ResourceLength;
+  UINT64                         MemoryType;
+} EFI_HOB_RESOURCE_DESCRIPTOR_V2;
+
 VOID EFIAPI BuildResourceDescriptorHob_V2 (
   IN EFI_RESOURCE_TYPE            ResourceType,
   IN EFI_RESOURCE_ATTRIBUTE_TYPE  ResourceAttribute,
@@ -36,22 +46,15 @@ VOID EFIAPI BuildResourceDescriptorHob_V2 (
   IN UINT64                       NumberOfBytes,
   IN UINT64                       MemoryType)
 {
-  EFI_HOB_RESOURCE_DESCRIPTOR  *Hob = CreateHob (EFI_HOB_TYPE_RESOURCE_DESCRIPTOR_V2, sizeof (EFI_HOB_RESOURCE_DESCRIPTOR) + 8);
+  EFI_HOB_RESOURCE_DESCRIPTOR_V2  *Hob = CreateHob (EFI_HOB_TYPE_RESOURCE_DESCRIPTOR_V2, sizeof (EFI_HOB_RESOURCE_DESCRIPTOR_V2));
   ASSERT (Hob != NULL);
 
   Hob->ResourceType      = ResourceType;
   Hob->ResourceAttribute = ResourceAttribute;
   Hob->PhysicalStart     = PhysicalStart;
   Hob->ResourceLength    = NumberOfBytes;
-
-  // Append the Memory Type at the end of the HOB
-  UINT8* Ptr = (UINT8*)Hob;
-  Ptr = &Ptr[sizeof (EFI_HOB_RESOURCE_DESCRIPTOR)];
-  *((UINT64 *)Ptr) = MemoryType;
+  Hob->MemoryType        = MemoryType;
 }
-
-
-
 
 BOOLEAN
 ReportDramHighSpace (
@@ -95,156 +98,156 @@ ArmPlatformGetVirtualMemoryMap (
 {
   UINTN    Index        = 0;
   UINT64   DramHighSize = 0;
-  BOOLEAN  DramHigh     = FALSE;
+  UINTN    PageCount    = EFI_SIZE_TO_PAGES (sizeof (ARM_MEMORY_REGION_DESCRIPTOR) * MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS);
 
-  ARM_MEMORY_REGION_DESCRIPTOR  *VirtualMemoryTable;
-  EFI_RESOURCE_ATTRIBUTE_TYPE   ResourceAttributes;
-
-  ResourceAttributes = (
-                        EFI_RESOURCE_ATTRIBUTE_PRESENT |
-                        EFI_RESOURCE_ATTRIBUTE_INITIALIZED |
-                        EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE |
-                        EFI_RESOURCE_ATTRIBUTE_WRITE_THROUGH_CACHEABLE |
-                        EFI_RESOURCE_ATTRIBUTE_WRITE_BACK_CACHEABLE |
-                        EFI_RESOURCE_ATTRIBUTE_TESTED
-                        );
-
-  DramHigh = ReportDramHighSpace (&DramHighSize);
-
-  BuildResourceDescriptorHob_V2 (
-    EFI_RESOURCE_MEMORY_MAPPED_IO,
-    ResourceAttributes | EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE,
-    0x00810000,                 // 0x00810000 is the address immediately after SPI MMIO which is declared in NorFlashStmmRuntimeDxe.c
-    0x80000000 - 0x00810000,
-    EFI_MEMORY_UC);
-
-
-  // Reserved secure memory
-  BuildResourceDescriptorHob_V2 (
-    EFI_RESOURCE_SYSTEM_MEMORY,
-    ResourceAttributes,
-    PcdGet32 (PcdReservedSecureMemoryBase),
-    PcdGet32 (PcdReservedSecureMemorySize),
-    EFI_MEMORY_WC
-    );
-
-  // Reserved share memory
-  BuildResourceDescriptorHob_V2 (
-    EFI_RESOURCE_SYSTEM_MEMORY,
-    ResourceAttributes,
-    PcdGet32 (PcdReservedShareMemoryBase),
-    PcdGet32 (PcdReservedShareMemorySize),
-    EFI_MEMORY_WC
-    );
-
-  // Create the System Memory HOB for the firmware
-  BuildResourceDescriptorHob_V2 (
-    EFI_RESOURCE_SYSTEM_MEMORY,
-    ResourceAttributes,
-    PcdGet64 (PcdFdBaseAddress),
-    PcdGet32 (PcdFdSize),
-    EFI_MEMORY_WB
-    );
-
-  // Reserved framebuffer memory
-  BuildResourceDescriptorHob_V2 (
-    EFI_RESOURCE_MEMORY_RESERVED,
-    ResourceAttributes,
-    PcdGet64 (PcdArmLcdDdrFrameBufferBase),
-    PcdGet32 (PcdArmLcdDdrFrameBufferSize),
-    EFI_MEMORY_WC
-    );
-
-  // Create initial Base Hob for system memory.
-  BuildResourceDescriptorHob_V2 (
-    EFI_RESOURCE_SYSTEM_MEMORY,
-    ResourceAttributes,
-    FixedPcdGet64 (PcdArmLcdDdrFrameBufferBase) + FixedPcdGet32 (PcdArmLcdDdrFrameBufferSize),
-    mSystemMemoryEnd + 1 - (FixedPcdGet64 (PcdArmLcdDdrFrameBufferBase) + FixedPcdGet32 (PcdArmLcdDdrFrameBufferSize)),
-    EFI_MEMORY_WB
-    );
-
-
-  if (DramHigh) {
-    BuildResourceDescriptorHob_V2 (
-      EFI_RESOURCE_SYSTEM_MEMORY,
-      ResourceAttributes,
-      FixedPcdGet64 (PcdDramHighSpaceBase),
-      DramHighSize,
-      EFI_MEMORY_WB
-      );
-  }
-
-  BuildResourceDescriptorHob_V2 (
-    EFI_RESOURCE_MEMORY_MAPPED_IO,
-    ResourceAttributes | EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE,
-    0x0000000480000000,
-    0x000000FB80000000,
-    EFI_MEMORY_UC);
-
-
-
-  VirtualMemoryTable = (ARM_MEMORY_REGION_DESCRIPTOR *)AllocatePages (
-                                                         EFI_SIZE_TO_PAGES (
-                                                           sizeof (ARM_MEMORY_REGION_DESCRIPTOR) *
-                                                           MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS
-                                                           )
-                                                         );
+  ARM_MEMORY_REGION_DESCRIPTOR *VirtualMemoryTable = (ARM_MEMORY_REGION_DESCRIPTOR *)AllocatePages (PageCount);
   if (VirtualMemoryTable == NULL) {
+    ASSERT(FALSE);
     return;
   }
 
-  // device
-  VirtualMemoryTable[Index].PhysicalBase = 0;
+  // Macro to indicate a present, initialized and tested memory resource
+  #define EFI_RESOURCE_ATTRIBUTE_PIT (EFI_RESOURCE_ATTRIBUTE_PRESENT | EFI_RESOURCE_ATTRIBUTE_INITIALIZED | EFI_RESOURCE_ATTRIBUTE_TESTED)
+
+  //
+  // Device MMIO Region before start of RAM - uncacheable device
+  //
+  VirtualMemoryTable[Index].PhysicalBase = 0x00001000; // Skip the first 4KB to avoid NULL pointer dereference issues
   VirtualMemoryTable[Index].VirtualBase  = VirtualMemoryTable[Index].PhysicalBase;
-  VirtualMemoryTable[Index].Length       = 0x80000000;
-  VirtualMemoryTable[Index++].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+  VirtualMemoryTable[Index].Length       = FixedPcdGet64 (PcdSystemMemoryBase) - 0x00001000;
+  VirtualMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
 
-  // reserved 0x80000000 ~ 0x824fffff secure memory
+  BuildResourceDescriptorHob_V2 (
+    EFI_RESOURCE_MEMORY_MAPPED_IO,
+    EFI_RESOURCE_ATTRIBUTE_PIT | EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE,
+    VirtualMemoryTable[Index].PhysicalBase,
+    VirtualMemoryTable[Index].Length,
+    EFI_MEMORY_UC);
+
+  Index++;
+
+  //
+  // Reserved Secure Memory - write combineable (uncached RAM)
+  //
   VirtualMemoryTable[Index].PhysicalBase = FixedPcdGet32 (PcdReservedSecureMemoryBase);
-  VirtualMemoryTable[Index].VirtualBase  = FixedPcdGet32 (PcdReservedSecureMemoryBase);
+  VirtualMemoryTable[Index].VirtualBase  = VirtualMemoryTable[Index].PhysicalBase;
   VirtualMemoryTable[Index].Length       = FixedPcdGet32 (PcdReservedSecureMemorySize);
-  VirtualMemoryTable[Index++].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
+  VirtualMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
 
-  // reserved 0x82500000 ~ 0x843fffff shared non secure memory
+  BuildResourceDescriptorHob_V2 (
+    EFI_RESOURCE_SYSTEM_MEMORY,
+    EFI_RESOURCE_ATTRIBUTE_PIT | EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE,
+    VirtualMemoryTable[Index].PhysicalBase,
+    VirtualMemoryTable[Index].Length,
+    EFI_MEMORY_WC);
+
+  Index++;
+
+  //
+  // Reserved Shared Non-Secure Memory - write combineable (uncached RAM)
+  //
   VirtualMemoryTable[Index].PhysicalBase = FixedPcdGet32 (PcdReservedShareMemoryBase);
-  VirtualMemoryTable[Index].VirtualBase  = FixedPcdGet32 (PcdReservedShareMemoryBase);
+  VirtualMemoryTable[Index].VirtualBase  = VirtualMemoryTable[Index].PhysicalBase;
   VirtualMemoryTable[Index].Length       = FixedPcdGet32 (PcdReservedShareMemorySize);
-  VirtualMemoryTable[Index++].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
+  VirtualMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
 
-  // system ram 0x84400000
+  BuildResourceDescriptorHob_V2 (
+    EFI_RESOURCE_SYSTEM_MEMORY,
+    EFI_RESOURCE_ATTRIBUTE_PIT | EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE,
+    VirtualMemoryTable[Index].PhysicalBase,
+    VirtualMemoryTable[Index].Length,
+    EFI_MEMORY_WC);
+
+  Index++;
+
+  //
+  // UEFI SPINOR Image in RAM - write back cacheable with option to set write combineable
+  //
   VirtualMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdFdBaseAddress);
   VirtualMemoryTable[Index].VirtualBase  = VirtualMemoryTable[Index].PhysicalBase;
   VirtualMemoryTable[Index].Length       = FixedPcdGet32 (PcdFdSize);
-  VirtualMemoryTable[Index++].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
+  VirtualMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
-  // Framebuffer Memory 0x84800000
+  BuildResourceDescriptorHob_V2 (
+    EFI_RESOURCE_SYSTEM_MEMORY,
+    EFI_RESOURCE_ATTRIBUTE_PIT | EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE | EFI_RESOURCE_ATTRIBUTE_WRITE_BACK_CACHEABLE,
+    VirtualMemoryTable[Index].PhysicalBase,
+    VirtualMemoryTable[Index].Length,
+    EFI_MEMORY_WB);
+
+  Index++;
+
+  //
+  // Framebuffer Memory - write combineable (uncached RAM)
+  //
   VirtualMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdArmLcdDdrFrameBufferBase);
-  VirtualMemoryTable[Index].VirtualBase  = FixedPcdGet64 (PcdArmLcdDdrFrameBufferBase);
+  VirtualMemoryTable[Index].VirtualBase  = VirtualMemoryTable[Index].PhysicalBase;
   VirtualMemoryTable[Index].Length       = FixedPcdGet32 (PcdArmLcdDdrFrameBufferSize);
-  VirtualMemoryTable[Index++].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
+  VirtualMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_UNCACHED_UNBUFFERED;
 
-  // system ram 0x85000000 ~
+  BuildResourceDescriptorHob_V2 (
+    EFI_RESOURCE_MEMORY_RESERVED,
+    EFI_RESOURCE_ATTRIBUTE_PIT | EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE,
+    VirtualMemoryTable[Index].PhysicalBase,
+    VirtualMemoryTable[Index].Length,
+    EFI_MEMORY_WC);
+
+  Index++;
+
+  // Useable System RAM - write back cacheable with option to set write combineable
   VirtualMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdArmLcdDdrFrameBufferBase) + FixedPcdGet32 (PcdArmLcdDdrFrameBufferSize);
   VirtualMemoryTable[Index].VirtualBase  = VirtualMemoryTable[Index].PhysicalBase;
-  VirtualMemoryTable[Index].Length       = mSystemMemoryEnd + 1 - VirtualMemoryTable[Index].PhysicalBase;
-  VirtualMemoryTable[Index++].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
+  VirtualMemoryTable[Index].Length       = FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet64 (PcdSystemMemorySize) - VirtualMemoryTable[Index].PhysicalBase;
+  VirtualMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
-  // system Dram high space 0x80_0000_0000
-  if (DramHigh) {
+  BuildResourceDescriptorHob_V2 (
+    EFI_RESOURCE_SYSTEM_MEMORY,
+    EFI_RESOURCE_ATTRIBUTE_PIT | EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE | EFI_RESOURCE_ATTRIBUTE_WRITE_BACK_CACHEABLE,
+    VirtualMemoryTable[Index].PhysicalBase,
+    VirtualMemoryTable[Index].Length,
+    EFI_MEMORY_WB);
+
+  Index++;
+
+  // Upper MMIO Region - uncacheable device
+  VirtualMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet64 (PcdSystemMemorySize);
+  VirtualMemoryTable[Index].VirtualBase  = VirtualMemoryTable[Index].PhysicalBase;
+  VirtualMemoryTable[Index].Length       = FixedPcdGet64 (PcdDramHighSpaceBase) - VirtualMemoryTable[Index].PhysicalBase;
+  VirtualMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+
+  BuildResourceDescriptorHob_V2 (
+    EFI_RESOURCE_MEMORY_MAPPED_IO,
+    EFI_RESOURCE_ATTRIBUTE_PIT | EFI_RESOURCE_ATTRIBUTE_INITIALIZED | EFI_RESOURCE_ATTRIBUTE_UNCACHEABLE,
+    VirtualMemoryTable[Index].PhysicalBase,
+    VirtualMemoryTable[Index].Length,
+    EFI_MEMORY_UC);
+
+  Index++;
+
+  // System DRAM High Space - write back cacheable with option to set write combineable
+  if (ReportDramHighSpace (&DramHighSize)) {
     VirtualMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdDramHighSpaceBase);
     VirtualMemoryTable[Index].VirtualBase  = VirtualMemoryTable[Index].PhysicalBase;
     VirtualMemoryTable[Index].Length       = DramHighSize;
-    VirtualMemoryTable[Index++].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
+    VirtualMemoryTable[Index].Attributes = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
+
+    BuildResourceDescriptorHob_V2 (
+      EFI_RESOURCE_SYSTEM_MEMORY,
+      EFI_RESOURCE_ATTRIBUTE_PIT | EFI_RESOURCE_ATTRIBUTE_WRITE_COMBINEABLE | EFI_RESOURCE_ATTRIBUTE_WRITE_BACK_CACHEABLE,
+      VirtualMemoryTable[Index].PhysicalBase,
+      VirtualMemoryTable[Index].Length,
+      EFI_MEMORY_WB);
+      
+    Index++;
   }
 
-  // End of Table
+  // End of Table Marker
   VirtualMemoryTable[Index].PhysicalBase = 0;
   VirtualMemoryTable[Index].VirtualBase  = 0;
   VirtualMemoryTable[Index].Length       = 0;
-  VirtualMemoryTable[Index++].Attributes = (ARM_MEMORY_REGION_ATTRIBUTES)0;
+  VirtualMemoryTable[Index].Attributes = (ARM_MEMORY_REGION_ATTRIBUTES)0;
+  Index++;
 
   ASSERT (Index <= MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS);
-
   *VirtualMemoryMap = VirtualMemoryTable;
 }
