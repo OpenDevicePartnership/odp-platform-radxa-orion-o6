@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     xz-utils \
     device-tree-compiler \
     bc \
+    python3-pyelftools \
     && rm -rf /var/lib/apt/lists/*
 
 # Download and install ARM GNU toolchain
@@ -37,6 +38,9 @@ ENV PATH="/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin:${PATH}
 # Verify toolchain installation
 RUN aarch64-none-elf-gcc --version && \
     echo "Toolchain installed successfully at: $(which aarch64-none-elf-gcc)"
+
+# Install Python dependencies (cryptography is needed by edk2 build)
+RUN pip3 install --break-system-packages cryptography
 
 # Allow git to work with mounted volumes owned by different users
 RUN git config --global --add safe.directory '*'
