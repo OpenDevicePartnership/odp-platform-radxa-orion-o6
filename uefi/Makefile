@@ -2,29 +2,24 @@
 # This build needs code that is provided in a monolithic delivery that can not be easily divided into
 # a submodules that reside under this component.  Therefore, the COMMON_DISTRIBUTION_COMPONENTS path
 # is being used to reach outside this component folder and into the common folder.
-COMMON_DISTRIBUTION_COMPONENTS := $(CURDIR)/../common/
 
-SHELL := /bin/bash
-BUILD_OUTPUT_RU := $(BUILD_OUTPUT)/DEBUG_GCC5/RustModules
+SHELL        := /bin/bash
+COMMON       := $(CURDIR)/../common
+BUILD_OUTPUT ?= $(CURDIR)/Build
+BINS_DIR     ?= $(CURDIR)/Build
+RUST_OUT     := $(BUILD_OUTPUT)/DEBUG_Rust
 
-export WORKSPACE := $(CURDIR)
-export PACKAGES_PATH := $(CURDIR)/edk2:$(CURDIR)/platform:$(COMMON_DISTRIBUTION_COMPONENTS)/edk2-platforms-cix-odp:$(COMMON_DISTRIBUTION_COMPONENTS)/edk2-non-osi-cix-odp:$(BUILD_OUTPUT_RU)
-export IASL_PREFIX := $(CURDIR)/tools/acpica/generate/unix/bin/
+export GCC5_AARCH64_PREFIX := $(CURDIR)/../tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+export WORKSPACE           := $(CURDIR)
+export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(COMMON)/edk2-platforms-cix-odp:$(COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT)
+export IASL_PREFIX         := $(CURDIR)/tools/acpica/generate/unix/bin/
 
-.PHONY: all BuildTools RustModules
+.PHONY: all PatinaDxeCore_ru
 
-# Build entire UEFI
-all: BuildTools RustModules TianocoreModules
-	mkdir -p $(BINS_DIR)
-	cp $(BUILD_OUTPUT)/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(BINS_DIR)/
-
-# Tools that must be built before building UEFI
-BuildTools:
-	test -e edk2/BaseTools/Source/C/bin/VolInfo || $(MAKE) -C edk2/BaseTools
-	test -e tools/acpica/generate/unix/bin/iasl || $(MAKE) -C tools/acpica
-
-# All UEFI modules based on Tianocore EDK2
-TianocoreModules: RustModules
+# The UEFI build process
+all: PatinaDxeCore_ru
+	$(MAKE) -C edk2/BaseTools
+	$(MAKE) -C tools/acpica
 	. edk2/edksetup.sh --reconfig && \
 	build \
 		-a AARCH64 \
@@ -41,15 +36,12 @@ TianocoreModules: RustModules
 		-D VARIABLE_TYPE=SPI \
 		-D STANDARD_MM=TRUE \
 		-D SYSTEM_LOADER=common
+	mkdir -p $(BINS_DIR)
+	cp $(BUILD_OUTPUT)/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(BINS_DIR)/
 
-# All Rust based modules to be linked into the final UEFI image
-RUST_DRIVERS := \
-	Drivers/PatinaDxeCore_ru
+# Build targets for each rust module
+PatinaDxeCore_ru:
+	cd platform/Drivers/PatinaDxeCore_ru && cargo build --target-dir $(RUST_OUT)/Drivers/PatinaDxeCore_ru
 
-RustModules:
-	mkdir -p $(BUILD_OUTPUT_RU)
-	@for driver in $(RUST_DRIVERS); do \
-		echo "Building $$driver" && \
-		cd $(CURDIR)/platform/$$driver && \
-		cargo build --target-dir $(BUILD_OUTPUT_RU)/$$driver; \
-	done
+clean:
+	rm -rf $(BUILD_OUTPUT)
