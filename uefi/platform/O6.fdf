@@ -165,7 +165,7 @@ READ_LOCK_STATUS   = TRUE
 
   INF Platform/Radxa/Drivers/RTL8126/RtkUndiDxe.inf
 
-  INF platform/DeviceTree/DeviceTree.inf
+  INF platform/bins/DeviceTree/DeviceTree.inf
 
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 16
@@ -336,7 +336,7 @@ READ_LOCK_STATUS   = TRUE
 
 [Rule.Common.DXE_DRIVER.COMPILE_TRUE_DEPEX]
   FILE DRIVER = $(NAMED_GUID) {
-    DXE_DEPEX    DXE_DEPEX              $(WORKSPACE)/platform/True.depex
+    DXE_DEPEX    DXE_DEPEX              $(WORKSPACE)/platform/bins/True.depex
     PE32         PE32                   $(INF_OUTPUT)/$(MODULE_NAME).efi
     UI           STRING="$(MODULE_NAME)" Optional
     RAW          ACPI  Optional               |.acpi
@@ -345,21 +345,21 @@ READ_LOCK_STATUS   = TRUE
 
 [Rule.Common.DXE_RUNTIME_DRIVER.COMPILE_TRUE_DEPEX]
   FILE DRIVER = $(NAMED_GUID) {
-    DXE_DEPEX    DXE_DEPEX              $(WORKSPACE)/platform/True.depex
+    DXE_DEPEX    DXE_DEPEX              $(WORKSPACE)/platform/bins/True.depex
     PE32         PE32                   $(INF_OUTPUT)/$(MODULE_NAME).efi
     UI           STRING="$(MODULE_NAME)" Optional
   }
 
 [Rule.Common.DXE_RUNTIME_DRIVER.BINARY_TRUE_DEPEX]
   FILE DRIVER = $(NAMED_GUID) {
-    DXE_DEPEX DXE_DEPEX               $(WORKSPACE)/platform/True.depex
+    DXE_DEPEX DXE_DEPEX               $(WORKSPACE)/platform/bins/True.depex
     PE32      PE32                    |.efi
     UI        STRING="$(MODULE_NAME)" Optional
   }
 
 [Rule.Common.DXE_DRIVER.BINARY_TRUE_DEPEX]
   FILE DRIVER = $(NAMED_GUID) {
-    DXE_DEPEX DXE_DEPEX               $(WORKSPACE)/platform/True.depex
+    DXE_DEPEX DXE_DEPEX               $(WORKSPACE)/platform/bins/True.depex
     PE32      PE32                    |.efi
     UI        STRING="$(MODULE_NAME)" Optional
   }

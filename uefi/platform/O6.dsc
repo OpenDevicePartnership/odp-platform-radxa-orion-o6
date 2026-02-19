@@ -203,7 +203,7 @@
 !if $(SMBIOS_ENABLE) == TRUE
   platform/Drivers/PlatformSmbios/PlatformSmbios.inf
 !endif
-  platform/DeviceTree/DeviceTree.inf
+  platform/bins/DeviceTree/DeviceTree.inf
 
 ###################################################################################################
 # BuildOptions Section - Define the module specific tool chain flags that should be used as
