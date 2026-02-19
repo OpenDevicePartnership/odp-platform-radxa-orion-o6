@@ -196,7 +196,7 @@
   # GOP Support
   #
 
-  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
   INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
 
   #

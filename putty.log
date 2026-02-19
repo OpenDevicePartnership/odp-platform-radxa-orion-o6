@@ -1,0 +1,2563 @@
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2026.02.18 17:17:23 =~=~=~=~=~=~=~=~=~=~=~=
+[00.074] [UEFI] E006 PrePiStart
+Cix UEFI firmware (version 0.0.1-ec9323d7d396-debug:08M260218171437N built at 17:14:47 on Feb 18 20Memory Map Entry[0] - PhysicalBase: 0x0000000000001000 - VirtualBase: 0x0000000000001000 - Length: 0x000000007FFFF000
+Memory Map Entry[1] - PhysicalBase: 0x0000000080000000 - VirtualBase: 0x0000000080000000 - Length: 0x0000000002500000
+Memory Map Entry[2] - PhysicalBase: 0x0000000082500000 - VirtualBase: 0x0000000082500000 - Length: 0x0000000001F00000
+Memory Map Entry[3] - PhysicalBase: 0x0000000084400000 - VirtualBase: 0x0000000084400000 - Length: 0x0000000000200000
+Memory Map Entry[4] - PhysicalBase: 0x0000000084800000 - VirtualBase: 0x0000000084800000 - Length: 0x0000000000800000
+Memory Map Entry[5] - PhysicalBase: 0x0000000085000000 - VirtualBase: 0x0000000085000000 - Length: 0x00000003FB000000
+Memory Map Entry[6] - PhysicalBase: 0x0000000480000000 - VirtualBase: 0x0000000480000000 - Length: 0x0000007B80000000
+GetArmCoreInfoFromReg  CoreBitMask[FFF] RegVal: A000
+[00.334] [UEFI] E007 PrePiEnd
+add-symbol-file dxe_core-770e0076d3382262.pdb 0x47E7BC400
+Loading DxeCore at 0x047E7BC000 EntryPoint=0x047E7C5820
+[INFO] DXE Core Platform Binary Entry
+[INFO] DXE Core Crate v20.0.1
+[INFO] memory_start: 0x478000000
+[INFO] memory_size: 0x8000000
+[INFO] free_memory_start: 0x478001000
+[INFO] free_memory_size: 0x67bb000
+[INFO] physical_hob_list: 0x478000000
+[INFO] free_memory_attributes: 0x8
+[INFO] free_memory_capabilities: 0xa
+[INFO] Mapping memory range 0x1000..0x80000000 as MemoryMappedIo with attributes 0x4001
+[INFO] Mapping memory range 0x80000000..0x82500000 as SystemMemory with attributes 0x6002
+[INFO] Mapping memory range 0x82500000..0x84400000 as SystemMemory with attributes 0x6002
+[INFO] Mapping memory range 0x84400000..0x84600000 as SystemMemory with attributes 0x6008
+[INFO] Mapping memory range 0x84800000..0x85000000 as Reserved with attributes 0x4002
+[INFO] Mapping memory range 0x85000000..0x478001000 as SystemMemory with attributes 0x6008
+[INFO] Mapping memory range 0x47e7bc000..0x480000000 as SystemMemory with attributes 0x6008
+[INFO] Mapping memory range 0x480000000..0x8000000000 as MemoryMappedIo with attributes 0x4001
+[INFO] Skipping FV HOB at 0x84400000 of length 0x200000. Containing region is not MMIO.
+[INFO] Skipping FV HOB at 0x47e936000 of length 0xb31600. Containing region is not MMIO.
+[INFO] Skipping FV HOB at 0x47e936000 of length 0xb31600. Containing region is not MMIO.
+[INFO] Page 0 is not part of system memory, it cannot be allocated. It will still be unmapped to use for null pointer detection.
+[INFO] Allocating memory bucket for memory type: 0x6, 0x450 pages.
+[INFO] Allocating memory bucket for memory type: 0x5, 0x4b0 pages.
+[INFO] Allocating memory bucket for memory type: 0x3, 0x5dc pages.
+[INFO] Allocating memory bucket for memory type: 0x4, 0x32c8 pages.
+[INFO] Allocating memory bucket for memory type: 0x1, 0x1000 pages.
+[INFO] GCD - After memory init:
+
+GCDMemType Range                             Capabilities     Attributes       ImageHandle      DeviceHandle
+========== ================================= ================ ================ ================ ================
+[INFO] Registering platform components
+[INFO] Finished.
+[INFO] Registering default components
+[INFO] Finished.
+[INFO] Initializing System Table
+[INFO] Initializing paging for the GCD
+[INFO] Splitting large page at VA VirtualAddress(
+    0x47FFB5000,
+) at level Level2 pt entry address: 0x47D7CBFF8
+[INFO] Setting TCR: 0x80823510
+[INFO] Paging initialized for the GCD
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047e6c1e00
+[INFO] Finished.
+[INFO] Parsing HOB list for Guided HOBs.
+[WARN] No parser registered for HOB: GuidHob { Hob { type: 4, length: 104, reserved: 0 }, name: Guid { 4c19049f-4137-4dd3-9c10-8b97a83ffdfa } }
+[WARN] No parser registered for HOB: GuidHob { Hob { type: 4, length: 504, reserved: 0 }, name: Guid { a4ee0728-e5d7-4ac5-b21e-658ed857e834 } }
+[WARN] No parser registered for HOB: GuidHob { Hob { type: 4, length: 32, reserved: 0 }, name: Guid { c095791a-3001-47b2-80c9-eac7319f2fa4 } }
+[WARN] No parser registered for HOB: GuidHob { Hob { type: 4, length: 56, reserved: 0 }, name: Guid { 385a982c-2f49-4043-a51e-4901025c8b6b } }
+[INFO] Finished.
+[INFO] Installing Firmware Volumes from HOB list.
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047e6c4b00
+[INFO] InstallProtocolInterface: 8F644FA9-E850-4DB1-9CE2-0B44698E8DA4 @ 0x000000047e6c1f40
+[INFO] InstallProtocolInterface: 220E73B6-6BDB-4413-8405-B974B108619A @ 0x000000047e6c4b80
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047e6c4b20
+[INFO] InstallProtocolInterface: 8F644FA9-E850-4DB1-9CE2-0B44698E8DA4 @ 0x000000047e6c4b40
+[INFO] InstallProtocolInterface: 220E73B6-6BDB-4413-8405-B974B108619A @ 0x000000047e6c5a80
+[INFO] Finished.
+[INFO] Dispatching Drivers
+[INFO] GIC initializing (e010000, e090000)
+[INFO] Total Redistributors: 12, Current CPU Redistributor Index: 10
+[INFO] GIC initialized
+[INFO] InstallProtocolInterface: 2890B3EA-053D-1643-AD0C-D64808DA3FF1 @ 0x000000047a8ec100
+[INFO] InstallProtocolInterface: 32898322-2DA1-474A-BAAA-F3F7CF569470 @ 0x000000047a8ec140
+[INFO] installed HARDWARE_INTERRUPT_PROTOCOL_V2
+[INFO] Dispatched: Id = ["patina_dxe_core::cpu::hw_interrupt_protocol::HwInterruptProtocolInstaller"] Status = [Success]
+[INFO] InstallProtocolInterface: 26BACCB1-6F42-11D4-BCE7-0080C73C8881 @ 0x000000047a8ec180
+[INFO] installed EFI_CPU_ARCH_PROTOCOL_GUID
+[INFO] Dispatched: Id = ["patina_dxe_core::cpu::cpu_arch_protocol::CpuArchProtocolInstaller"] Status = [Success]
+[INFO] Dispatched: Id = ["patina_dxe_core::systemtables::SystemTableChecksumInstaller"] Status = [Success]
+[INFO] InstallProtocolInterface: D8117CFE-94A6-11D4-9A3A-0090273FC14D @ 0x000000047e6c1f30
+[INFO] Dispatched: Id = ["patina_dxe_core::decompress::DecompressProtocolInstaller"] Status = [Success]
+[INFO] Depex evaluation complete, scheduled 16 drivers
+[INFO] Loading file: 80CF7257-87AB-47F9-A3FE-D50B76D89541
+[INFO] Applying image memory protections on 0x47E6B4000 for len 0x6000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47E6BA000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47E6BB000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047e6c1280
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8eeb00
+[INFO] Loaded image at 0x000000047e6b3000 Size=0x9000 EntryPoint=0x47e6b80d4 PcdDxe.efi
+[INFO] InstallProtocolInterface: 11B34006-D85B-4D0A-A290-D5A571310EF7 @ 0x000000047e6ba170
+[INFO] InstallProtocolInterface: 13A3F0F6-264A-3EF0-F2E0-DEC512342F34 @ 0x000000047e6ba0d0
+[INFO] InstallProtocolInterface: 5BE40F57-FA68-4610-BBBF-E9C5FCDAD365 @ 0x000000047e6ba0a8
+[INFO] InstallProtocolInterface: FD0F4478-0EFD-461D-BA2D-E58C45FD5F5E @ 0x000000047e6ba088
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: B601F8C4-43B7-4784-95B1-F4226CB40CEE
+[INFO] Applying image memory protections on 0x47E220000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47E230000 for len 0x10000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47E240000 for len 0x10000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047d3ff700
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8f2000
+[INFO] Loaded image at 0x000000047e210000 Size=0x40000 EntryPoint=0x47e221838 RuntimeDxe.efi
+[INFO] InstallProtocolInterface: B7DFB4E1-052F-449F-87BE-9818FC91B733 @ 0x000000047e230000
+[INFO] Runtime protocol installed. Setting up pointers.
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 9585984C-F027-45E9-AFDF-ADAA6DFAAAC7
+[INFO] Applying image memory protections on 0x47DDAA000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DDAE000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DDAF000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047950b680
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d2d80
+[INFO] Loaded image at 0x000000047dda9000 Size=0x7000 EntryPoint=0x47ddabf0c ArmScmiDxe.efi
+[INFO] InstallProtocolInterface: D7E5ABE9-33AB-418E-9F91-72DAE2BA8E2F @ 0x000000047ddac8c8
+[INFO] InstallProtocolInterface: 09B8BA84-3DD3-49A6-A05A-3134A5F07BAD @ 0x000000047ddac8f8
+[INFO] InstallProtocolInterface: 91CE67A8-E0AA-4012-B99F-B6FCF3048EAA @ 0x000000047ddac898
+[INFO] InstallProtocolInterface: B8D8CAF2-9E94-462C-A834-6C99FC05EFCF @ 0x000000047ddac858
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 7A98E3A1-8EF2-19BB-EE53-4A5F56D0D964
+[INFO] Applying image memory protections on 0x47DDA5000 for len 0x2000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DDA7000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DDA8000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047950b780
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d2dc0
+[INFO] Loaded image at 0x000000047dda4000 Size=0x5000 EntryPoint=0x47dda6134 PowerDxe.efi
+[INFO] InstallProtocolInterface: FFD63551-9B97-AADE-7616-53129C7F645A @ 0x000000047dda63c8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: B710F783-3329-4A82-976D-E9A8B040202D
+[INFO] Applying image memory protections on 0x47DDA0000 for len 0x2000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DDA2000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DDA3000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9080
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d2e40
+[INFO] Loaded image at 0x000000047dd9f000 Size=0x5000 EntryPoint=0x47dda1118 ClockDxe.efi
+[INFO] InstallProtocolInterface: 9DFDA0F8-EC28-6452-9EAC-BB082655D884 @ 0x000000047dda2000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 1A9B022B-7686-798A-30A4-947ACA7D42D6
+[INFO] Applying image memory protections on 0x47DD9C000 for len 0x1000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DD9D000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DD9E000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9180
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d2040
+[INFO] Loaded image at 0x000000047dd9b000 Size=0x4000 EntryPoint=0x47dd9c1d8 ResetDxe.efi
+[INFO] InstallProtocolInterface: 1E5069D3-36B4-9DEB-1BE2-D4650ED41A26 @ 0x000000047dd9d010
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 2E3FC9CC-9606-4279-BF3D-84183F298C0F
+[INFO] Applying image memory protections on 0x47DD96000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DD99000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DD9A000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9200
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8cd200
+[INFO] Loaded image at 0x000000047dd95000 Size=0x6000 EntryPoint=0x47dd97aec S3SaveStateDxe.efi
+[INFO] InstallProtocolInterface: E5FAF065-1F34-46A4-80C5-FF66EB2B6AA1 @ 0x000000047dd99000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: A4A011DA-89F9-462A-2806-2375CDD35609
+[INFO] Applying image memory protections on 0x47DD91000 for len 0x2000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DD93000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DD94000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9300
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8cd880
+[INFO] Loaded image at 0x000000047dd90000 Size=0x5000 EntryPoint=0x47dd9222c SocDxe.efi
+[INFO] InstallProtocolInterface: 222A6C1A-51EE-0EEC-9E7C-F3FD6F0FD7CF @ 0x000000047dd93000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 09EE81D3-F15E-43F4-85B4-CB9873DA5D6B
+[INFO] Applying image memory protections on 0x47E1D0000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47E1E0000 for len 0x10000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47E1F0000 for len 0x10000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9380
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8ce300
+[INFO] Loaded image at 0x000000047e1c0000 Size=0x40000 EntryPoint=0x47e1d1438 ArmMmCommunication.efi
+[INFO] InstallProtocolInterface: ED32D533-99E6-4209-9CC0-2D72CDD998A7 @ 0x0000000000000000
+[INFO] InstallProtocolInterface: 93BA1826-DFFB-45DD-82A7-E7DCAA3BBDF3 @ 0x0000000000000000
+[INFO] InstallProtocolInterface: 378DAEDC-F06B-4446-8314-40AB933C87A3 @ 0x000000047e1e00f0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: A40F512E-7450-4CC6-99DB-ACC074EC5010
+[INFO] Applying image memory protections on 0x47E180000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47E190000 for len 0x10000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47E1A0000 for len 0x10000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9500
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d0040
+[INFO] Loaded image at 0x000000047e170000 Size=0x40000 EntryPoint=0x47e182ec4 NorFlashStmmRuntimeDxe.efi
+NorFlashInitialise: enter
+[13.641] [UEFI] E3C1 XspiInitDxeStart
+FlashMemoryInitEventNotify: set flash memory space attribute 0x8000000000000001
+NorFlashCreateInstance: block size 0x1000, region index 0
+NorFlashFvbInitialize: enter
+[INFO] InstallProtocolInterface: D1A86E3F-0707-4C35-83CD-DC2C29C891A3 @ 0x0000000000000000
+NorFlashFvbInitialize: exit
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047e6a18b8
+[INFO] InstallProtocolInterface: 8A22261F-FCE3-4FB7-8240-4F64FA685E70 @ 0x000000047e6a1870
+[INFO] InstallProtocolInterface: CE345171-BA0B-11D2-8E4F-00A0C969723B @ 0x000000047e6a18a0
+[INFO] InstallProtocolInterface: 8F644FA9-E850-4DB1-9CE2-0B44698E8DA4 @ 0x000000047e6a1908
+[INFO] InstallProtocolInterface: 0B25D2AF-335B-4B04-9537-1BCF164D33BE @ 0x000000047e6a18d1
+[ERROR] Failed to get physical address for fvb handle 0x263284380245ec92. Error: Status(
+    0x8000000000000003,
+)
+[13.723] [UEFI] E400 XspiInitDxeEnd
+NorFlashInitialise exit
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 9F7DCADE-11EA-448A-A46F-76E003657DD1
+[INFO] Applying image memory protections on 0x47E130000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47E140000 for len 0x10000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47E150000 for len 0x10000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9580
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d1000
+[INFO] Loaded image at 0x000000047e120000 Size=0x40000 EntryPoint=0x47e133738 VariableSmmRuntimeDxe.efi
+Variable driver runtime cache is disabled.
+[INFO] InstallProtocolInterface: 1E5668E2-8481-11D4-BCF1-0080C73C8881 @ 0x0000000000000000
+[INFO] InstallProtocolInterface: CD3D0A05-9E24-437C-A891-1EE053DB7638 @ 0x000000047e140150
+[INFO] InstallProtocolInterface: AF23B340-97B4-4685-8D4F-A3F28169B21D @ 0x000000047e140138
+[INFO] InstallProtocolInterface: 6441F818-6362-4E44-B570-7DBA31DD2453 @ 0x0000000000000000
+[INFO] InstallProtocolInterface: 81D1675C-86F6-48DF-BD95-9A6E4F0925C3 @ 0x000000047e140210
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 49EA041E-6752-42CA-B0B1-7344FE2546B7
+[INFO] Applying image memory protections on 0x47DD8B000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DD8E000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DD8F000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9680
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d3ec0
+[INFO] Loaded image at 0x000000047dd8a000 Size=0x6000 EntryPoint=0x47dd8c290 ArmTimerDxe.efi
+[INFO] InstallProtocolInterface: 26BACCB3-6F42-11D4-BCE7-0080C73C8881 @ 0x000000047dd8e000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 0619F5C2-4858-4CAA-A86A-73A21A18DF6B
+[INFO] Applying image memory protections on 0x47DD86000 for len 0x2000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DD88000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DD89000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9700
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d3e80
+[INFO] Loaded image at 0x000000047dd85000 Size=0x5000 EntryPoint=0x47dd87270 GenericWatchdogDxe.efi
+[INFO] InstallProtocolInterface: 665E3FF5-46CC-11D4-9A38-0090273FC14D @ 0x000000047dd88000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 346E31BC-C80C-49D7-9D27-A10CC21A00D6
+[INFO] Applying image memory protections on 0x47DD7B000 for len 0x6000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DD81000 for len 0x3000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DD84000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9800
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d7780
+[INFO] Loaded image at 0x000000047dd7a000 Size=0xb000 EntryPoint=0x47dd7da74 PlatformConfigParamsManageDxe.efi
+PlatformConfigParamsHookLibConstructor: initialize I2C bus 3 (0x4040000) at clock 98814
+[14.041] [UEFI] E119 PlatformConfigParamsManageDxeStart
+SetBoardId: enter 
+EC response board ID info:
+SKU ID       : 0x4
+Memory ID    : 0x0
+Reversion ID : 0x0
+SetBoardId: exit 
+GetRtcVoltDropFlag: RTC VL_seconds: 0x97
+GetRtcVoltDropFlag: RTC voltage dropped
+GetRtcVoltDropFlag: reset RTC to default time
+[INFO] InstallProtocolInterface: C8723B5F-2550-498E-B11F-4D05258C3157 @ 0x000000047a8d7618
+[14.083] [UEFI] E11A PlatformConfigParamsManageDxeEnd
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 8BA8F66D-B32A-4048-8325-8CC0A171C4E6
+[INFO] Applying image memory protections on 0x47DD60000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DD64000 for len 0x15000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DD79000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9880
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d7d80
+[INFO] Loaded image at 0x000000047dd5f000 Size=0x1b000 EntryPoint=0x47dd62084 ConfigParamsManageDxe.efi
+[14.149] [UEFI] E117 ConfigParamsManageDxeStart
+[INFO] InstallProtocolInterface: C86EADA7-D376-474A-9FAC-CC4FC5FD417B @ 0x000000047a8d8d18
+[14.161] [UEFI] E118 ConfigParamsManageDxeEnd
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 9804231A-EA80-EDB1-29C3-3D24A0EAD998
+[INFO] Applying image memory protections on 0x47DD54000 for len 0x8000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DD5C000 for len 0x2000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DD5E000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9980
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d7d40
+[INFO] Loaded image at 0x000000047dd53000 Size=0xc000 EntryPoint=0x47dd5725c PlatformDxe.efi
+[14.227] [UEFI] E115 PlatformDxeStart
+[INFO] InstallProtocolInterface: 00964A41-71FF-49A0-AEA1-2163FDF54121 @ 0x000000047dd5d2a0
+[UpdatePcdDmaDeviceLimit] SystemMemSize :400000000
+PcdDmaDeviceLimit set success
+WakeupSourceInit
+[OnboardDevicePowerOff] EntryPoint
+GPIO17 Output Low GFX Power On
+EC GPIO203 Output High TouchPanelPower Power On
+EC request set gpio info:
+Len       : 0x2
+Num       : 0xCB
+EC GPIO74 Output High TpmPower Power On
+EC request set gpio info:
+Len       : 0x2
+Num       : 0x4A
+EC GPIO215 Output High WwanPower Power On
+EC request set gpio info:
+Len       : 0x2
+Num       : 0xD7
+EC GPIO214 Output High PcieX2SlotPower Power On
+EC request set gpio info:
+Len       : 0x2
+Num       : 0xD6
+EC GPIO107 Output High FingerPrintPower Power On
+EC request set gpio info:
+Len       : 0x2
+Num       : 0x6B
+GPIO010 Output High OnBoardLan0Power Power On
+GPIO022 Output High OnBoardLan1Power Power On
+GPIO13 Output High WlanPower Power On
+GPIO12 Output High M2SsdPower Power On
+GPIO91 Output Low IspCamera0Power Power Off
+GPIO93 Output Low IspCamera1Power Power Off
+GPIO83 Output Low IspCamera2Power Power Off
+GPIO86 Output Low IspCamera3Power Power Off
+EC request ec auto power on info:
+Len       : 0x1
+EC_AUTO_POWER_ON_FLG       : 0x1
+EC response farm id info:
+FRAM_ID       : 0x1
+Farm Function Disable.
+[FarmFunctionControl] [641]Get Farm Enable Flag Variable StatusNot Found.
+PlatformEnvHook: platform ENV hook routine failed at index 7, status Not Found
+gEfiI2cMasterProtocolGuid not found yet, status: Not Found
+EC platform not ready.
+[FenceFchXspiHost] enable FCH XSPI gasket fencing status Success, response error code 0
+[INFO] InstallProtocolInterface: 63DAB70D-F5DB-4402-BB3A-36D0DA02A756 @ 0x0000000000000000
+[14.413] [UEFI] E116 PlatformDxeEnd
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Depex evaluation complete, scheduled 36 drivers
+[INFO] Loading file: A74306CD-B65F-F936-7B5D-098350D717FA
+[INFO] Applying image memory protections on 0x47DD4D000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DD51000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DD52000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9a00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047a8d9500
+[INFO] Loaded image at 0x000000047dd4c000 Size=0x7000 EntryPoint=0x47dd4f448 FwVersionDxe.efi
+FwVersionDxeEntryPoint start.
+SetBoardInfo Entry
+EC platform not ready.
+[INFO] InstallProtocolInterface: E1574F13-5014-41CA-2459-FF15CB0ADE33 @ 0x000000047dd51040
+SetBoardInfo Entry
+EC platform not ready.
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: F80697E9-7FD6-4665-8646-88E33EF71DFC
+[INFO] Applying image memory protections on 0x47DCD4000 for len 0x73000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DD47000 for len 0x2000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DD49000 for len 0x3000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047e6c6600
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789dad40
+[INFO] Loaded image at 0x000000047dcd3000 Size=0x79000 EntryPoint=0x47dcd68bc SecurityStubDxe.efi
+[INFO] InstallProtocolInterface: 94AB2F58-1438-4EF1-9152-18941A3A0E68 @ 0x000000047dd471e8
+[INFO] InstallProtocolInterface: A46423E3-4617-49F1-B9FF-D1BFA9115839 @ 0x000000047dd471e0
+[INFO] InstallProtocolInterface: 15853D7C-3DDF-43E0-A1CB-EBF85B8F872C @ 0x000000047dd471c8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 42857F0A-13F2-4B21-8A23-53D3F714B840
+[INFO] Applying image memory protections on 0x47E0F0000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47E100000 for len 0x10000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x00000004789dad80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789dc4c0
+[INFO] Loaded image at 0x000000047e0e0000 Size=0x30000 EntryPoint=0x47e0f1558 CapsuleRuntimeDxe.efi
+[INFO] InstallProtocolInterface: 5053697E-2CBC-4819-90D9-0580DEEE5754 @ 0x0000000000000000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 82A80854-4DEF-0548-E746-8BC8763CE13F
+[INFO] Applying image memory protections on 0x47E0B0000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47E0C0000 for len 0x10000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x00000004789df680
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789df600
+[INFO] Loaded image at 0x000000047e0a0000 Size=0x30000 EntryPoint=0x47e0b09e4 TypecPhyDxe.efi
+[INFO] InstallProtocolInterface: AFC9EECB-C5F1-3EDE-A61F-284F38E27832 @ 0x00000004789dae28
+[INFO] InstallProtocolInterface: AFC9EECB-C5F1-3EDE-A61F-284F38E27832 @ 0x00000004789daf28
+[INFO] InstallProtocolInterface: AFC9EECB-C5F1-3EDE-A61F-284F38E27832 @ 0x00000004789f6628
+[INFO] InstallProtocolInterface: AFC9EECB-C5F1-3EDE-A61F-284F38E27832 @ 0x00000004789f6728
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 0D44EEBC-AB62-4B2A-935C-7C3A5CACFEBF
+[INFO] Applying image memory protections on 0x47DCCE000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DCD1000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DCD2000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cb480
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789df780
+[INFO] Loaded image at 0x000000047dccd000 Size=0x6000 EntryPoint=0x47dccfb80 UsbCHostDxe.efi
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 0B593D3F-B6FF-495E-BB8B-DA15A63D9C4E
+[INFO] Applying image memory protections on 0x47DCC8000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DCCB000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DCCC000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cb780
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789f7400
+[INFO] Loaded image at 0x000000047dcc7000 Size=0x6000 EntryPoint=0x47dcc9b78 Usb32HostDxe.efi
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 7B93FA36-68B2-49D8-A5FB-30542C691EB3
+[INFO] Applying image memory protections on 0x47DCC2000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DCC5000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DCC6000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cb800
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789f7640
+[INFO] Loaded image at 0x000000047dcc1000 Size=0x6000 EntryPoint=0x47dcc3a60 Usb20HostDxe.efi
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 805337AD-1C86-49E5-B8FC-4147A2076562
+[INFO] Applying image memory protections on 0x47DCB8000 for len 0x5000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DCBD000 for len 0x3000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DCC0000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cb900
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789f8040
+[INFO] Loaded image at 0x000000047dcb7000 Size=0xa000 EntryPoint=0x47dcb97a8 PcieInitDxe.efi
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: C937FCB7-25AC-4376-89A2-4EA8B317DE83
+[INFO] Applying image memory protections on 0x47DC62000 for len 0x51000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DCB3000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DCB4000 for len 0x3000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cb980
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789f82c0
+[INFO] Loaded image at 0x000000047dc61000 Size=0x56000 EntryPoint=0x47dc67d14 SecureBootDefaultKeysDxe.efi
+Variable PKDefault does not exist.
+Variable KEKDefault does not exist.
+Variable dbDefault does not exist.
+Variable dbtDefault does not exist.
+SecureBootDefaultKeysEntryPoint: dbtDefault not initialized
+Variable dbxDefault does not exist.
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: D1FED3CC-E80C-4B78-94F8-72DDA5B396E5
+[INFO] Applying image memory protections on 0x47DC5C000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DC60000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x00000004789fd280
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789fde80
+[INFO] Loaded image at 0x000000047dc5b000 Size=0x6000 EntryPoint=0x47dc5df8c SecureBootDxe.efi
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: AD608272-D07F-4964-801E-7BD3B7888652
+[INFO] Applying image memory protections on 0x47E070000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47E080000 for len 0x10000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x00000004789fd380
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a37d00
+[INFO] Loaded image at 0x000000047e060000 Size=0x30000 EntryPoint=0x47e07130c MonotonicCounterRuntimeDxe.efi
+[INFO] InstallProtocolInterface: 1DA97072-BDDC-4B30-99F1-72A0B56FFF2A @ 0x0000000000000000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 16036A73-E8EF-46D0-953C-9B8E96527D13
+[INFO] Applying image memory protections on 0x47E030000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47E040000 for len 0x10000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x00000004789fde00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789fd300
+[INFO] Loaded image at 0x000000047e020000 Size=0x30000 EntryPoint=0x47e0324dc Reset.efi
+I2cMemoryInitEventNotify: memory space base 0x4070000, length 0x1000 already added
+[INFO] InstallProtocolInterface: 27CFAC88-46CC-11D4-9A38-0090273FC14D @ 0x0000000000000000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 4C6E0267-C77D-410D-8100-1495911A989D
+[INFO] Applying image memory protections on 0x47DC57000 for len 0x2000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DC59000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DC5A000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9b80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a39880
+[INFO] Loaded image at 0x000000047dc56000 Size=0x5000 EntryPoint=0x47dc580c4 MetronomeDxe.efi
+[INFO] InstallProtocolInterface: 26BACCB2-6F42-11D4-BCE7-0080C73C8881 @ 0x000000047dc59000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 348C4D62-BFBD-4882-9ECE-C80BB1C4783B
+[INFO] Applying image memory protections on 0x47DC38000 for len 0x1C000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DC54000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DC55000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9c80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a37ec0
+[INFO] Loaded image at 0x000000047dc37000 Size=0x1f000 EntryPoint=0x47dc3b724 HiiDatabase.efi
+[INFO] InstallProtocolInterface: E9CA4775-8657-47FC-97E7-7ED65A084324 @ 0x000000047dc54110
+[INFO] InstallProtocolInterface: 0FD96974-23AA-4CDC-B9CB-98D17750322A @ 0x000000047dc54188
+[INFO] InstallProtocolInterface: EF9FC172-A1B2-4693-B327-6D32FC416042 @ 0x000000047dc541b0
+[INFO] InstallProtocolInterface: 587E72D7-CC50-4F79-8209-CA291FC1A10F @ 0x000000047dc54208
+[INFO] InstallProtocolInterface: 0A8BADD5-03B8-4D19-B128-7B8F0EDAA596 @ 0x000000047dc54238
+[INFO] InstallProtocolInterface: 31A6406A-6BDF-4E46-B2A2-EBAA89C40920 @ 0x000000047dc54130
+[INFO] InstallProtocolInterface: 1A1241E6-8F19-41A9-BC0E-E8EF39E06546 @ 0x000000047dc54158
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 9A5163E7-5C29-453F-825C-837A46A81E15
+[INFO] Applying image memory protections on 0x47DC32000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DC35000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DC36000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8c9a80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789fdec0
+[INFO] Loaded image at 0x000000047dc31000 Size=0x6000 EntryPoint=0x47dc33774 SerialDxe.efi
+[INFO] InstallProtocolInterface: BB25CF6F-F1D4-11D2-9A0C-0090273FC1FD @ 0x000000047dc35020
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047dc35068
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 55E0FA57-571D-6103-A9CD-32438D01AC71
+[INFO] Applying image memory protections on 0x47DC2B000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DC2F000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DC30000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8ca200
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a38440
+[INFO] Loaded image at 0x000000047dc2a000 Size=0x7000 EntryPoint=0x47dc2cb50 PowerButtonDxe.efi
+[PBTN]Create Power Button callback Success
+[INFO] InstallProtocolInterface: 3CBB5523-1A97-4032-A6B9-F5B31B7AF9EF @ 0x000000047dc2f050
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 13AC6DD0-73D0-11D4-B06B-00AA00BD6DE7
+[INFO] Applying image memory protections on 0x47DC21000 for len 0x7000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DC28000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DC29000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8ca580
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a39700
+[INFO] Loaded image at 0x000000047dc20000 Size=0xa000 EntryPoint=0x47dc25950 EbcDxe.efi
+[INFO] InstallProtocolInterface: 13AC6DD1-73D0-11D4-B06B-00AA00BD6DE7 @ 0x0000000478a38218
+[INFO] InstallProtocolInterface: 96F46153-97A7-4793-ACC1-FA19BF78EA97 @ 0x000000047dc28030
+[INFO] InstallProtocolInterface: 2755590C-6F3C-42FA-9EA4-A3BA543CDA25 @ 0x0000000478a37f18
+[INFO] InstallProtocolInterface: AAEACCFD-F27B-4C17-B610-75CA1F2DFB52 @ 0x000000047a8d0298
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 6D5E4989-3AEE-4B1F-9844-4F0A76D45B4D
+[INFO] Applying image memory protections on 0x47DFE0000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DFF0000 for len 0x10000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47E000000 for len 0x10000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8ca600
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a38280
+[INFO] Loaded image at 0x000000047dfd0000 Size=0x40000 EntryPoint=0x47dfe1d08 I2cDxe.efi
+[16.454] [UEFI] E201 I2cInitDxeStart
+[INFO] InstallProtocolInterface: CD72881F-45B5-4FEB-98C8-313DA8117462 @ 0x000000047e695260
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047e695280
+[INFO] InstallProtocolInterface: CD72881F-45B5-4FEB-98C8-313DA8117462 @ 0x000000047e695360
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047e695380
+[INFO] InstallProtocolInterface: CD72881F-45B5-4FEB-98C8-313DA8117462 @ 0x000000047e695460
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047e695480
+[INFO] InstallProtocolInterface: 907D8B8B-5C4D-422E-AF93-CDE0814C3725 @ 0x0000000000000000
+[INFO] InstallProtocolInterface: CD72881F-45B5-4FEB-98C8-313DA8117462 @ 0x000000047e695560
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047e695580
+[INFO] InstallProtocolInterface: CD72881F-45B5-4FEB-98C8-313DA8117462 @ 0x000000047e695660
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047e695680
+[INFO] InstallProtocolInterface: CD72881F-45B5-4FEB-98C8-313DA8117462 @ 0x000000047e695760
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047e695780
+[INFO] InstallProtocolInterface: CD72881F-45B5-4FEB-98C8-313DA8117462 @ 0x000000047e695860
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047e695880
+I2cMemoryInitEventNotify: memory space base 0x4040000, length 0x1000 already added
+[16.586] [UEFI] E240 I2cInitDxeEnd
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 4E60AF09-2861-4BC9-9DC8-249642F43568
+[INFO] Applying image memory protections on 0x47DFA0000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DFB0000 for len 0x10000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478a38e00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a38400
+[INFO] Loaded image at 0x000000047df90000 Size=0x30000 EntryPoint=0x47dfa169c I2cHidDeviceDxe.efi
+[INFO] InstallProtocolInterface: CD72881F-45B5-4FEB-98C8-313DA8117462 @ 0x0000000478a381c2
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478a38398
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 4A7306C0-0EA8-463B-8CA5-17E82F937E1D
+[INFO] Applying image memory protections on 0x47DC1A000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DC1E000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DC1F000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8ca780
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789fdc00
+[INFO] Loaded image at 0x000000047dc19000 Size=0x7000 EntryPoint=0x47dc1bb64 SpiDxe.efi
+[16.721] [UEFI] E241 SpiInitDxeStart
+[INFO] InstallProtocolInterface: 79C83D2B-8CE1-4DD3-AE24-4BD2D87236B1 @ 0x0000000478a55728
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478a55740
+[16.741] [UEFI] E280 SpiInitDxeEnd
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 2FF1885B-51E2-39F4-BF58-C47E4D55A7E9
+[INFO] Applying image memory protections on 0x47DC0F000 for len 0x8000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DC17000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DC18000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cad00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a380c0
+[INFO] Loaded image at 0x000000047dc0e000 Size=0xb000 EntryPoint=0x47dc140dc DpuDxe.efi
+[INFO] InstallProtocolInterface: B773037A-76E5-4016-9F60-A304571C7476 @ 0x000000047dc170a0
+[INFO] InstallProtocolInterface: B9B02EF7-4588-4FB9-91D3-A02005B3D228 @ 0x000000047dc171b8
+[INFO] InstallProtocolInterface: B9B02EF7-4588-4FB9-91D3-A02005B3D228 @ 0x000000047dc17210
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 9622E42C-8E38-4A08-9E8F-54F784652F6B
+[INFO] Applying image memory protections on 0x47DC04000 for len 0x7000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DC0B000 for len 0x2000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DC0D000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cad80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a3aac0
+[INFO] Loaded image at 0x000000047dc03000 Size=0xb000 EntryPoint=0x47dc0892c AcpiTableDxe.efi
+[INFO] InstallProtocolInterface: FFE06BDD-6107-46A6-7BB2-5A9C7EC5275C @ 0x0000000478a568a0
+[INFO] InstallProtocolInterface: EB97088E-CFDF-49C6-BE4B-D906A5B20E86 @ 0x0000000478a568b0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: D021A013-70EC-4B0D-9FBF-6BD1E245152D
+[INFO] Applying image memory protections on 0x47DBFB000 for len 0x5000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DC00000 for len 0x2000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DC02000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cb000
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a37e80
+[INFO] Loaded image at 0x000000047dbfa000 Size=0x9000 EntryPoint=0x47dbfd108 ConfigurationManagerDxe.efi
+[INFO] InstallProtocolInterface: D85A4835-5A82-4894-AC02-706F43D5978E @ 0x000000047dbfdd71
+[CPU0] Performace_Level = [0].   Level = [992]    ,  PowerCost = [400], Latency = [1000]
+[CPU0] Performace_Level = [1].   Level = [2232]    ,  PowerCost = [1300], Latency = [1000]
+HighestPerf = 8B8
+NominalPerf = 8B8
+LowestNonlinearPerf = 3E0
+LowestPerf = 3E0
+CpcGranularity = 806451
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 1800
+[CPU1] Performace_Level = [0].   Level = [992]    ,  PowerCost = [400], Latency = [1000]
+[CPU1] Performace_Level = [1].   Level = [2232]    ,  PowerCost = [1300], Latency = [1000]
+HighestPerf = 8B8
+NominalPerf = 8B8
+LowestNonlinearPerf = 3E0
+LowestPerf = 3E0
+CpcGranularity = 806451
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 1800
+[CPU2] Performace_Level = [0].   Level = [992]    ,  PowerCost = [400], Latency = [1000]
+[CPU2] Performace_Level = [1].   Level = [2232]    ,  PowerCost = [1300], Latency = [1000]
+HighestPerf = 8B8
+NominalPerf = 8B8
+LowestNonlinearPerf = 3E0
+LowestPerf = 3E0
+CpcGranularity = 806451
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 1800
+[CPU3] Performace_Level = [0].   Level = [992]    ,  PowerCost = [400], Latency = [1000]
+[CPU3] Performace_Level = [1].   Level = [2232]    ,  PowerCost = [1300], Latency = [1000]
+HighestPerf = 8B8
+NominalPerf = 8B8
+LowestNonlinearPerf = 3E0
+LowestPerf = 3E0
+CpcGranularity = 806451
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 1800
+[CPU4] Performace_Level = [0].   Level = [2520]    ,  PowerCost = [500], Latency = [1000]
+[CPU4] Performace_Level = [1].   Level = [3780]    ,  PowerCost = [1500], Latency = [1000]
+[CPU4] Performace_Level = [2].   Level = [4726]    ,  PowerCost = [1900], Latency = [1000]
+[CPU4] Performace_Level = [3].   Level = [5671]    ,  PowerCost = [2450], Latency = [1000]
+[CPU4] Performace_Level = [4].   Level = [5986]    ,  PowerCost = [2633], Latency = [1000]
+[CPU4] Performace_Level = [5].   Level = [6301]    ,  PowerCost = [2816], Latency = [1000]
+[CPU4] Performace_Level = [6].   Level = [6616]    ,  PowerCost = [3000], Latency = [1000]
+[CPU4] Performace_Level = [7].   Level = [6931]    ,  PowerCost = [3200], Latency = [1000]
+[CPU4] Performace_Level = [8].   Level = [7246]    ,  PowerCost = [3500], Latency = [1000]
+HighestPerf = 1C4E
+NominalPerf = 1C4E
+LowestNonlinearPerf = 9D8
+LowestPerf = 9D8
+CpcGranularity = 317393
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 2300
+[CPU5] Performace_Level = [0].   Level = [2520]    ,  PowerCost = [500], Latency = [1000]
+[CPU5] Performace_Level = [1].   Level = [3780]    ,  PowerCost = [1500], Latency = [1000]
+[CPU5] Performace_Level = [2].   Level = [4726]    ,  PowerCost = [1900], Latency = [1000]
+[CPU5] Performace_Level = [3].   Level = [5671]    ,  PowerCost = [2450], Latency = [1000]
+[CPU5] Performace_Level = [4].   Level = [5986]    ,  PowerCost = [2633], Latency = [1000]
+[CPU5] Performace_Level = [5].   Level = [6301]    ,  PowerCost = [2816], Latency = [1000]
+[CPU5] Performace_Level = [6].   Level = [6616]    ,  PowerCost = [3000], Latency = [1000]
+[CPU5] Performace_Level = [7].   Level = [6931]    ,  PowerCost = [3200], Latency = [1000]
+[CPU5] Performace_Level = [8].   Level = [7246]    ,  PowerCost = [3500], Latency = [1000]
+HighestPerf = 1C4E
+NominalPerf = 1C4E
+LowestNonlinearPerf = 9D8
+LowestPerf = 9D8
+CpcGranularity = 317393
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 2300
+[CPU6] Performace_Level = [0].   Level = [2520]    ,  PowerCost = [500], Latency = [1000]
+[CPU6] Performace_Level = [1].   Level = [3780]    ,  PowerCost = [1500], Latency = [1000]
+[CPU6] Performace_Level = [2].   Level = [4726]    ,  PowerCost = [1900], Latency = [1000]
+[CPU6] Performace_Level = [3].   Level = [5041]    ,  PowerCost = [2200], Latency = [1000]
+[CPU6] Performace_Level = [4].   Level = [5356]    ,  PowerCost = [2500], Latency = [1000]
+[CPU6] Performace_Level = [5].   Level = [5671]    ,  PowerCost = [2800], Latency = [1000]
+[CPU6] Performace_Level = [6].   Level = [6616]    ,  PowerCost = [3300], Latency = [1000]
+[CPU6] Performace_Level = [7].   Level = [6931]    ,  PowerCost = [3500], Latency = [1000]
+HighestPerf = 1B13
+NominalPerf = 1B13
+LowestNonlinearPerf = 9D8
+LowestPerf = 9D8
+CpcGranularity = 317393
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 2200
+[CPU7] Performace_Level = [0].   Level = [2520]    ,  PowerCost = [500], Latency = [1000]
+[CPU7] Performace_Level = [1].   Level = [3780]    ,  PowerCost = [1500], Latency = [1000]
+[CPU7] Performace_Level = [2].   Level = [4726]    ,  PowerCost = [1900], Latency = [1000]
+[CPU7] Performace_Level = [3].   Level = [5041]    ,  PowerCost = [2200], Latency = [1000]
+[CPU7] Performace_Level = [4].   Level = [5356]    ,  PowerCost = [2500], Latency = [1000]
+[CPU7] Performace_Level = [5].   Level = [5671]    ,  PowerCost = [2800], Latency = [1000]
+[CPU7] Performace_Level = [6].   Level = [6616]    ,  PowerCost = [3300], Latency = [1000]
+[CPU7] Performace_Level = [7].   Level = [6931]    ,  PowerCost = [3500], Latency = [1000]
+HighestPerf = 1B13
+NominalPerf = 1B13
+LowestNonlinearPerf = 9D8
+LowestPerf = 9D8
+CpcGranularity = 317393
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 2200
+[CPU8] Performace_Level = [0].   Level = [2520]    ,  PowerCost = [500], Latency = [1000]
+[CPU8] Performace_Level = [1].   Level = [3780]    ,  PowerCost = [1600], Latency = [1000]
+[CPU8] Performace_Level = [2].   Level = [4726]    ,  PowerCost = [2000], Latency = [1000]
+[CPU8] Performace_Level = [3].   Level = [5986]    ,  PowerCost = [2857], Latency = [1000]
+[CPU8] Performace_Level = [4].   Level = [6301]    ,  PowerCost = [3071], Latency = [1000]
+[CPU8] Performace_Level = [5].   Level = [6616]    ,  PowerCost = [3285], Latency = [1000]
+[CPU8] Performace_Level = [6].   Level = [6931]    ,  PowerCost = [3500], Latency = [1000]
+[CPU8] Performace_Level = [7].   Level = [7561]    ,  PowerCost = [4500], Latency = [1000]
+[CPU8] Performace_Level = [8].   Level = [7876]    ,  PowerCost = [5000], Latency = [1000]
+HighestPerf = 1EC4
+NominalPerf = 1EC4
+LowestNonlinearPerf = 9D8
+LowestPerf = 9D8
+CpcGranularity = 317393
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 2500
+[CPU9] Performace_Level = [0].   Level = [2520]    ,  PowerCost = [500], Latency = [1000]
+[CPU9] Performace_Level = [1].   Level = [3780]    ,  PowerCost = [1600], Latency = [1000]
+[CPU9] Performace_Level = [2].   Level = [4726]    ,  PowerCost = [2000], Latency = [1000]
+[CPU9] Performace_Level = [3].   Level = [5986]    ,  PowerCost = [2857], Latency = [1000]
+[CPU9] Performace_Level = [4].   Level = [6301]    ,  PowerCost = [3071], Latency = [1000]
+[CPU9] Performace_Level = [5].   Level = [6616]    ,  PowerCost = [3285], Latency = [1000]
+[CPU9] Performace_Level = [6].   Level = [6931]    ,  PowerCost = [3500], Latency = [1000]
+[CPU9] Performace_Level = [7].   Level = [7561]    ,  PowerCost = [4500], Latency = [1000]
+[CPU9] Performace_Level = [8].   Level = [7876]    ,  PowerCost = [5000], Latency = [1000]
+HighestPerf = 1EC4
+NominalPerf = 1EC4
+LowestNonlinearPerf = 9D8
+LowestPerf = 9D8
+CpcGranularity = 317393
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 2500
+[CPU10] Performace_Level = [0].   Level = [2520]    ,  PowerCost = [500], Latency = [1000]
+[CPU10] Performace_Level = [1].   Level = [3780]    ,  PowerCost = [1600], Latency = [1000]
+[CPU10] Performace_Level = [2].   Level = [4726]    ,  PowerCost = [2000], Latency = [1000]
+[CPU10] Performace_Level = [3].   Level = [5986]    ,  PowerCost = [2914], Latency = [1000]
+[CPU10] Performace_Level = [4].   Level = [6301]    ,  PowerCost = [3142], Latency = [1000]
+[CPU10] Performace_Level = [5].   Level = [6616]    ,  PowerCost = [3371], Latency = [1000]
+[CPU10] Performace_Level = [6].   Level = [6931]    ,  PowerCost = [3600], Latency = [1000]
+[CPU10] Performace_Level = [7].   Level = [7876]    ,  PowerCost = [4700], Latency = [1000]
+[CPU10] Performace_Level = [8].   Level = [8192]    ,  PowerCost = [5100], Latency = [1000]
+HighestPerf = 2000
+NominalPerf = 2000
+LowestNonlinearPerf = 9D8
+LowestPerf = 9D8
+CpcGranularity = 317393
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 2600
+[CPU11] Performace_Level = [0].   Level = [2520]    ,  PowerCost = [500], Latency = [1000]
+[CPU11] Performace_Level = [1].   Level = [3780]    ,  PowerCost = [1600], Latency = [1000]
+[CPU11] Performace_Level = [2].   Level = [4726]    ,  PowerCost = [2000], Latency = [1000]
+[CPU11] Performace_Level = [3].   Level = [5986]    ,  PowerCost = [2914], Latency = [1000]
+[CPU11] Performace_Level = [4].   Level = [6301]    ,  PowerCost = [3142], Latency = [1000]
+[CPU11] Performace_Level = [5].   Level = [6616]    ,  PowerCost = [3371], Latency = [1000]
+[CPU11] Performace_Level = [6].   Level = [6931]    ,  PowerCost = [3600], Latency = [1000]
+[CPU11] Performace_Level = [7].   Level = [7876]    ,  PowerCost = [4700], Latency = [1000]
+[CPU11] Performace_Level = [8].   Level = [8192]    ,  PowerCost = [5100], Latency = [1000]
+HighestPerf = 2000
+NominalPerf = 2000
+LowestNonlinearPerf = 9D8
+LowestPerf = 9D8
+CpcGranularity = 317393
+LowestFrequencyInteger = 800
+NominalFrequencyInteger = 2600
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: FE846898-7403-4932-B8AD-A0491F0C2CBA
+[INFO] Applying image memory protections on 0x47DBE7000 for len 0x11000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBF8000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DBF9000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478a38500
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a39000
+[INFO] Loaded image at 0x000000047dbe6000 Size=0x14000 EntryPoint=0x47dbe7b10 DynamicTableFactoryDxe.efi
+Registering ACPI.STD.MADT.GENERATOR
+MADT: Register Generator. Status = Success
+Registering ACPI.STD.SSDT.CPU.TOPOLOGY.GENERATOR
+SSDT-CPU-TOPOLOGY: Register Generator. Status = Success
+Registering ACPI.STD.PPTT.GENERATOR
+PPTT: Register Generator. Status = Success
+[INFO] InstallProtocolInterface: 91D1E327-FE5A-49B8-AB65-0ECE2DDB45EC @ 0x000000047dbf6dc0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: F9D88642-0737-49BC-81B5-6889CD57D9EA
+[INFO] Applying image memory protections on 0x47DBDF000 for len 0x5000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBE4000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DBE5000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cba80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a39040
+[INFO] Loaded image at 0x000000047dbde000 Size=0x8000 EntryPoint=0x47dbe23bc SmbiosDxe.efi
+[INFO] InstallProtocolInterface: 03583FF6-CB36-4940-947E-B9B39F4AFAF7 @ 0x000000047dbe40e0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 168D1A6E-F4A5-448A-9E95-795661BB3067
+[INFO] Applying image memory protections on 0x47DBD9000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBDC000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DBDD000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cbb80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a39200
+[INFO] Loaded image at 0x000000047dbd8000 Size=0x6000 EntryPoint=0x47dbda558 ArmPciCpuIo2Dxe.efi
+[INFO] InstallProtocolInterface: AD61F191-AE5F-4C0E-B9FA-E869D288C64F @ 0x000000047dbdc000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 7ED510AA-9CDC-49D2-A306-6E11E359F9B3
+[INFO] Applying image memory protections on 0x47DBD2000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBD6000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DBD7000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cbc00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a39240
+[INFO] Loaded image at 0x000000047dbd1000 Size=0x7000 EntryPoint=0x47dbd4190 NonCoherentIoMmuDxe.efi
+[INFO] InstallProtocolInterface: 4E939DE9-D948-4B0F-88ED-E6E1CE517C1E @ 0x000000047dbd6040
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 16EFDEC8-3F12-490C-9C98-386B2329EAED
+[INFO] Applying image memory protections on 0x47DF50000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DF60000 for len 0x10000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DF70000 for len 0x10000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cbb00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a38700
+[INFO] Loaded image at 0x000000047df40000 Size=0x40000 EntryPoint=0x47df52868 CixFirmwareUpdateDxe.efi
+[FwU]CixFirmwareUpdateDxeEntryPoint start.
+[INFO] InstallProtocolInterface: B1CCCD1C-C853-45CF-825D-902912558054 @ 0x000000047df60068
+: locate gEfiFirmwareVolume2ProtocolGuid success.
+no ec.bin ...
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: A210F973-229D-4F4D-AA37-9895E6C9EABA
+[INFO] Applying image memory protections on 0x47DBCC000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBCF000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DBD0000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cbd00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a38780
+[INFO] Loaded image at 0x000000047dbcb000 Size=0x6000 EntryPoint=0x47dbcd4ac DpcDxe.efi
+[INFO] InstallProtocolInterface: 480F8AE9-0C46-4AA9-BC89-DB9FBA619806 @ 0x000000047dbcf010
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 22EA234F-E72A-11E4-91F9-28D2447C4829
+[INFO] Applying image memory protections on 0x47DBC6000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBC9000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DBCA000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cc380
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a38900
+[INFO] Loaded image at 0x000000047dbc5000 Size=0x6000 EntryPoint=0x47dbc7f74 HttpUtilitiesDxe.efi
+[INFO] InstallProtocolInterface: 3E35C163-4074-45DD-431E-23989DD86B32 @ 0x000000047dbc9000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 9B680FCE-AD6B-4F3A-B60B-F59899003443
+[INFO] Applying image memory protections on 0x47DBB7000 for len 0xC000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBC3000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DBC4000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cc800
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a38940
+[INFO] Loaded image at 0x000000047dbb6000 Size=0xf000 EntryPoint=0x47dbbf134 DevicePathDxe.efi
+[INFO] InstallProtocolInterface: 0379BE4E-D706-437D-B037-EDB82FB772A4 @ 0x000000047dbc2258
+[INFO] InstallProtocolInterface: 8B843E20-8132-4852-90CC-551A4E4A7F1C @ 0x000000047dbc2248
+[INFO] InstallProtocolInterface: 05C99A21-C70F-4AD2-8A5F-35DF3343F51E @ 0x000000047dbc2238
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 4C7FCED5-9CD6-4F33-AD33-A2EC35DFDE71
+[INFO] Applying image memory protections on 0x47DBB1000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBB5000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478a81b80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a39400
+[INFO] Loaded image at 0x000000047dbb0000 Size=0x6000 EntryPoint=0x47dbb2ed8 PlatformSetupVariableInitDxe.efi
+PlatformSetupVariableInitDxeEntry: PlatformSetupVariableInit Success - Success
+PlatformSetupVariableInitDxeEntry: NetworkStackVariableInit Success - Success
+PlatformSetupVariableInitDxeEntry: SystemTableVariableInit Success - Success
+RTC voltage drop status : TRUE
+RTC voltage drop status : TRUE
+RTC voltage drop status : TRUE
+[INFO] InstallProtocolInterface: 3638A3B3-60E6-4F76-B1AC-479DCDC6F88D @ 0x0000000000000000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 58EC6163-B79D-4397-BE82-65F2DB5ED645
+[INFO] Applying image memory protections on 0x47DBAD000 for len 0x2000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBAF000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478a83500
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a3aa00
+[INFO] Loaded image at 0x000000047dbac000 Size=0x4000 EntryPoint=0x47dbae11c RadxaSetupVariableInitDxe.efi
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 4A7EDE18-8BDC-4AE1-9BD5-D1F1B2BCCB5F
+[INFO] Applying image memory protections on 0x47DBA8000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBAB000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478a83600
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a394c0
+[INFO] Loaded image at 0x000000047dba7000 Size=0x5000 EntryPoint=0x47dba98dc FirmwareConfigUpdateDxe.efi
+[FindFirmwareEntryInfo]: Firmware header is incompleted, iamge buffer too small
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 479B6009-88D3-B397-CBFC-14BC904D1F68
+[INFO] Applying image memory protections on 0x47DB9F000 for len 0x6000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DBA5000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DBA6000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cca00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a38a80
+[INFO] Loaded image at 0x000000047db9e000 Size=0x9000 EntryPoint=0x47dba1064 DtbUpdateDxe.efi
+DtbUpdateEnable:1
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: DC92CDA1-5D43-4E3F-A594-15B6886893F3
+[INFO] Applying image memory protections on 0x47DB9B000 for len 0x2000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB9D000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478a83780
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a396c0
+[INFO] Loaded image at 0x000000047db9a000 Size=0x4000 EntryPoint=0x47db9c034 AcpiPlatformDxe.efi
+Acpi Platform Dxe Entry
+- Found 'SSDT' ACPI Table
+Install Acpi table status:Success
+Acpi Platform Dxe Exit
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Depex evaluation complete, scheduled 18 drivers
+[INFO] Loading file: 3B08B59E-B317-4824-8C53-871C9B8571F5
+[INFO] Applying image memory protections on 0x47DB92000 for len 0x6000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB98000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DB99000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8d1700
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478a39680
+[INFO] Loaded image at 0x000000047db91000 Size=0x9000 EntryPoint=0x47db94660 PdDxe.efi
+[18.806] [UEFI] E6C1 PdDxeStart
+Pd Device 0 get device config, I2C bus: 1, Slave Address:30
+Pd Device 0 I2C Bus 1, Slave Address 30, read data status
+Pd Device 0 read pd data status, byte1: 0, byte2: 0
+Update Pd Device 0 state, Mode: TYPEC_STATE_DISCONNECT, Orientation: TYPEC_ORIENTATION_NONE
+Update Typec phy 0, Mode: TYPEC_STATE_DISCONNECT, Orientation: TYPEC_ORIENTATION_NONE
+Pd Device 1 get device config, I2C bus: FF, Slave Address:FF
+Pd Device 1 is invalid, set default state
+Update Pd Device 1 state, Mode: TYPEC_DP_STATE_E, Orientation: TYPEC_ORIENTATION_NORMAL
+Update Typec phy 1, Mode: TYPEC_DP_STATE_E, Orientation: TYPEC_ORIENTATION_NORMAL
+Pd Device 2 get device config, I2C bus: 1, Slave Address:31
+Pd Device 2 I2C Bus 1, Slave Address 31, read data status
+Pd Device 2 read pd data status, byte1: 73, byte2: 0
+Update Pd Device 2 state, Mode: TYPEC_STATE_USB, Orientation: TYPEC_ORIENTATION_REVERSE
+Update Typec phy 2, Mode: TYPEC_STATE_USB, Orientation: TYPEC_ORIENTATION_REVERSE
+Pd Device 3 get device config, I2C bus: FF, Slave Address:FF
+Pd Device 3 is invalid, set default state
+Update Pd Device 3 state, Mode: TYPEC_DP_STATE_E, Orientation: TYPEC_ORIENTATION_NORMAL
+Update Typec phy 3, Mode: TYPEC_DP_STATE_E, Orientation: TYPEC_ORIENTATION_NORMAL
+[INFO] InstallProtocolInterface: 0CA5CC68-66C7-4E45-A3F0-E53CC6DB519A @ 0x000000047db98380
+Enabled alert pin nums: 9
+Alert Pin Num 9 connected pd device indexes: 0 2
+RegisterAlertTimerCallback: register alert pin num 9 pd timer callback status
+
+[Pd Alert Interrupt Enter]
+Pd Device 0, I2C Bus 1, Slave Address 30, set cpu ack for interrupt
+Pd Device 0 I2C Bus 1, Slave Address 30, read data status
+Pd Device 0 read pd data status, byte1: 0, byte2: 0
+Update Pd Device 0 state, Mode: TYPEC_STATE_DISCONNECT, Orientation: TYPEC_ORIENTATION_NONE
+Update Typec phy 0, Mode: TYPEC_STATE_DISCONNECT, Orientation: TYPEC_ORIENTATION_NONE
+Pd Device 0, I2C Bus 1, Slave Address 30, set ack of HPD IRQ
+Pd Device 0 Read data status byte2: 0
+Pd Device 0 IRQ_HPD flag is not set, skip set ack of HPD IRQ
+Pd Device 2, I2C Bus 1, Slave Address 31, set cpu ack for interrupt
+Pd Device 2 I2C Bus 1, Slave Address 31, read data status
+Pd Device 2 read pd data status, byte1: 5, byte2: 73
+Update Pd Device 2 state, Mode: TYPEC_DP_STATE_E, Orientation: TYPEC_ORIENTATION_NORMAL
+Update Typec phy 2, Mode: TYPEC_DP_STATE_E, Orientation: TYPEC_ORIENTATION_NORMAL
+Pd Device 2, I2C Bus 1, Slave Address 31, set ack of HPD IRQ
+Pd Device 2 Read data status byte2: 0
+Pd Device 2 IRQ_HPD flag is not set, skip set ack of HPD IRQ
+Pd alert interrupt (gpio [9]) not cleared in time
+[Pd Alert Interrupt Exit]
+
+
+: Success
+[19.044] [UEFI] E7
+
+[Pd Alert Interrupt Enter]
+Pd Device 0, I2C Bus 1, Slave Address 30, set cpu ack for interrupt
+Pd Device 0 I2C Bus 1, Slave Address 30, read data status
+Pd Device 0 read pd data status, byte1: 0, byte2: 0
+Update Pd Device 0 state, Mode: TYPEC_STATE_DISCONNECT, Orientation: TYPEC_ORIENTATION_NONE
+Update Typec phy 0, Mode: TYPEC_STATE_DISCONNECT, Orientation: TYPEC_ORIENTATION_NONE
+Pd Device 0, I2C Bus 1, Slave Address 30, set ack of HPD IRQ
+Pd Device 0 Read data status byte2: 0
+Pd Device 0 IRQ_HPD flag is not set, skip set ack of HPD IRQ
+Pd Device 2, I2C Bus 1, Slave Address 31, set cpu ack for interrupt
+Pd Device 2 I2C Bus 1, Slave Address 31, read data status
+Pd Device 2 read pd data status, byte1: 73, byte2: 0
+Update Pd Device 2 state, Mode: TYPEC_STATE_USB, Orientation: TYPEC_ORIENTATION_REVERSE
+Update Typec phy 2, Mode: TYPEC_STATE_USB, Orientation: TYPEC_ORIENTATION_REVERSE
+Pd Device 2, I2C Bus 1, Slave Address 31, set ack of HPD IRQ
+Pd Device 2 Read data status byte2: 0
+Pd Device 2 IRQ_HPD flag is not set, skip set ack of HPD IRQ
+[Pd Alert Interrupt Exit]
+
+
+00 PdDxeEnd
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: B336F62D-4135-4A55-AE4E-4971BBF0885D
+[INFO] Applying image memory protections on 0x47DF10000 for len 0x10000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DF20000 for len 0x10000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x00000004789dd980
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789dd900
+[INFO] Loaded image at 0x000000047df00000 Size=0x30000 EntryPoint=0x47df11ff4 RealTimeClock.efi
+I2cMasterRegistrationEvent: found I2C master!
+InitializeRealTimeClock: using default timezone/daylight settings
+[INFO] InstallProtocolInterface: 27CFAC87-46CC-11D4-9A38-0090273FC14D @ 0x0000000000000000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 1448F299-7269-45BA-8C01-673A173FE03D
+[INFO] Applying image memory protections on 0x47DB89000 for len 0x6000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB8F000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DB90000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x00000004789df000
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x00000004789ddb40
+[INFO] Loaded image at 0x000000047db88000 Size=0x9000 EntryPoint=0x47db8c664 EcPlatformDxe.efi
+[INFO] InstallProtocolInterface: 1422C857-10C5-43C5-AB6D-47155AD13DC5 @ 0x000000047db8f060
+EC request fan auto control info:
+Len       : 0x1
+FAN_AUTO_FLG       : 0x1
+EC Set Fan control mode Status:Success
+SetBoardInfo Entry
+EC response board ID info:
+SKU ID       : 0x4
+Memory ID    : 0x0
+Reversion ID : 0x0
+EC response version info:
+Version : V1.07-f4c3ada6e90d
+EC response pd version info:
+PD1_VER       : 0x1
+PD2_VER       : 0x0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 496EE240-DB1F-4A14-BD76-347FE9873624
+[INFO] Applying image memory protections on 0x47DB82000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB86000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DB87000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x00000004789df300
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478eb3b80
+[INFO] Loaded image at 0x000000047db81000 Size=0x7000 EntryPoint=0x47db839d8 AcpiSocDxe.efi
+Acpi Soc Dxe Entry
+[INFO] InstallProtocolInterface: 1B5EE0D9-1145-42B9-9333-F98B3D60F703 @ 0x0000000478eb3a98
+- Found 'CSRT' ACPI Table
+- Found 'DBG2' ACPI Table
+- Found 'FACP' ACPI Table
+- Found 'GTDT' ACPI Table
+- Found 'IORT' ACPI Table
+- Found 'PCCT' ACPI Table
+- Found 'SDEI' ACPI Table
+- Found 'SPCR' ACPI Table
+- Found 'DSDT' ACPI Table
+Install Acpi table status:Success
+Acpi Soc Dxe Exit
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 89122868-BCFD-49E8-88A3-06635CB7B3CF
+[INFO] Applying image memory protections on 0x47DB7D000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB80000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478eb8c80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478eb3140
+[INFO] Loaded image at 0x000000047db7c000 Size=0x5000 EntryPoint=0x47db7e034 DynamicTableManagerDxe.efi
+INFO: CmObjectId = 0, Ptr = 0x47DC00000, Size = 10, Count = 1
+INFO: Configuration Manager Version = 0x0, OemID = CIXTEK
+INFO: CmObjectId = 1, Ptr = 0x47DC0000A, Size = 90, Count = 3
+INFO: EStdObjAcpiTableList: AcpiTableCount = 3
+INFO: AcpiTableInfo[0].TableGeneratorId = 0x3
+INFO: EStdObjAcpiTableList: Address = 0x47DC0000A, TableGeneratorId = 0x3
+INFO: Generator found : ACPI.STD.MADT.GENERATOR
+INFO: CmObjectId = 10000004, Ptr = 0x478A57018, Size = 1140, Count = 12
+INFO: CmObjectId = 10000005, Ptr = 0x47DC00070, Size = 13, Count = 1
+WARNING: Object 0x10000006. Status = Not Found
+INFO: GetEArmObjGicMsiFrameInfo: Platform does not implement EArmObjGicMsiFrameInfo. Status = Not Found
+INFO: CmObjectId = 10000007, Ptr = 0x47DC0007D, Size = 12, Count = 1
+INFO: CmObjectId = 10000008, Ptr = 0x47DC00089, Size = 16, Count = 1
+MADT: Madt = 0x4789DD018 TableSize = 0x428
+INFO: CmObjectId = 0, Ptr = 0x47DC00000, Size = 10, Count = 1
+ACPI TABLE APIC : Rev 0x5 : Length : 0x428
+INFO: ACPI Table installed. Status = Success
+INFO: AcpiTableInfo[1].TableGeneratorId = 0xD
+INFO: EStdObjAcpiTableList: Address = 0x47DC00028, TableGeneratorId = 0xD
+INFO: Generator found : ACPI.STD.SSDT.CPU.TOPOLOGY.GENERATOR
+INFO: CmObjectId = 0, Ptr = 0x47DC00000, Size = 10, Count = 1
+INFO: CmObjectId = 30000002, Ptr = 0x47DC00EFD, Size = 12, Count = 1
+INFO: CmObjectId = 10000004, Ptr = 0x478A57018, Size = 1140, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 1000002A, Ptr = 0x47DC00099, Size = 3504, Count = 12
+INFO: CmObjectId = 30000002, Ptr = 0x47DC00EFD, Size = 12, Count = 1
+ACPI TABLE SSDT : Rev 0x2 : Length : 0x1400
+INFO: ACPI Table installed. Status = Success
+INFO: AcpiTableInfo[2].TableGeneratorId = 0x9
+INFO: EStdObjAcpiTableList: Address = 0x47DC00046, TableGeneratorId = 0x9
+INFO: Generator found : ACPI.STD.PPTT.GENERATOR
+INFO: CmObjectId = 30000002, Ptr = 0x47DC00EFD, Size = 12, Count = 1
+INFO: PPTT:
+ ProcTopologyStructCount = 18
+ TableSize = 664
+PPTT: Pptt = 0x478EBA818. TableSize = 0x298
+INFO: CmObjectId = 0, Ptr = 0x47DC00000, Size = 10, Count = 1
+ACPI TABLE PPTT : Rev 0x2 : Length : 0x298
+INFO: ACPI Table installed. Status = Success
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: F3FE0E33-EA38-4069-9FB5-BE23407207C7
+[INFO] Applying image memory protections on 0x47DB73000 for len 0x7000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB7A000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DB7B000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478ff1180
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478ff1100
+[INFO] Loaded image at 0x000000047db72000 Size=0xa000 EntryPoint=0x47db761ac ProcessorSubClass.efi
+SmbiosAdd: Smbios type 7 with size 0x31 is added to 32-bit table
+SmbiosAdd: Smbios type 7 with size 0x31 is added to 64-bit table
+SmbiosCreateTable: Initialize 32-bit entry point structure
+SmbiosCreateTable() re-allocate SMBIOS 32-bit table
+SmbiosCreateTable: Initialize 64-bit entry point structure
+SmbiosCreate64BitTable() re-allocate SMBIOS 64-bit table
+SmbiosAdd: Smbios type 7 with size 0x2A is added to 32-bit table
+SmbiosAdd: Smbios type 7 with size 0x2A is added to 64-bit table
+SmbiosAdd: Smbios type 7 with size 0x25 is added to 32-bit table
+SmbiosAdd: Smbios type 7 with size 0x25 is added to 64-bit table
+SmbiosAdd: Smbios type 7 with size 0x25 is added to 32-bit table
+SmbiosAdd: Smbios type 7 with size 0x25 is added to 64-bit table
+SmbiosAdd: Smbios type 4 with size 0x7B is added to 32-bit table
+SmbiosAdd: Smbios type 4 with size 0x7B is added to 64-bit table
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 3BFC114C-98F1-492E-97D1-98567E4F20D0
+[INFO] Applying image memory protections on 0x47DB6E000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB71000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478ff0380
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478feec40
+[INFO] Loaded image at 0x000000047db6d000 Size=0x5000 EntryPoint=0x47db6f07c CixSmbiosDxe.efi
+SmbiosAdd: Smbios type 16 with size 0x19 is added to 32-bit table
+SmbiosAdd: Smbios type 16 with size 0x19 is added to 64-bit table
+SmbiosAdd: Smbios type 17 with size 0x88 is added to 32-bit table
+SmbiosAdd: Smbios type 17 with size 0x88 is added to 64-bit table
+SmbiosAdd: Smbios type 17 with size 0x88 is added to 32-bit table
+SmbiosAdd: Smbios type 17 with size 0x88 is added to 64-bit table
+SmbiosAdd: Smbios type 17 with size 0x88 is added to 32-bit table
+SmbiosAdd: Smbios type 17 with size 0x88 is added to 64-bit table
+SmbiosAdd: Smbios type 17 with size 0x88 is added to 32-bit table
+SmbiosAdd: Smbios type 17 with size 0x88 is added to 64-bit table
+SmbiosAdd: Smbios type 19 with size 0x21 is added to 32-bit table
+SmbiosAdd: Smbios type 19 with size 0x21 is added to 64-bit table
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 128FB770-5E79-4176-9E51-9BB268A17DD1
+[INFO] Applying image memory protections on 0x47DB5F000 for len 0xC000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB6B000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DB6C000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478ff0000
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478feb880
+[INFO] Loaded image at 0x000000047db5e000 Size=0xf000 EntryPoint=0x47db64198 PciHostBridgeDxe.efi
+Construct Root Bridge resource
+Construct Root Bridge resource
+RootBridge: PciRoot(0x3)
+  Support/Attr: 70069 / 70069
+    DmaAbove4G: Yes
+NoExtConfSpace: No
+     AllocAttr: 2 (Mem64Decode)
+           Bus: 30 - 4F Translation=0
+            Io: 0 - FFFF Translation=0
+           Mem: 38000000 - 3FFFFFFF Translation=0
+    MemAbove4G: C00000000 - FFFFFFFFF Translation=0
+          PMem: 38000000 - 3FFFFFFF Translation=0
+   PMemAbove4G: C00000000 - FFFFFFFFF Translation=0
+RootBridge: PciRoot(0x4)
+  Support/Attr: 70069 / 70069
+    DmaAbove4G: Yes
+NoExtConfSpace: No
+     AllocAttr: 2 (Mem64Decode)
+           Bus: 0 - 1F Translation=0
+            Io: 0 - FFFF Translation=0
+           Mem: 30000000 - 37FFFFFF Translation=0
+    MemAbove4G: 800000000 - BFFFFFFFF Translation=0
+          PMem: 30000000 - 37FFFFFF Translation=0
+   PMemAbove4G: 800000000 - BFFFFFFFF Translation=0
+[INFO] InstallProtocolInterface: CF8034BE-6768-4D8B-B739-7CCE683A9FBE @ 0x0000000478fefe40
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478fe8998
+[INFO] InstallProtocolInterface: 2F707EBB-4A1A-11D4-9A38-0090273FC14D @ 0x0000000478ff1df0
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478fe80d8
+[INFO] InstallProtocolInterface: 2F707EBB-4A1A-11D4-9A38-0090273FC14D @ 0x0000000478ff21f0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 74C958A8-4905-9991-4560-1FB44569AF9E
+[INFO] Applying image memory protections on 0x47DB5A000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB5D000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fef800
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478fe73c0
+[INFO] Loaded image at 0x000000047db59000 Size=0x5000 EntryPoint=0x47db5b034 FwVersionProtocolTest.efi
+------Begin firmware version dump------
+ SE:beta2.0-46f56d10502e
+ PM:00.10.002-f96a8235135a
+ PBL:v2.7-f66ef4bdf09d
+ ATF:v2.7-6708b43484b5
+ TEE:4396d2c-3.17-4396d2cf7de1
+ UEFI:0.0.1-ec9323d7d396-debug:08M260218171437N
+ STMM:Beta2-W31M250728N-ffb0e0740e78
+EC response version info:
+Version : V1.07-f4c3ada6e90d
+ EC:V1.07-f4c3ada6e90d
+FwVerGetBoardId Entry
+EC response board ID info:
+SKU ID       : 0x4
+Memory ID    : 0x0
+Reversion ID : 0x0
+ Board Id:4(PHECDA-Rev A)
+EC response pd version info:
+PD1_VER       : 0x1
+PD2_VER       : 0x0
+ PD:0.0 1.0
+EC response pmic version info:
+PMIC_VER       : 0x0 0x0 0x0
+ PMIC: 0x00 0x00 0x00 
+------End firmware version dump------
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: E622443C-284E-4B47-A984-FD66B482DAC0
+[INFO] Applying image memory protections on 0x47DB53000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB57000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DB58000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8cc300
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478fe5ec0
+[INFO] Loaded image at 0x000000047db52000 Size=0x7000 EntryPoint=0x47db559a0 BootManagerPolicyDxe.efi
+[INFO] InstallProtocolInterface: FEDF8E0C-E147-11E3-9903-B8E8562CBAFA @ 0x000000047db57130
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: EBF342FE-B1D3-4EF8-957C-8048606FF671
+[INFO] Applying image memory protections on 0x47DB38000 for len 0x18000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB50000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DB51000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fef200
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478fe34c0
+[INFO] Loaded image at 0x000000047db37000 Size=0x1b000 EntryPoint=0x47db38db0 SetupBrowser.efi
+[INFO] InstallProtocolInterface: B9D4C360-BCFB-4F9B-9298-53C136982258 @ 0x000000047db50130
+[INFO] InstallProtocolInterface: A770C357-B693-4E6D-A6CF-D21C728E550B @ 0x000000047db50160
+[INFO] InstallProtocolInterface: 1F73B18D-4630-43C1-A1DE-6F80855D7DA4 @ 0x000000047db50140
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 6D33944A-EC75-4855-A54D-809C75241F6C
+[INFO] Applying image memory protections on 0x47DB1E000 for len 0x17000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DB35000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DB36000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478feec80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478fe3480
+[INFO] Loaded image at 0x000000047db1d000 Size=0x1a000 EntryPoint=0x47db1f1c8 BdsDxe.efi
+[INFO] InstallProtocolInterface: 665E3FF6-46CC-11D4-9A38-0090273FC14D @ 0x000000047db354b8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: B8267B10-B0C8-4631-8EC4-442A62F7970F
+[INFO] Applying image memory protections on 0x47DAB5000 for len 0x2000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DAB7000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DAB8000 for len 0x64000 with attributes 0x24008
+[INFO] Applying image memory protections on 0x47DB1C000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fee880
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478fe26c0
+[INFO] InstallProtocolInterface: 6A1EE763-D47A-43B4-AABE-EF1DE2AB56FC @ 0x000000047da50000
+[INFO] Loaded image at 0x000000047dab4000 Size=0x69000 EntryPoint=0x47dab60a8 LogoDxe.efi
+[INFO] InstallProtocolInterface: 53CD299F-2BC1-40C0-8C07-23F64FDB30E0 @ 0x000000047dab7000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: EDB82499-30D4-4481-B4F9-0F1685480096
+[INFO] Applying image memory protections on 0x47DA4A000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DA4E000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DA4F000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fee400
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478fe1380
+[INFO] Loaded image at 0x000000047da49000 Size=0x7000 EntryPoint=0x47da4bd0c SystemInfoDxe.efi
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047da4e548
+EC response board ID info:
+SKU ID       : 0x4
+Memory ID    : 0x0
+Reversion ID : 0x0
+EC response pd version info:
+PD1_VER       : 0x1
+PD2_VER       : 0x0
+EC response pmic version info:
+PMIC_VER       : 0x0 0x0 0x0
+EC response version info:
+Version : V1.07-f4c3ada6e90d
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 1FFDAA93-A1D1-40EB-ADC8-37EEB86A7995
+[INFO] Applying image memory protections on 0x47DA44000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DA47000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DA48000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fed900
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478fded80
+[INFO] Loaded image at 0x000000047da43000 Size=0x6000 EntryPoint=0x47da45760 PlatformConfigDxe.efi
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047da47a40
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047da47a18
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: D3BEA75B-165C-440F-830D-C972EFA4BED1
+[INFO] Applying image memory protections on 0x47DA3E000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DA42000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fed100
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478fdbe80
+[INFO] Loaded image at 0x000000047da3d000 Size=0x6000 EntryPoint=0x47da3fba0 SeConfigUpdateDxe.efi
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047da4223c
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: FC097B3C-2EBD-4A75-A3DA-121DCAB365CC
+[INFO] Applying image memory protections on 0x47DA39000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DA3C000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fec700
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f5a8c0
+[INFO] Loaded image at 0x000000047da38000 Size=0x5000 EntryPoint=0x47da3a7b0 DtPlatformDxe.efi
+DtPlatformDxeEntryPoint: no DT/ACPI preference found, defaulting to ACPI
+[INFO] InstallProtocolInterface: F0966B41-C23F-41B9-9604-0FF7E111965A @ 0x0000000000000000
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047da3c320
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 7CA4DA59-3F21-4A7C-801D-018FABB96615
+[INFO] Applying image memory protections on 0x47DA33000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DA36000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DA37000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fec400
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f597c0
+[INFO] Loaded image at 0x000000047da32000 Size=0x6000 EntryPoint=0x47da34304 PlatformSmbios.efi
+SmbiosAdd: Smbios type 0 with size 0x7A is added to 32-bit table
+SmbiosAdd: Smbios type 0 with size 0x7A is added to 64-bit table
+[Platfrom Smbios] Execute Add: AddSmbiosType0, Status: Success
+SmbiosAdd: Smbios type 1 with size 0x7F is added to 32-bit table
+SmbiosAdd: Smbios type 1 with size 0x7F is added to 64-bit table
+[Platfrom Smbios] Execute Add: AddSmbiosType1, Status: Success
+SmbiosAdd: Smbios type 2 with size 0x88 is added to 32-bit table
+SmbiosAdd: Smbios type 2 with size 0x88 is added to 64-bit table
+[Platfrom Smbios] Execute Add: AddSmbiosType2, Status: Success
+SmbiosAdd: Smbios type 3 with size 0x65 is added to 32-bit table
+SmbiosAdd: Smbios type 3 with size 0x65 is added to 64-bit table
+[Platfrom Smbios] Execute Add: AddSmbiosType3, Status: Success
+SmbiosAdd: Smbios type 32 with size 0xD is added to 32-bit table
+SmbiosAdd: Smbios type 32 with size 0xD is added to 64-bit table
+[Platfrom Smbios] Execute Add: AddSmbiosType32, Status: Success
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Depex evaluation complete, scheduled 43 drivers
+[INFO] Loading file: 71FD84CD-353B-464D-B7A4-6EA7B96995CB
+[INFO] Applying image memory protections on 0x47DA2B000 for len 0x5000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DA30000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DA31000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8d1600
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f556c0
+[INFO] Loaded image at 0x000000047da2a000 Size=0x8000 EntryPoint=0x47da2e804 NonDiscoverablePciDeviceDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047da30130
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047da30118
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047da30100
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 2FB92EFA-2EE0-4BAE-9EB6-7464125E1EF7
+[INFO] Applying image memory protections on 0x47DA21000 for len 0x7000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DA28000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DA29000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478febf80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f54880
+[INFO] Loaded image at 0x000000047da20000 Size=0xa000 EntryPoint=0x47da26758 UhciDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047da280c0
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047da280a8
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047da28090
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: BDFE430E-8F2A-4DB0-9991-6F856594777E
+[INFO] Applying image memory protections on 0x47DA15000 for len 0x9000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DA1E000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DA1F000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478febc00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f54380
+[INFO] Loaded image at 0x000000047da14000 Size=0xc000 EntryPoint=0x47da1ba40 EhciDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047da1e0c0
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047da1e0a8
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047da1e090
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: B7F50E91-A759-412C-ADE4-DCD03E7F7C28
+[INFO] Applying image memory protections on 0x47DA04000 for len 0xE000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DA12000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DA13000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478feb700
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f54c80
+[INFO] Loaded image at 0x000000047da03000 Size=0x11000 EntryPoint=0x47da0e57c XhciDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047da12130
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047da12118
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047da12100
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 240612B7-A063-11D4-9A3A-0090273FC14D
+[INFO] Applying image memory protections on 0x47D9F7000 for len 0xA000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47DA01000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47DA02000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478feb780
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f53b80
+[INFO] Loaded image at 0x000000047d9f6000 Size=0xd000 EntryPoint=0x47d9fe3c0 UsbBusDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047da011b8
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047da011a0
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047da01188
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 9FB4B4A7-42C0-4BCD-8540-9BCC6711F83E
+[INFO] Applying image memory protections on 0x47D9ED000 for len 0x7000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D9F4000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D9F5000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478feb480
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f53f80
+[INFO] Loaded image at 0x000000047d9ec000 Size=0xa000 EntryPoint=0x47d9f1788 UsbMassStorageDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d9f4180
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d9f4168
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d9f4150
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 2D2E62CF-9ECF-43B7-8219-94E7FC713DFE
+[INFO] Applying image memory protections on 0x47D9E4000 for len 0x6000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D9EA000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D9EB000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478feaf80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f52e80
+[INFO] Loaded image at 0x000000047d9e3000 Size=0x9000 EntryPoint=0x47d9e85fc UsbKbDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d9ea828
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d9ea810
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d9ea7f8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 2D2E62AA-9ECF-43B7-8219-94E7FC713DFE
+[INFO] Applying image memory protections on 0x47D9DD000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D9E1000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D9E2000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478feac80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f52a80
+[INFO] Loaded image at 0x000000047d9dc000 Size=0x7000 EntryPoint=0x47d9dfa5c UsbMouseDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d9e10b0
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d9e1098
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d9e1080
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: F0E6A44F-7195-41C3-AC64-54F202CD0A21
+[INFO] Applying image memory protections on 0x47D975000 for len 0x60000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D9D5000 for len 0x4000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D9D9000 for len 0x3000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478feaa00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f53280
+[INFO] Loaded image at 0x000000047d974000 Size=0x68000 EntryPoint=0x47d97ef04 SecureBootConfigDxe.efi
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478f4ff58
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047d9d5c58
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047d9d7844
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x0000000478fe9ea0
+[INFO] InstallProtocolInterface: F0E6A44F-7195-41C3-AC64-54F202CD0A21 @ 0x0000000478fe9e98
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 51CCF399-4FDF-4E55-A45B-E123F84D456A
+[INFO] Applying image memory protections on 0x47D96D000 for len 0x5000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D972000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D973000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe9980
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f4c8c0
+[INFO] Loaded image at 0x000000047d96c000 Size=0x8000 EntryPoint=0x47d96febc ConPlatformDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d9721c0
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d9721a8
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d972190
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d972160
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d9721a8
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d972190
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 408EDCEC-CF6D-477C-A5A8-B4844E3DE281
+[INFO] Applying image memory protections on 0x47D962000 for len 0x8000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D96A000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D96B000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe9580
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f4ccc0
+[INFO] Loaded image at 0x000000047d961000 Size=0xb000 EntryPoint=0x47d967ef4 ConSplitterDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d96a738
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d96a720
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d96a708
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d96a6d8
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d96a6c0
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d96a6a8
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d96a678
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d96a660
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d96a648
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d96a618
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d96a600
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d96a5e8
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d96a5b8
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d96a5a0
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d96a588
+[INFO] InstallProtocolInterface: 387477C1-69C7-11D2-8E39-00A0C969723B @ 0x000000047d96a410
+[INFO] InstallProtocolInterface: DD9E7534-7762-4698-8C14-F58517A625AA @ 0x000000047d96a440
+[INFO] InstallProtocolInterface: 31878C87-0B75-11D5-9A4F-0090273FC14D @ 0x000000047d96a4b0
+[INFO] InstallProtocolInterface: 8D59D32B-C655-4AE9-9B15-F25904992A43 @ 0x000000047d96a508
+[INFO] InstallProtocolInterface: 387477C2-69C7-11D2-8E39-00A0C969723B @ 0x000000047d96a2c0
+[INFO] InstallProtocolInterface: 387477C2-69C7-11D2-8E39-00A0C969723B @ 0x000000047d96a1a0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: CCCB0C28-4B24-11D5-9A5A-0090273FC14D
+[INFO] Applying image memory protections on 0x47D959000 for len 0x5000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D95E000 for len 0x2000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D960000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe9080
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f47d80
+[INFO] Loaded image at 0x000000047d958000 Size=0x9000 EntryPoint=0x47d95c76c GraphicsConsoleDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d95f7d0
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d95f7b8
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d95f7a0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 9E863906-A40F-4875-977F-5B93FF237FC6
+[INFO] Applying image memory protections on 0x47D94E000 for len 0x8000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D956000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D957000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe8900
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f46380
+[INFO] Loaded image at 0x000000047d94d000 Size=0xb000 EntryPoint=0x47d954318 TerminalDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d956428
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d956410
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d9563f8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 20ADBB1E-9298-4B74-A087-FC19A4732805
+[INFO] Applying image memory protections on 0x47D948000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D94B000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D94C000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe8680
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f45f80
+[INFO] Loaded image at 0x000000047d947000 Size=0x6000 EntryPoint=0x47d949c9c I2cHidKeyboard.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d94b060
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d94b090
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d94b0a8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 4E5CA006-34F4-42D9-BD47-0F1E26A64D5E
+[INFO] Applying image memory protections on 0x47D942000 for len 0x3000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D945000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D946000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe8400
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f46780
+[INFO] Loaded image at 0x000000047d941000 Size=0x6000 EntryPoint=0x47d943e8c I2cHidServiceDriver.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d9450a0
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d9450d0
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d9450e8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 70CB8A73-5B96-32B9-8F78-F6248A92F3FE
+[INFO] Applying image memory protections on 0x47D93B000 for len 0x4000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D93F000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D940000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe7d80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f45780
+[INFO] Loaded image at 0x000000047d93a000 Size=0x7000 EntryPoint=0x47d93d25c LcdGraphicsOutputDxe.efi
+XXXXXXXX LcdGraphics 1 - Success
+XXXXXXXX LcdGraphics 1 - Success
+XXXXXXXX LcdGraphics 3 - Success
+[INFO] InstallProtocolInterface: 9042A9DE-23DC-4A38-96FB-7ADED080516A @ 0x0000000478fe8878
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478fe8898
+XXXXXXXX LcdGraphics 4 - Success
+XXXXXXXX LcdGraphics 5 - Success
+XXXXXXXX LcdGraphics 6 - Success
+XXXXXXXX LcdGraphics 7 - Success
+XXXXXXXX LcdGraphics 8 - Success
+LcdGraphicsOutputDxeInitialize: HandleProtocol gCixConnectorProtocolGuid [0] . Status=Success Connecotr: 7DC171B8
+XXXXXXXX LcdGraphics 9 - Success
+XXXXXXXX LcdGraphics 9 - Success
+XXXXXXXX LcdGraphics 9 - Success
+XXXXXXXX LcdGraphics 9 - Success
+XXXXXXXX LcdGraphics 9 - Success
+XXXXXXXX LcdGraphics 7 - Success
+XXXXXXXX LcdGraphics 8 - Success
+LcdGraphicsOutputDxeInitialize: HandleProtocol gCixConnectorProtocolGuid [1] . Status=Success Connecotr: 7DC17210
+XXXXXXXX LcdGraphics 9 - Success
+XXXXXXXX LcdGraphics 9 - Success
+XXXXXXXX LcdGraphics 9 - Success
+XXXXXXXX LcdGraphics 9 - Success
+XXXXXXXX LcdGraphics 9 - Success
+XXXXXXXX GopDisplayPort=0x1
+XXXXXXXX LcdGraphics 10 - Success
+XXXXXXXX LcdGraphics 11 - Success
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 27E5BA77-5839-400B-A7DA-5F5D78F0C539
+[ERROR] core_load_pe_image failed: AmdGop.efi section alignment of 0x20 is not a multiple of page size 0x1000
+[ERROR] Failed to load: load_image returned LoadError
+[INFO] Loading file: 6B38F7B4-AD98-40E9-9093-ACA2B5A253C4
+[INFO] Applying image memory protections on 0x47D933000 for len 0x5000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D938000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D939000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047a8caf00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f41bc0
+[INFO] Loaded image at 0x000000047d932000 Size=0x8000 EntryPoint=0x47d936584 DiskIoDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d938148
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d938130
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d938118
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 1FA1F39E-FEFF-4AAE-BD7B-38A070A3B609
+[INFO] Applying image memory protections on 0x47D929000 for len 0x7000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D930000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D931000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe7d00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f43580
+[INFO] Loaded image at 0x000000047d928000 Size=0xa000 EntryPoint=0x47d92e0ac PartitionDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d930128
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d930110
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d9300f8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 961578FE-B6B7-44C3-AF35-6BC705CD2B1F
+[INFO] Applying image memory protections on 0x47D91C000 for len 0xA000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D926000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D927000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe7480
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f416c0
+[INFO] Loaded image at 0x000000047d91b000 Size=0xd000 EntryPoint=0x47d9241ac Fat.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d9261b8
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d926190
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d926178
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: CD3BAFB6-50FB-4FE8-8E4E-AB74D2C1A600
+[INFO] Applying image memory protections on 0x47D917000 for len 0x2000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D919000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D91A000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe7700
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f412c0
+[INFO] Loaded image at 0x000000047d916000 Size=0x5000 EntryPoint=0x47d918370 EnglishDxe.efi
+[INFO] InstallProtocolInterface: 1D85CD7F-F43D-11D2-9A0C-0090273FC14D @ 0x000000047d919048
+[INFO] InstallProtocolInterface: A4C751FC-23AE-4C3E-92E9-4964CF63F349 @ 0x000000047d919000
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 93B80004-9FB3-11D4-9A3A-0090273FC14D
+[INFO] Applying image memory protections on 0x47D902000 for len 0x12000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D914000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D915000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe7400
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f40ec0
+[INFO] Loaded image at 0x000000047d901000 Size=0x15000 EntryPoint=0x47d90a2b0 PciBusDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d914248
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d914230
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d914218
+[INFO] InstallProtocolInterface: 19CB87AB-2CB9-4665-8360-DDCF6054F79D @ 0x000000047d914200
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 5BE3BDF4-53CF-46A3-A6A9-73C34A6E5EE3
+[INFO] Applying image memory protections on 0x47D8F5000 for len 0xA000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D8FF000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D900000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe6c80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f40ac0
+[INFO] Loaded image at 0x000000047d8f4000 Size=0xd000 EntryPoint=0x47d8fcb64 NvmExpressDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d8ff168
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d8ff108
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d8ff0f0
+[INFO] InstallProtocolInterface: 5C198761-16A8-4E69-972C-89D67954F81D @ 0x000000047d8ff150
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: A2F436EA-A127-4EF8-957C-8048606FF670
+[INFO] Applying image memory protections on 0x47D8EA000 for len 0x8000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D8F2000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D8F3000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe6f00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f401c0
+[INFO] Loaded image at 0x000000047d8e9000 Size=0xb000 EntryPoint=0x47d8ef63c SnpDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d8f20a0
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d8f2088
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d8f2070
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: E4F61863-FE2C-4B56-A8F4-08519BC439DF
+[INFO] Applying image memory protections on 0x47D8E0000 for len 0x7000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D8E7000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D8E8000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe6c00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f41fc0
+[INFO] Loaded image at 0x000000047d8df000 Size=0xa000 EntryPoint=0x47d8e4b30 VlanConfigDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d8e7798
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d8e7780
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d8e7768
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 025BBFC7-E6A9-4B8B-82AD-6815A1AEAF4A
+[INFO] Applying image memory protections on 0x47D8D1000 for len 0xC000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D8DD000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D8DE000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe6380
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f3fdc0
+[INFO] Loaded image at 0x000000047d8d0000 Size=0xf000 EntryPoint=0x47d8d969c MnpDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d8dd138
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d8dd120
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d8dd108
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 529D3F93-E8E9-4E73-B1E1-BDF6A9D50113
+[INFO] Applying image memory protections on 0x47D8C7000 for len 0x7000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D8CE000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D8CF000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe6600
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f3f9c0
+[INFO] Loaded image at 0x000000047d8c6000 Size=0xa000 EntryPoint=0x47d8cb948 ArpDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d8ce0f8
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d8ce0e0
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d8ce0c8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 94734718-0BBC-47FB-96A5-EE7A5AE6A2AD
+[INFO] Applying image memory protections on 0x47D8BA000 for len 0xA000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D8C4000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D8C5000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe6300
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f3f5c0
+[INFO] Loaded image at 0x000000047d8b9000 Size=0xd000 EntryPoint=0x47d8c1ca8 Dhcp4Dxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d8c4d20
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d8c4d08
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d8c4cf0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 9FB1A1F3-3B71-4324-B39A-745CBB015FFF
+[INFO] Applying image memory protections on 0x47D8A4000 for len 0x13000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D8B7000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D8B8000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe5b80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f3d3c0
+[INFO] Loaded image at 0x000000047d8a3000 Size=0x16000 EntryPoint=0x47d8a61b4 Ip4Dxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d8b7800
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d8b77e8
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d8b77d0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 6D6963AB-906D-4A65-A7CA-BD40E5D6AF2B
+[INFO] Applying image memory protections on 0x47D898000 for len 0x9000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D8A1000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D8A2000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe5e00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f3d380
+[INFO] Loaded image at 0x000000047d897000 Size=0xc000 EntryPoint=0x47d89eff8 Udp4Dxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d8a1130
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d8a1118
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d8a1100
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: DC3641B8-2FA8-4ED3-BC1F-F9962A03454B
+[INFO] Applying image memory protections on 0x47D88B000 for len 0xA000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D895000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D896000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe5b00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f3bdc0
+[INFO] Loaded image at 0x000000047d88a000 Size=0xd000 EntryPoint=0x47d8923b0 Mtftp4Dxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d895128
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d895110
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d8950f8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 95E3669D-34BE-4775-A651-7EA41B69D89E
+[INFO] Applying image memory protections on 0x47D87D000 for len 0xB000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D888000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D889000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe5380
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f3b0c0
+[INFO] Loaded image at 0x000000047d87c000 Size=0xe000 EntryPoint=0x47d885e08 Dhcp6Dxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d888198
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d888180
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d888168
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 5BEDB5CC-D830-4EB2-8742-2D4CC9B54F2C
+[INFO] Applying image memory protections on 0x47D85F000 for len 0x1A000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D879000 for len 0x2000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D87B000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe5600
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f3acc0
+[INFO] Loaded image at 0x000000047d85e000 Size=0x1e000 EntryPoint=0x47d861eb4 Ip6Dxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d879178
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d879160
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d879148
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: D912C7BC-F098-4367-92BA-E911083C7B0E
+[INFO] Applying image memory protections on 0x47D853000 for len 0x9000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D85C000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D85D000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe5300
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f405c0
+[INFO] Loaded image at 0x000000047d852000 Size=0xc000 EntryPoint=0x47d859f34 Udp6Dxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d85c140
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d85c128
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d85c110
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 99F03B99-98D8-49DD-A8D3-3219D0FFE41E
+[INFO] Applying image memory protections on 0x47D846000 for len 0xA000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D850000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D851000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe4f00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f39fc0
+[INFO] Loaded image at 0x000000047d845000 Size=0xd000 EntryPoint=0x47d84dafc Mtftp6Dxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d850138
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d850120
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d850108
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 1A7E4468-2F55-4A56-903C-01265EB7622B
+[INFO] Applying image memory protections on 0x47D830000 for len 0x13000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D843000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D844000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe4c00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f3a3c0
+[INFO] Loaded image at 0x000000047d82f000 Size=0x16000 EntryPoint=0x47d832678 TcpDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d8432c8
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d8432b0
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d843298
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d843268
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d8432b0
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d843298
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: B95E9FDA-26DE-48D2-8807-1F9107AC5E3A
+[INFO] Applying image memory protections on 0x47D82C000 for len 0x2000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D82E000 for len 0x1000 with attributes 0x4008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe4700
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f3a8c0
+[INFO] Loaded image at 0x000000047d82b000 Size=0x4000 EntryPoint=0x47d82c190 UefiPxeBcDxe.efi
+[INFO] start_image entrypoint exit with status: Status(8000000000000003)
+[INFO] Loading file: B219E140-DFFC-11E3-B956-0022681E6906
+[INFO] Applying image memory protections on 0x47D81D000 for len 0xC000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D829000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D82A000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe4400
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f39bc0
+[INFO] Loaded image at 0x000000047d81c000 Size=0xf000 EntryPoint=0x47d823494 DnsDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d829240
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d829228
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d829210
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d8291e0
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d829228
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d829210
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 2366C20F-E15A-11E3-8BF1-E4115B28BC50
+[INFO] Applying image memory protections on 0x47D80D000 for len 0xD000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D81A000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D81B000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe3f00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f397c0
+[INFO] Loaded image at 0x000000047d80c000 Size=0x10000 EntryPoint=0x47d8169ec HttpDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d81a1f0
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d81a1d8
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d81a1c0
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d81a190
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d81a1d8
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d81a1c0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: ECEBCB00-D9C8-11E4-AF3D-8CDCD426C973
+[INFO] Applying image memory protections on 0x47D7F9000 for len 0x11000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D80A000 for len 0x1000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D80B000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe3b00
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f37240
+[INFO] Loaded image at 0x000000047d7f8000 Size=0x14000 EntryPoint=0x47d7fb8ec HttpBootDxe.efi
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d80a620
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d80a608
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d80a5f0
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x000000047d80a5c0
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x000000047d80a608
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x000000047d80a5f0
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: E660EA85-058E-4B55-A54B-F02F83A24707
+[INFO] Applying image memory protections on 0x47D7E2000 for len 0x12000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x47D7F4000 for len 0x3000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x47D7F7000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fe3500
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f37200
+[INFO] Loaded image at 0x000000047d7e1000 Size=0x17000 EntryPoint=0x47d7e2a38 DisplayEngine.efi
+[INFO] InstallProtocolInterface: 9BBE29E9-FDA1-41EC-AD52-452213742D2E @ 0x000000047d7f4790
+[INFO] InstallProtocolInterface: 4311EDC0-6054-46D4-9E40-893EA952FCCC @ 0x000000047d7f47a8
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 28A03FF4-12B3-4305-A417-BB1A4F94081E
+[INFO] Applying image memory protections on 0x4789AC000 for len 0xA000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x4789B6000 for len 0x2000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x4789B8000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fdf480
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478f02700
+[INFO] Loaded image at 0x00000004789ab000 Size=0xe000 EntryPoint=0x4789b348c RamDiskDxe.efi
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478f02758
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x00000004789b6bd8
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x00000004789b72e4
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x0000000478fde930
+[INFO] InstallProtocolInterface: AB38A0DF-6873-44A9-87E6-D4EB56148449 @ 0x00000004789b7380
+[INFO] InstallProtocolInterface: 28A03FF4-12B3-4305-A417-BB1A4F94081E @ 0x0000000478fde918
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Loading file: 81D01805-D9E4-4D67-A550-A04A04E1B8E8
+[INFO] Applying image memory protections on 0x478987000 for len 0x1000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x478988000 for len 0x1E000 with attributes 0x20008
+[INFO] Applying image memory protections on 0x4789A6000 for len 0x2000 with attributes 0x4008
+[INFO] Applying image memory protections on 0x4789A8000 for len 0x1000 with attributes 0x24008
+[INFO] Applying image memory protections on 0x4789A9000 for len 0x1000 with attributes 0x24008
+[INFO] Applying image memory protections on 0x4789AA000 for len 0x1000 with attributes 0x24008
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x0000000478fddf80
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x0000000478ecf900
+[INFO] Loaded image at 0x0000000478986000 Size=0x25000 EntryPoint=0x478988048 <no PDB>
+[INFO] InstallProtocolInterface: 18A031AB-B443-4D1A-A5C0-0C09261E9F71 @ 0x00000004789a6120
+[INFO] InstallProtocolInterface: 107A772C-D5E1-11D4-9A46-0090273FC14D @ 0x00000004789a6298
+[INFO] InstallProtocolInterface: 6A7A5CFF-E8D9-4F70-BADA-75AB3025CE14 @ 0x00000004789a6280
+[INFO] InstallProtocolInterface: 4D330321-025F-4AAC-90D8-5ED900173B63 @ 0x00000004789a6958
+[INFO] start_image entrypoint exit with status: Status(0)
+[INFO] Depex evaluation complete, scheduled 0 drivers
+[INFO] Depex evaluation complete, scheduled 0 drivers
+[INFO] Finished Dispatching Drivers
+[ERROR] Unable to locate status code runtime protocol: NotFound
+[Bds] Entry...
+[BdsDxe] Locate Variable Policy protocol - Success
+[cixboot] register grubaa64.efi status: Success
+[cixboot] write grubaa64.efi boot to variable status: Success
+[INFO] InstallProtocolInterface: E3F5CC15-9635-4346-86A1-8327DE48231C @ 0x0000000479268018
+[INFO] InstallProtocolInterface: A6FDAD2A-A56F-45F8-80D3-2CFFF491CDC2 @ 0x0000000478ecf118
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478fdce18
+[INFO] InstallProtocolInterface: 387477C1-69C7-11D2-8E39-00A0C969723B @ 0x000000047926ae20
+[INFO] InstallProtocolInterface: DD9E7534-7762-4698-8C14-F58517A625AA @ 0x000000047926ae38
+[INFO] InstallProtocolInterface: 0D51905B-B77E-452A-A2C0-ECA0CC8D514A @ 0x0000000478fdd798
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478ece918
+[INFO] InstallProtocolInterface: 0D51905B-B77E-452A-A2C0-ECA0CC8D514A @ 0x0000000478fdcb18
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478ebc718
+[INFO] InstallProtocolInterface: 0D51905B-B77E-452A-A2C0-ECA0CC8D514A @ 0x0000000478fdca98
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478ebb958
+[INFO] InstallProtocolInterface: 0D51905B-B77E-452A-A2C0-ECA0CC8D514A @ 0x0000000478fdc798
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478ebb458
+[INFO] InstallProtocolInterface: 0D51905B-B77E-452A-A2C0-ECA0CC8D514A @ 0x0000000478fdc718
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478ebae18
+[INFO] InstallProtocolInterface: 0D51905B-B77E-452A-A2C0-ECA0CC8D514A @ 0x0000000478fdc598
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000479009858
+[INFO] InstallProtocolInterface: 0D51905B-B77E-452A-A2C0-ECA0CC8D514A @ 0x0000000478fdc518
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000479009898
+[INFO] InstallProtocolInterface: 0D51905B-B77E-452A-A2C0-ECA0CC8D514A @ 0x0000000478fdc098
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x00000004790098d8
+[INFO] InstallProtocolInterface: 0D51905B-B77E-452A-A2C0-ECA0CC8D514A @ 0x0000000478fdc318
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000479009918
+[INFO] InstallProtocolInterface: 0D51905B-B77E-452A-A2C0-ECA0CC8D514A @ 0x0000000478fdbe18
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000479009958
+PCI Bus First Scanning
+PciBus: Discovered PPB @ [30|00|00]
+
+PciBus: Discovered PCI @ [31|00|00]
+   BAR[0]: Type =   Io32; Alignment = 0xFF;Length = 0x100;Offset = 0x10
+   BAR[2]: Type =  Mem64; Alignment = 0xFFFF;Length = 0x10000;Offset = 0x18
+   BAR[3]: Type =  Mem64; Alignment = 0x3FFF;Length = 0x4000;Offset = 0x20
+
+PciBus: Discovered PPB @ [00|00|00]
+
+PciBus: Discovered PCI @ [01|00|00]
+   BAR[0]: Type =   Io32; Alignment = 0xFF;Length = 0x100;Offset = 0x10
+   BAR[2]: Type =  Mem64; Alignment = 0xFFFF;Length = 0x10000;Offset = 0x18
+   BAR[3]: Type =  Mem64; Alignment = 0x3FFF;Length = 0x4000;Offset = 0x20
+
+PciBus: Discovered PPB @ [30|00|00]
+
+PciBus: Discovered PCI @ [31|00|00]
+   BAR[0]: Type =   Io32; Alignment = 0xFF;Length = 0x100;Offset = 0x10
+   BAR[2]: Type =  Mem64; Alignment = 0xFFFF;Length = 0x10000;Offset = 0x18
+   BAR[3]: Type =  Mem64; Alignment = 0x3FFF;Length = 0x4000;Offset = 0x20
+
+PciBus: Discovered PPB @ [00|00|00]
+
+PciBus: Discovered PCI @ [01|00|00]
+   BAR[0]: Type =   Io32; Alignment = 0xFF;Length = 0x100;Offset = 0x10
+   BAR[2]: Type =  Mem64; Alignment = 0xFFFF;Length = 0x10000;Offset = 0x18
+   BAR[3]: Type =  Mem64; Alignment = 0x3FFF;Length = 0x4000;Offset = 0x20
+
+PciHostBridge: SubmitResources for PciRoot(0x3)
+ I/O: Granularity/SpecificFlag = 0 / 01
+      Length/Alignment = 0x1000 / 0xFFF
+ Mem: Granularity/SpecificFlag = 32 / 00
+      Length/Alignment = 0x100000 / 0xFFFFF
+PciBus: HostBridge->SubmitResources() - Success
+PciHostBridge: SubmitResources for PciRoot(0x4)
+ I/O: Granularity/SpecificFlag = 0 / 01
+      Length/Alignment = 0x1000 / 0xFFF
+ Mem: Granularity/SpecificFlag = 32 / 00
+      Length/Alignment = 0x100000 / 0xFFFFF
+PciBus: HostBridge->SubmitResources() - Success
+PciHostBridge: NotifyPhase (AllocateResources)
+ RootBridge: PciRoot(0x3)
+  Mem: Base/Length/Alignment = 38000000/100000/FFFFF - Success
+  I/O: Base/Length/Alignment = 0/1000/FFF - Success
+ RootBridge: PciRoot(0x4)
+  Mem: Base/Length/Alignment = 30000000/100000/FFFFF - Success
+  I/O: Base/Length/Alignment = 1000/1000/FFF - Success
+PciBus: HostBridge->NotifyPhase(AllocateResources) - Success
+Process Option ROM: BAR Base/Length = 0/0
+PciBus: Resource Map for Root Bridge PciRoot(0x3)
+Type =   Io16; Base = 0x0;Length = 0x1000;Alignment = 0xFFF
+   Base = 0x0;Length = 0x1000;Alignment = 0xFFF;Owner = PPB [30|00|00:**]
+Type =  Mem32; Base = 0x38000000;Length = 0x100000;Alignment = 0xFFFFF
+   Base = 0x38000000;Length = 0x100000;Alignment = 0xFFFFF;Owner = PPB [30|00|00:**]
+
+PciBus: Resource Map for Bridge [30|00|00]
+Type =   Io16; Base = 0x0;Length = 0x1000;Alignment = 0xFFF
+   Base = 0x0;Length = 0x100;Alignment = 0xFF;Owner = PCI [31|00|00:10]
+Type =  Mem32; Base = 0x38000000;Length = 0x100000;Alignment = 0xFFFFF
+   Base = 0x38000000;Length = 0x10000;Alignment = 0xFFFF;Owner = PCI [31|00|00:18]
+   Base = 0x38010000;Length = 0x4000;Alignment = 0x3FFF;Owner = PCI [31|00|00:20]
+
+Process Option ROM: BAR Base/Length = 0/0
+PciBus: Resource Map for Root Bridge PciRoot(0x4)
+Type =   Io16; Base = 0x1000;Length = 0x1000;Alignment = 0xFFF
+   Base = 0x1000;Length = 0x1000;Alignment = 0xFFF;Owner = PPB [00|00|00:**]
+Type =  Mem32; Base = 0x30000000;Length = 0x100000;Alignment = 0xFFFFF
+   Base = 0x30000000;Length = 0x100000;Alignment = 0xFFFFF;Owner = PPB [00|00|00:**]
+
+PciBus: Resource Map for Bridge [00|00|00]
+Type =   Io16; Base = 0x1000;Length = 0x1000;Alignment = 0xFFF
+   Base = 0x1000;Length = 0x100;Alignment = 0xFF;Owner = PCI [01|00|00:10]
+Type =  Mem32; Base = 0x30000000;Length = 0x100000;Alignment = 0xFFFFF
+   Base = 0x30000000;Length = 0x10000;Alignment = 0xFFFF;Owner = PCI [01|00|00:18]
+   Base = 0x30010000;Length = 0x4000;Alignment = 0x3FFF;Owner = PCI [01|00|00:20]
+
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000479009998
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792c2428
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x00000004791eb458
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792c2828
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x00000004791eb518
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792c3028
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x00000004791eb558
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792d3828
+[INFO] InstallProtocolInterface: 30CFE3E7-3DE1-4586-BE20-DEABA1B3B793 @ 0x0000000000000000
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792c1628
+XhcCreateUsb3Hc: Capability length 0x80
+XhcCreateUsb3Hc: HcSParams1 0x1000110
+XhcCreateUsb3Hc: HcSParams2 0x5A
+XhcCreateUsb3Hc: HcCParams 0x8000F8D
+XhcCreateUsb3Hc: DBOff 0x3000
+XhcCreateUsb3Hc: RTSOff 0x1000
+XhcCreateUsb3Hc: UsbLegSupOffset 0x0
+XhcCreateUsb3Hc: DebugCapSupOffset 0xFFFFFFFF
+XhcCreateUsb3Hc: Usb2SupOffset 0x8
+XhcCreateUsb3Hc: Usb3SupOffset 0xFFFFFFFF
+XhcSetBiosOwnership: called to set BIOS ownership
+XhcResetHC!
+XhcInitSched:DCBAA=0x7D412000
+XhcInitSched: Created CMD ring [47D4120C0~47D4130C0) EVENT ring [47D4130C0~47D4150C0)
+[INFO] InstallProtocolInterface: 3E745226-9818-45B6-A2AC-D7CD0E8BA2BC @ 0x0000000479351468
+XhcDriverBindingStart: XHCI started for controller @ F8FD5251
+[INFO] InstallProtocolInterface: 240612B7-A063-11D4-9A3A-0090273FC14D @ 0x00000004792d5020
+XhcGetCapability: 1 ports, 64 bit 1
+UsbRootHubInit: root hub 478FDDE18 - max speed 3, 1 ports
+UsbBusStart: usb bus started on 59502CC2F8FD5251, root hub 478FDDE18
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792d3628
+XhcCreateUsb3Hc: Capability length 0x80
+XhcCreateUsb3Hc: HcSParams1 0x1000110
+XhcCreateUsb3Hc: HcSParams2 0x5A
+XhcCreateUsb3Hc: HcCParams 0x8000F8D
+XhcCreateUsb3Hc: DBOff 0x3000
+XhcCreateUsb3Hc: RTSOff 0x1000
+XhcCreateUsb3Hc: UsbLegSupOffset 0x0
+XhcCreateUsb3Hc: DebugCapSupOffset 0xFFFFFFFF
+XhcCreateUsb3Hc: Usb2SupOffset 0x8
+XhcCreateUsb3Hc: Usb3SupOffset 0xFFFFFFFF
+XhcSetBiosOwnership: called to set BIOS ownership
+XhcResetHC!
+XhcInitSched:DCBAA=0x7D402000
+XhcInitSched: Created CMD ring [47D4020C0~47D4030C0) EVENT ring [47D4030C0~47D4050C0)
+[INFO] InstallProtocolInterface: 3E745226-9818-45B6-A2AC-D7CD0E8BA2BC @ 0x0000000479365e20
+XhcDriverBindingStart: XHCI started for controller @ 3A938A98
+[INFO] InstallProtocolInterface: 240612B7-A063-11D4-9A3A-0090273FC14D @ 0x00000004792e0020
+XhcGetCapability: 1 ports, 64 bit 1
+UsbRootHubInit: root hub 478FDD618 - max speed 3, 1 ports
+UsbBusStart: usb bus started on D30E9E8C3A938A98, root hub 478FDD618
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792d6428
+XhcCreateUsb3Hc: Capability length 0x80
+XhcCreateUsb3Hc: HcSParams1 0x1000110
+XhcCreateUsb3Hc: HcSParams2 0x5A
+XhcCreateUsb3Hc: HcCParams 0x8000F8D
+XhcCreateUsb3Hc: DBOff 0x3000
+XhcCreateUsb3Hc: RTSOff 0x1000
+XhcCreateUsb3Hc: UsbLegSupOffset 0x0
+XhcCreateUsb3Hc: DebugCapSupOffset 0xFFFFFFFF
+XhcCreateUsb3Hc: Usb2SupOffset 0x8
+XhcCreateUsb3Hc: Usb3SupOffset 0xFFFFFFFF
+XhcSetBiosOwnership: called to set BIOS ownership
+XhcResetHC!
+XhcInitSched:DCBAA=0x7A8B9000
+XhcInitSched: Created CMD ring [47A8B90C0~47A8BA0C0) EVENT ring [47A8BA0C0~47A8BC0C0)
+[INFO] InstallProtocolInterface: 3E745226-9818-45B6-A2AC-D7CD0E8BA2BC @ 0x000000047937a7d8
+XhcDriverBindingStart: XHCI started for controller @ 5DB7D163
+[INFO] InstallProtocolInterface: 240612B7-A063-11D4-9A3A-0090273FC14D @ 0x00000004792f2020
+XhcGetCapability: 1 ports, 64 bit 1
+UsbRootHubInit: root hub 478FDC418 - max speed 3, 1 ports
+UsbBusStart: usb bus started on B99E11F85DB7D163, root hub 478FDC418
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792d6628
+XhcCreateUsb3Hc: Capability length 0x80
+XhcCreateUsb3Hc: HcSParams1 0x1000110
+XhcCreateUsb3Hc: HcSParams2 0x5A
+XhcCreateUsb3Hc: HcCParams 0x8000F8D
+XhcCreateUsb3Hc: DBOff 0x3000
+XhcCreateUsb3Hc: RTSOff 0x1000
+XhcCreateUsb3Hc: UsbLegSupOffset 0x0
+XhcCreateUsb3Hc: DebugCapSupOffset 0xFFFFFFFF
+XhcCreateUsb3Hc: Usb2SupOffset 0x8
+XhcCreateUsb3Hc: Usb3SupOffset 0xFFFFFFFF
+XhcSetBiosOwnership: called to set BIOS ownership
+XhcResetHC!
+XhcInitSched:DCBAA=0x7A8A9000
+XhcInitSched: Created CMD ring [47A8A90C0~47A8AA0C0) EVENT ring [47A8AA0C0~47A8AC0C0)
+[INFO] InstallProtocolInterface: 3E745226-9818-45B6-A2AC-D7CD0E8BA2BC @ 0x000000047938f190
+XhcDriverBindingStart: XHCI started for controller @ 53D3DBF9
+[INFO] InstallProtocolInterface: 240612B7-A063-11D4-9A3A-0090273FC14D @ 0x00000004792f3020
+XhcGetCapability: 1 ports, 64 bit 1
+UsbRootHubInit: root hub 478FDBD18 - max speed 3, 1 ports
+UsbBusStart: usb bus started on 1AC6608153D3DBF9, root hub 478FDBD18
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792d7028
+XhcCreateUsb3Hc: Capability length 0x80
+XhcCreateUsb3Hc: HcSParams1 0x2000110
+XhcCreateUsb3Hc: HcSParams2 0x5A
+XhcCreateUsb3Hc: HcCParams 0x8007F0D
+XhcCreateUsb3Hc: DBOff 0x3000
+XhcCreateUsb3Hc: RTSOff 0x1000
+XhcCreateUsb3Hc: UsbLegSupOffset 0x0
+XhcCreateUsb3Hc: DebugCapSupOffset 0xFFFFFFFF
+XhcCreateUsb3Hc: Usb2SupOffset 0x8
+XhcCreateUsb3Hc: Usb3SupOffset 0x24
+XhcSetBiosOwnership: called to set BIOS ownership
+XhcResetHC!
+XhcInitSched:DCBAA=0x7A899000
+XhcInitSched: Created CMD ring [47A8990C0~47A89A0C0) EVENT ring [47A89A0C0~47A89C0C0)
+[INFO] InstallProtocolInterface: 3E745226-9818-45B6-A2AC-D7CD0E8BA2BC @ 0x00000004793a3b48
+XhcDriverBindingStart: XHCI started for controller @ 5A9B9778
+[INFO] InstallProtocolInterface: 240612B7-A063-11D4-9A3A-0090273FC14D @ 0x00000004792f4020
+XhcGetCapability: 2 ports, 64 bit 1
+UsbRootHubInit: root hub 478FDB718 - max speed 3, 2 ports
+UsbBusStart: usb bus started on 529D11B25A9B9778, root hub 478FDB718
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792d7228
+XhcCreateUsb3Hc: Capability length 0x80
+XhcCreateUsb3Hc: HcSParams1 0x2000110
+XhcCreateUsb3Hc: HcSParams2 0x5A
+XhcCreateUsb3Hc: HcCParams 0x8007F0D
+XhcCreateUsb3Hc: DBOff 0x3000
+XhcCreateUsb3Hc: RTSOff 0x1000
+XhcCreateUsb3Hc: UsbLegSupOffset 0x0
+XhcCreateUsb3Hc: DebugCapSupOffset 0xFFFFFFFF
+XhcCreateUsb3Hc: Usb2SupOffset 0x8
+XhcCreateUsb3Hc: Usb3SupOffset 0x24
+XhcSetBiosOwnership: called to set BIOS ownership
+XhcResetHC!
+XhcInitSched:DCBAA=0x7A889000
+XhcInitSched: Created CMD ring [47A8890C0~47A88A0C0) EVENT ring [47A88A0C0~47A88C0C0)
+[INFO] InstallProtocolInterface: 3E745226-9818-45B6-A2AC-D7CD0E8BA2BC @ 0x00000004793b8500
+XhcDriverBindingStart: XHCI started for controller @ 1CF947CA
+[INFO] InstallProtocolInterface: 240612B7-A063-11D4-9A3A-0090273FC14D @ 0x00000004792f5020
+XhcGetCapability: 2 ports, 64 bit 1
+UsbRootHubInit: root hub 478F5AB18 - max speed 3, 2 ports
+XhcClearRootHubPortFeature: PortFeature = 0x10, status Success
+UsbEnumeratePort: port 0 state - 201, change - 01 on 478F5AB18
+UsbEnumeratePort: Device Connect/Disconnect Normally (port 0)
+UsbEnumeratePort: new device connected at port 0
+XhcUsbPortReset!
+XhcSetRootHubPortFeature: status Success
+XhcClearRootHubPortFeature: PortFeature = 0x4, status Success
+XhcClearRootHubPortFeature: PortFeature = 0x14, status Success
+Enable Slot Successfully, The Slot ID = 0x1
+    Address 1 assigned successfully
+UsbEnumerateNewDev: hub port 0 is reset
+UsbEnumerateNewDev: device is of 1 speed
+UsbEnumerateNewDev: device uses translator (0, 0)
+UsbEnumerateNewDev: device is now ADDRESSED at 1
+UsbEnumerateNewDev: max packet size for EP 0 is 8
+Evaluate context
+UsbBuildDescTable: device has 1 configures
+UsbGetOneConfig: total length is 59
+UsbParseConfigDesc: config 1 has 2 interfaces
+UsbParseInterfaceDesc: interface 0(setting 0) has 1 endpoints
+UsbParseInterfaceDesc: interface 1(setting 0) has 1 endpoints
+Endpoint64[81]: Created INT ring [47A88E140~47A88F140)
+Endpoint64[82]: Created INT ring [47A890000~47A891000)
+Configure Endpoint
+UsbEnumerateNewDev: device 1 is now in CONFIGED state
+UsbSelectConfig: config 1 selected for device 1
+UsbSelectSetting: setting 0 selected for interface 0
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000479294598
+[INFO] InstallProtocolInterface: 2B2F68D6-0CD2-44CF-8E8B-BBA20B1B5B75 @ 0x0000000478f5a740
+UsbConnectDriver: TPL before connect is 8, DF0388FE811949C6
+[INFO] InstallProtocolInterface: 387477C1-69C7-11D2-8E39-00A0C969723B @ 0x0000000479307838
+[INFO] InstallProtocolInterface: DD9E7534-7762-4698-8C14-F58517A625AA @ 0x0000000479307850
+UsbConnectDriver: TPL after connect is 8
+UsbSelectSetting: setting 0 selected for interface 1
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x00000004792c1518
+[INFO] InstallProtocolInterface: 2B2F68D6-0CD2-44CF-8E8B-BBA20B1B5B75 @ 0x0000000478f59e40
+UsbConnectDriver: TPL before connect is 8, CA7780AE1B959B1F
+UsbConnectDriver: TPL after connect is 8
+UsbSelectConfig: failed to connect driver Not Found, ignored
+UsbBusStart: usb bus started on E6AB94D61CF947CA, root hub 478F5AB18
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792df628
+XhcCreateUsb3Hc: Capability length 0x80
+XhcCreateUsb3Hc: HcSParams1 0x2000110
+XhcCreateUsb3Hc: HcSParams2 0x5A
+XhcCreateUsb3Hc: HcCParams 0x8007F0D
+XhcCreateUsb3Hc: DBOff 0x3000
+XhcCreateUsb3Hc: RTSOff 0x1000
+XhcCreateUsb3Hc: UsbLegSupOffset 0x0
+XhcCreateUsb3Hc: DebugCapSupOffset 0xFFFFFFFF
+XhcCreateUsb3Hc: Usb2SupOffset 0x8
+XhcCreateUsb3Hc: Usb3SupOffset 0x24
+XhcSetBiosOwnership: called to set BIOS ownership
+XhcResetHC!
+XhcInitSched:DCBAA=0x7A879000
+XhcInitSched: Created CMD ring [47A8790C0~47A87A0C0) EVENT ring [47A87A0C0~47A87C0C0)
+[INFO] InstallProtocolInterface: 3E745226-9818-45B6-A2AC-D7CD0E8BA2BC @ 0x00000004793cceb8
+XhcDriverBindingStart: XHCI started for controller @ 3EF3B1DD
+[INFO] InstallProtocolInterface: 240612B7-A063-11D4-9A3A-0090273FC14D @ 0x000000047931d020
+XhcGetCapability: 2 ports, 64 bit 1
+UsbRootHubInit: root hub 478F59118 - max speed 3, 2 ports
+UsbBusStart: usb bus started on F5EF2EBD3EF3B1DD, root hub 478F59118
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792f1628
+XhcCreateUsb3Hc: Capability length 0x80
+XhcCreateUsb3Hc: HcSParams1 0x2000110
+XhcCreateUsb3Hc: HcSParams2 0x5A
+XhcCreateUsb3Hc: HcCParams 0x8007F0D
+XhcCreateUsb3Hc: DBOff 0x3000
+XhcCreateUsb3Hc: RTSOff 0x1000
+XhcCreateUsb3Hc: UsbLegSupOffset 0x0
+XhcCreateUsb3Hc: DebugCapSupOffset 0xFFFFFFFF
+XhcCreateUsb3Hc: Usb2SupOffset 0x8
+XhcCreateUsb3Hc: Usb3SupOffset 0x24
+XhcSetBiosOwnership: called to set BIOS ownership
+XhcResetHC!
+XhcInitSched:DCBAA=0x7A869000
+XhcInitSched: Created CMD ring [47A8690C0~47A86A0C0) EVENT ring [47A86A0C0~47A86C0C0)
+[INFO] InstallProtocolInterface: 3E745226-9818-45B6-A2AC-D7CD0E8BA2BC @ 0x00000004793e1870
+XhcDriverBindingStart: XHCI started for controller @ A981AA31
+[INFO] InstallProtocolInterface: 240612B7-A063-11D4-9A3A-0090273FC14D @ 0x000000047931f020
+XhcGetCapability: 2 ports, 64 bit 1
+UsbRootHubInit: root hub 478F58518 - max speed 3, 2 ports
+UsbBusStart: usb bus started on 77C79D9BA981AA31, root hub 478F58518
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x00000004792f6c28
+XhcCreateUsb3Hc: Capability length 0x80
+XhcCreateUsb3Hc: HcSParams1 0x2000110
+XhcCreateUsb3Hc: HcSParams2 0x5A
+XhcCreateUsb3Hc: HcCParams 0x8007F0D
+XhcCreateUsb3Hc: DBOff 0x3000
+XhcCreateUsb3Hc: RTSOff 0x1000
+XhcCreateUsb3Hc: UsbLegSupOffset 0x0
+XhcCreateUsb3Hc: DebugCapSupOffset 0xFFFFFFFF
+XhcCreateUsb3Hc: Usb2SupOffset 0x8
+XhcCreateUsb3Hc: Usb3SupOffset 0x24
+XhcSetBiosOwnership: called to set BIOS ownership
+XhcResetHC!
+XhcInitSched:DCBAA=0x7A859000
+XhcInitSched: Created CMD ring [47A8590C0~47A85A0C0) EVENT ring [47A85A0C0~47A85C0C0)
+[INFO] InstallProtocolInterface: 3E745226-9818-45B6-A2AC-D7CD0E8BA2BC @ 0x00000004793f6228
+XhcDriverBindingStart: XHCI started for controller @ 3252473D
+[INFO] InstallProtocolInterface: 240612B7-A063-11D4-9A3A-0090273FC14D @ 0x0000000479320020
+XhcGetCapability: 2 ports, 64 bit 1
+UsbRootHubInit: root hub 478F57B18 - max speed 3, 2 ports
+UsbBusStart: usb bus started on 96E66ACA3252473D, root hub 478F57B18
+[INFO] InstallProtocolInterface: 4CF5B200-68B8-4CA5-9EEC-B23E3F50029A @ 0x0000000479307628
+XhcCreateUsb3Hc: Capability length 0x80
+XhcCreateUsb3Hc: HcSParams1 0x2000110
+XhcCreateUsb3Hc: HcSParams2 0x5A
+XhcCreateUsb3Hc: HcCParams 0x8007F0D
+XhcCreateUsb3Hc: DBOff 0x3000
+XhcCreateUsb3Hc: RTSOff 0x1000
+XhcCreateUsb3Hc: UsbLegSupOffset 0x0
+XhcCreateUsb3Hc: DebugCapSupOffset 0xFFFFFFFF
+XhcCreateUsb3Hc: Usb2SupOffset 0x8
+XhcCreateUsb3Hc: Usb3SupOffset 0x24
+XhcSetBiosOwnership: called to set BIOS ownership
+XhcResetHC!
+XhcInitSched:DCBAA=0x7A849000
+XhcInitSched: Created CMD ring [47A8490C0~47A84A0C0) EVENT ring [47A84A0C0~47A84C0C0)
+[INFO] InstallProtocolInterface: 3E745226-9818-45B6-A2AC-D7CD0E8BA2BC @ 0x000000047940abe0
+XhcDriverBindingStart: XHCI started for controller @ AB8E3141
+[INFO] InstallProtocolInterface: 240612B7-A063-11D4-9A3A-0090273FC14D @ 0x0000000479322020
+XhcGetCapability: 2 ports, 64 bit 1
+UsbRootHubInit: root hub 478F57318 - max speed 3, 2 ports
+UsbBusStart: usb bus started on 218237BCAB8E3141, root hub 478F57318
+[27.261] [UEFI] E1FF DxeMainEnd
+[Bds]RegisterKeyNotify: 000C/0000 80000000/00 Success
+[Bds]RegisterKeyNotify: 0017/0000 80000000/00 Success
+[Bds]RegisterKeyNotify: 0000/000D 80000000/00 Success
+[INFO] InstallProtocolInterface: 1C0C34F6-D380-41FA-A049-8AD06C1A66AA @ 0x0000000478f56b18
+[INFO] InstallProtocolInterface: BD8C1056-9F36-44EC-92A8-A6337F817986 @ 0x0000000478f56318
+[INIT]detailed mode clock 148500 kHz, flags[A]
+          H: 1920 1968 2000 2200
+          V: 1080 1083 1088 1125
+      bus_format: 7FFFF2D0
+GraphicsConsole video resolution 1920 x 1080
+Graphics - Mode 0, Column = 80, Row = 25
+Graphics - Mode 1, Column = 80, Row = 50
+Graphics - Mode 2, Column = 100, Row = 31
+Graphics - Mode 3, Column = 128, Row = 40
+Graphics - Mode 4, Column = 160, Row = 42
+Graphics - Mode 5, Column = 240, Row = 56
+Graphics Console Started, Mode: 0
+[INFO] InstallProtocolInterface: 387477C2-69C7-11D2-8E39-00A0C969723B @ 0x0000000478f57130
+[INFO] InstallProtocolInterface: D3B36F2C-D551-11D4-9A46-0090273FC14D @ 0x0000000000000000
+[INFO] InstallProtocolInterface: D3B36F2D-D551-11D4-9A46-0090273FC14D @ 0x0000000000000000
+[INFO] InstallProtocolInterface: 9042A9DE-23DC-4A38-96FB-7ADED080516A @ 0x000000047d96a350
+[INFO] InstallProtocolInterface: 982C298B-F4FA-41CB-B838-77AA688FB839 @ 0x000000047d96a328
+Terminal - Mode 0, Column = 80, Row = 25
+Terminal - Mode 1, Column = 80, Row = 50
+Terminal - Mode 2, Column = 100, Row = 31
+[INFO] InstallProtocolInterface: 387477C1-69C7-11D2-8E39-00A0C969723B @ 0x0000000479326840
+[INFO] InstallProtocolInterface: DD9E7534-7762-4698-8C14-F58517A625AA @ 0x0000000479326928
+[INFO] InstallProtocolInterface: 387477C2-69C7-11D2-8E39-00A0C969723B @ 0x0000000479326858
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478f55398
+[INFO] InstallProtocolInterface: D3B36F2B-D551-11D4-9A46-0090273FC14D @ 0x0000000000000000
+[INFO] InstallProtocolInterface: D3B36F2C-D551-11D4-9A46-0090273FC14D @ 0x0000000000000000
+[INFO] InstallProtocolInterface: D3B36F2D-D551-11D4-9A46-0090273FC14D @ 0x0000000000000000
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+[INFO] InstallProtocolInterface: D3B36F2B-D551-11D4-9A46-0090273FC14D @ 0x0000000000000000
+[INFO] InstallProtocolInterface: D3B36F2B-D551-11D4-9A46-0090273FC14D @ 0x0000000000000000
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+[INFO] InstallProtocolInterface: 7838B201-4381-439B-9DA1-2B1891634077 @ 0x0000000479426bb0
+[INFO] InstallProtocolInterface: 6870F6C8-6286-4A73-8C49-8703822C2A5C @ 0x0000000479426bc8
+[INFO] InstallProtocolInterface: 1ACED566-76ED-4218-BC81-767F1F977A89 @ 0x0000000479423cd0
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478f54818
+[INFO] InstallProtocolInterface: 7838B201-4381-439B-9DA1-2B1891634077 @ 0x0000000479426bb0
+Support(): UNDI3.1 found on handle 5E39B6317DE7010C
+Support(): supported on 5E39B6317DE7010C
+Start(): UNDI3.1 found
+[INFO] InstallProtocolInterface: A19832B9-AC25-11D3-9A2D-0090273FC14D @ 0x000000047e6b1020
+[INFO] InstallProtocolInterface: 9E23D768-D2F3-4366-9FC3-3A7ABA864374 @ 0x0000000479427230
+[INFO] InstallProtocolInterface: F36FF770-A7E1-42CF-9ED2-56F0F271F44C @ 0x0000000478ebc140
+[INFO] InstallProtocolInterface: 7AB33A91-ACE5-4326-B572-E7EE33D39F16 @ 0x000000047a918f40
+
+Snp->undi.initialize()  8000h:6h
+[INFO] InstallProtocolInterface: F44C00EE-1F2C-4A00-AA09-1C9F3E0800A3 @ 0x0000000479327020
+[INFO] InstallProtocolInterface: 7AB33A91-ACE5-4326-B572-E7EE33D39F16 @ 0x000000047a918e40
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478ebb998
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x0000000479421838
+[INFO] InstallProtocolInterface: C51711E7-B4BF-404A-BFB8-0A048EF1FFE4 @ 0x0000000479421020
+[INFO] InstallProtocolInterface: 5B446ED1-E30B-4FAA-871A-3654ECA36080 @ 0x0000000479421580
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047a91ee20
+[INFO] InstallProtocolInterface: 83F01464-99BD-45E5-B383-AF6305D8E9E6 @ 0x0000000478ebb120
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047a962220
+[INFO] InstallProtocolInterface: 3AD9DF29-4501-478D-B1F8-7F7FE70E50F3 @ 0x000000047a962038
+[INFO] InstallProtocolInterface: 2FE800BE-8F01-4AA6-946B-D71388E1833F @ 0x0000000478ebaca0
+[INFO] InstallProtocolInterface: 7AB33A91-ACE5-4326-B572-E7EE33D39F16 @ 0x000000047a963940
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x0000000478eb8f18
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047a9653e8
+[INFO] InstallProtocolInterface: EC835DD3-FE0F-617B-A621-B350C3E13388 @ 0x000000047a964420
+[INFO] InstallProtocolInterface: 937FE521-95AE-4D1A-8929-48BCD90AD31A @ 0x000000047a965370
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047a965620
+[INFO] InstallProtocolInterface: 66ED4721-3C98-4D3E-81E3-D03DD39A7254 @ 0x000000047a9676a0
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047a96d020
+[INFO] InstallProtocolInterface: 4F948815-B4B9-43CB-8A33-90E060B34955 @ 0x000000047a96ce38
+[INFO] InstallProtocolInterface: D9760FF3-3CCA-4267-80F9-7527FAFA4223 @ 0x000000047a96cc20
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047a96ec20
+[INFO] InstallProtocolInterface: 00720665-67EB-4A99-BAF7-D3C33A1C7CC9 @ 0x000000047a96cd40
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047a970420
+[INFO] InstallProtocolInterface: EC20EB79-6C1A-4664-9A0D-D2E4CC16D664 @ 0x000000047a96cdc0
+[INFO] InstallProtocolInterface: BDC8E6AF-D9BC-4379-A72A-E0C4E75DAE1C @ 0x000000047a9701a0
+[INFO] InstallProtocolInterface: 65530BC7-A359-410F-B010-5AADC7EC2B62 @ 0x000000047a972538
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047a972a20
+MnpAddFreeTxBuf: Add TxBufWrap 47A970818, TxBuf 47A970841
+MnpAddFreeTxBuf: Add TxBufWrap 47A974018, TxBuf 47A974041
+MnpAddFreeTxBuf: Add TxBufWrap 47A974818, TxBuf 47A974841
+MnpAddFreeTxBuf: Add TxBufWrap 47A975018, TxBuf 47A975041
+MnpAddFreeTxBuf: Add TxBufWrap 47A975818, TxBuf 47A975841
+MnpAddFreeTxBuf: Add TxBufWrap 47A976018, TxBuf 47A976041
+MnpAddFreeTxBuf: Add TxBufWrap 47A976818, TxBuf 47A976841
+MnpAddFreeTxBuf: Add TxBufWrap 47A977018, TxBuf 47A977041
+MnpAddFreeTxBuf: Add TxBufWrap 47A977818, TxBuf 47A977841
+MnpAddFreeTxBuf: Add TxBufWrap 47A978018, TxBuf 47A978041
+MnpAddFreeTxBuf: Add TxBufWrap 47A978818, TxBuf 47A978841
+MnpAddFreeTxBuf: Add TxBufWrap 47A979018, TxBuf 47A979041
+MnpAddFreeTxBuf: Add TxBufWrap 47A979818, TxBuf 47A979841
+MnpAddFreeTxBuf: Add TxBufWrap 47A97A018, TxBuf 47A97A041
+MnpAddFreeTxBuf: Add TxBufWrap 47A97A818, TxBuf 47A97A841
+MnpAddFreeTxBuf: Add TxBufWrap 47A97B018, TxBuf 47A97B041
+MnpAddFreeTxBuf: Add TxBufWrap 47A97B818, TxBuf 47A97B841
+MnpAddFreeTxBuf: Add TxBufWrap 47A97C018, TxBuf 47A97C041
+MnpAddFreeTxBuf: Add TxBufWrap 47A97C818, TxBuf 47A97C841
+MnpAddFreeTxBuf: Add TxBufWrap 47A97D018, TxBuf 47A97D041
+MnpAddFreeTxBuf: Add TxBufWrap 47A97D818, TxBuf 47A97D841
+MnpAddFreeTxBuf: Add TxBufWrap 47A97E018, TxBuf 47A97E041
+MnpAddFreeTxBuf: Add TxBufWrap 47A97E818, TxBuf 47A97E841
+MnpAddFreeTxBuf: Add TxBufWrap 47A97F018, TxBuf 47A97F041
+MnpAddFreeTxBuf: Add TxBufWrap 47A97F818, TxBuf 47A97F841
+MnpAddFreeTxBuf: Add TxBufWrap 47A980018, TxBuf 47A980041
+MnpAddFreeTxBuf: Add TxBufWrap 47A980818, TxBuf 47A980841
+MnpAddFreeTxBuf: Add TxBufWrap 47A981018, TxBuf 47A981041
+MnpAddFreeTxBuf: Add TxBufWrap 47A981818, TxBuf 47A981841
+MnpAddFreeTxBuf: Add TxBufWrap 47A982018, TxBuf 47A982041
+MnpAddFreeTxBuf: Add TxBufWrap 47A984018, TxBuf 47A984041
+MnpAddFreeTxBuf: Add TxBufWrap 47A984818, TxBuf 47A984841
+MnpSyncSendPacket: No network cable detected.
+MnpSyncSendPacket: No network cable detected.
+[INFO] InstallProtocolInterface: 46E44855-BD60-4AB7-AB0D-A679B9447D77 @ 0x000000047a983d38
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047a985820
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047a985e20
+[INFO] InstallProtocolInterface: 4F948815-B4B9-43CB-8A33-90E060B34955 @ 0x0000000479426e38
+[INFO] InstallProtocolInterface: 7F1647C8-B76E-44B2-A565-F70FF19CD19E @ 0x000000047a985c20
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047a987e20
+[INFO] InstallProtocolInterface: 3AD9DF29-4501-478D-B1F8-7F7FE70E50F3 @ 0x000000047a987c38
+[INFO] InstallProtocolInterface: B625B186-E063-44F7-8905-6A74DC6F52B4 @ 0x000000047a987620
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047a968f18
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x0000000479323a20
+[INFO] InstallProtocolInterface: E4F61863-FE2C-4B56-A8F4-08519BC439DF @ 0x0000000479323a18
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047a98aa20
+[INFO] InstallProtocolInterface: 3AD9DF29-4501-478D-B1F8-7F7FE70E50F3 @ 0x000000047a98a838
+[INFO] InstallProtocolInterface: 9D9A39D8-BD42-4A73-A4D5-8EE94BE11380 @ 0x000000047a98a620
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047a98fa20
+[INFO] InstallProtocolInterface: 4F948815-B4B9-43CB-8A33-90E060B34955 @ 0x000000047a98ee38
+[INFO] InstallProtocolInterface: 9FB9A8A1-2F4A-43A6-889C-D0F7B6C47AD5 @ 0x000000047a98eb30
+[INFO] InstallProtocolInterface: 7838B201-4381-439B-9DA1-2B1891634077 @ 0x000000047a995bb0
+[INFO] InstallProtocolInterface: 6870F6C8-6286-4A73-8C49-8703822C2A5C @ 0x000000047a995bc8
+[INFO] InstallProtocolInterface: 1ACED566-76ED-4218-BC81-767F1F977A89 @ 0x000000047a992cd0
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047a98f898
+[INFO] InstallProtocolInterface: 7838B201-4381-439B-9DA1-2B1891634077 @ 0x000000047a995bb0
+Support(): UNDI3.1 found on handle 55D7E071CE355A0B
+Support(): supported on 55D7E071CE355A0B
+Start(): UNDI3.1 found
+[INFO] InstallProtocolInterface: A19832B9-AC25-11D3-9A2D-0090273FC14D @ 0x000000047d401020
+[INFO] InstallProtocolInterface: 9E23D768-D2F3-4366-9FC3-3A7ABA864374 @ 0x000000047a997230
+[INFO] InstallProtocolInterface: F36FF770-A7E1-42CF-9ED2-56F0F271F44C @ 0x000000047aad9dc0
+[INFO] InstallProtocolInterface: 7AB33A91-ACE5-4326-B572-E7EE33D39F16 @ 0x000000047aad9f40
+
+Snp->undi.initialize()  8000h:6h
+[INFO] InstallProtocolInterface: F44C00EE-1F2C-4A00-AA09-1C9F3E0800A3 @ 0x000000047a996420
+[INFO] InstallProtocolInterface: 7AB33A91-ACE5-4326-B572-E7EE33D39F16 @ 0x000000047aad9e40
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047aadef18
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047a96a838
+[INFO] InstallProtocolInterface: C51711E7-B4BF-404A-BFB8-0A048EF1FFE4 @ 0x000000047a96a020
+[INFO] InstallProtocolInterface: 5B446ED1-E30B-4FAA-871A-3654ECA36080 @ 0x000000047a96a580
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047aadfc20
+[INFO] InstallProtocolInterface: 83F01464-99BD-45E5-B383-AF6305D8E9E6 @ 0x000000047aae25a0
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047aae3e20
+[INFO] InstallProtocolInterface: 3AD9DF29-4501-478D-B1F8-7F7FE70E50F3 @ 0x000000047aae3c38
+[INFO] InstallProtocolInterface: 2FE800BE-8F01-4AA6-946B-D71388E1833F @ 0x000000047aae2720
+[INFO] InstallProtocolInterface: 7AB33A91-ACE5-4326-B572-E7EE33D39F16 @ 0x000000047aae5240
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047aae7198
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047aae6fe8
+[INFO] InstallProtocolInterface: EC835DD3-FE0F-617B-A621-B350C3E13388 @ 0x000000047aae6020
+[INFO] InstallProtocolInterface: 937FE521-95AE-4D1A-8929-48BCD90AD31A @ 0x000000047aae6f70
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047aadea20
+[INFO] InstallProtocolInterface: 66ED4721-3C98-4D3E-81E3-D03DD39A7254 @ 0x000000047aaf00a0
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047aaf5220
+[INFO] InstallProtocolInterface: 4F948815-B4B9-43CB-8A33-90E060B34955 @ 0x000000047aaf5038
+[INFO] InstallProtocolInterface: D9760FF3-3CCA-4267-80F9-7527FAFA4223 @ 0x000000047aaf4e20
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047aaf6020
+[INFO] InstallProtocolInterface: 00720665-67EB-4A99-BAF7-D3C33A1C7CC9 @ 0x000000047aaf5440
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047aaf8c20
+[INFO] InstallProtocolInterface: EC20EB79-6C1A-4664-9A0D-D2E4CC16D664 @ 0x000000047aaf54c0
+[INFO] InstallProtocolInterface: BDC8E6AF-D9BC-4379-A72A-E0C4E75DAE1C @ 0x000000047aaf9da0
+[INFO] InstallProtocolInterface: 65530BC7-A359-410F-B010-5AADC7EC2B62 @ 0x000000047aafa138
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047aafaa20
+[INFO] InstallProtocolInterface: 46E44855-BD60-4AB7-AB0D-A679B9447D77 @ 0x000000047aafb938
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047aafbe20
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047aafc820
+[INFO] InstallProtocolInterface: 4F948815-B4B9-43CB-8A33-90E060B34955 @ 0x000000047a996c38
+[INFO] InstallProtocolInterface: 7F1647C8-B76E-44B2-A565-F70FF19CD19E @ 0x000000047aafc220
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047aafe220
+[INFO] InstallProtocolInterface: 3AD9DF29-4501-478D-B1F8-7F7FE70E50F3 @ 0x000000047aafe038
+[INFO] InstallProtocolInterface: B625B186-E063-44F7-8905-6A74DC6F52B4 @ 0x000000047aafda20
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047aaf1718
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047a991a20
+[INFO] InstallProtocolInterface: E4F61863-FE2C-4B56-A8F4-08519BC439DF @ 0x000000047a991a18
+[INFO] InstallProtocolInterface: 41D94CD2-35B6-455A-8258-D4E51334AADD @ 0x000000047ab01620
+[INFO] InstallProtocolInterface: 3AD9DF29-4501-478D-B1F8-7F7FE70E50F3 @ 0x000000047ab01438
+[INFO] InstallProtocolInterface: 9D9A39D8-BD42-4A73-A4D5-8EE94BE11380 @ 0x000000047ab01220
+[INFO] InstallProtocolInterface: 2C8759D5-5C2D-66EF-925F-B66C101957E2 @ 0x000000047ab05620
+[INFO] InstallProtocolInterface: 4F948815-B4B9-43CB-8A33-90E060B34955 @ 0x000000047ab05438
+[INFO] InstallProtocolInterface: 9FB9A8A1-2F4A-43A6-889C-D0F7B6C47AD5 @ 0x000000047ab04430
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+[INFO] Depex evaluation complete, scheduled 0 drivers
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+HandleCapsules: processing capsules ...
+[Bds]RegisterKeyNotify: 0000/0073 80000000/00 Success
+[29.814] [UEFI] E550 BmAfterConsole
+[Bds]OsIndication: 0000000000000000
+[Bds]=============Begin Load Options Dumping ...=============
+  Driver Options:
+  SysPrep Options:
+  Boot Options:
+    Boot0000: UiApp  0x0109
+    Boot0001: UEFI Shell  0x0000
+  PlatformRecovery Options:
+    PlatformRecovery0000: Default PlatformRecovery  0x0001
+    PlatformRecovery0001: Debian boot  0x0001
+[Bds]=============End Load Options Dumping=============
+[Bds]BdsWait ...Zzzzzzzzzzzz...
+[Bds]BdsWait(5)..Zzzz...
+MnpAddFreeTxBuf: Add TxBufWrap 47AB04818, TxBuf 47AB04841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB0B018, TxBuf 47AB0B041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB0B818, TxBuf 47AB0B841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB0C018, TxBuf 47AB0C041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB0C818, TxBuf 47AB0C841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB0D018, TxBuf 47AB0D041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB0D818, TxBuf 47AB0D841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB0E018, TxBuf 47AB0E041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB0E818, TxBuf 47AB0E841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB0F018, TxBuf 47AB0F041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB0F818, TxBuf 47AB0F841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB10018, TxBuf 47AB10041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB10818, TxBuf 47AB10841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB11018, TxBuf 47AB11041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB11818, TxBuf 47AB11841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB12018, TxBuf 47AB12041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB12818, TxBuf 47AB12841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB13018, TxBuf 47AB13041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB13818, TxBuf 47AB13841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB14018, TxBuf 47AB14041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB14818, TxBuf 47AB14841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB15018, TxBuf 47AB15041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB16018, TxBuf 47AB16041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB16818, TxBuf 47AB16841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB17018, TxBuf 47AB17041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB17818, TxBuf 47AB17841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB18018, TxBuf 47AB18041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB18818, TxBuf 47AB18841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB19018, TxBuf 47AB19041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB19818, TxBuf 47AB19841
+MnpAddFreeTxBuf: Add TxBufWrap 47AB1A018, TxBuf 47AB1A041
+MnpAddFreeTxBuf: Add TxBufWrap 47AB1A818, TxBuf 47AB1A841
+MnpSyncSendPacket: No network cable detected.
+MnpSyncSendPacket: No network cable detected.
+[Bds]BdsWait(4)..Zzzz...
+[Bds]BdsWait(3)..Zzzz...
+[Bds]BdsWait(2)..Zzzz...
+[Bds]BdsWait(1)..Zzzz...
+[Bds]Exit the waiting!
+Process PlatformRecovery0000 (Default PlatformRecovery) ...
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+[INFO] Depex evaluation complete, scheduled 0 drivers
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+[Bds] Expand \EFI\BOOT\BOOTAA64.EFI -> <null string>
+Process PlatformRecovery0001 (Debian boot) ...
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+[INFO] Depex evaluation complete, scheduled 0 drivers
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+[Bds] Expand \EFI\DEBIAN\GRUBAA64.EFI -> <null string>
+[Bds] Unable to boot!
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+[INFO] Depex evaluation complete, scheduled 0 drivers
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+[Bds] Booting Boot Manager Menu.
+[Bds]Stop Hotkey Service!
+[Bds]UnregisterKeyNotify: 000C/0000 Success
+[Bds]UnregisterKeyNotify: 0017/0000 Success
+[Bds]UnregisterKeyNotify: 0000/000D Success
+[Bds]UnregisterKeyNotify: 0000/0073 Success
+Memory  Previous  Current    Next   
+ Type    Pages     Pages     Pages  
+======  ========  ========  ========
+  09    00000000  00000021  00000029
+  0A    00000000  00000010  00000014
+  00    00000000  0000A510  0000CE54
+  06    00000450  00002070  0000288C
+  05    000004B0  00000360  000004B0
+  03    000005DC  00000785  00000966
+  04    000032C8  00005350  00006824
+  01    00001000  00000000  00001000
+  02    00000000  00000000  00000000
+Memory Type Information settings change.
+[Bds]Booting UiApp
+[INFO] Depex evaluation complete, scheduled 0 drivers
+[Bds] Expand Fv(9A15AA37-D555-4A4E-B541-86391FF68164)/FvFile(462CAA21-7614-4503-836E-8AB6F4662331) -> Fv(9A15AA37-D555-4A4E-B541-86391FF68164)/FvFile(462CAA21-7614-4503-836E-8AB6F4662331)
+[WARN] Attempting to load an application image that is not NX compatible. Activating compatibility mode.
+[INFO] uninstalled MEMORY_ATTRIBUTES_PROTOCOL_GUID
+[INFO] InstallProtocolInterface: 5B1B31A1-9562-11D2-8E3F-00A0C969723B @ 0x000000047ab09800
+[INFO] InstallProtocolInterface: BC62157E-3E33-4FEC-9920-2D3B36D750DF @ 0x000000047ab0a080
+[INFO] Loaded image at 0x000000047a4e2000 Size=0x2a000 EntryPoint=0x47a4ea15c UiApp.efi
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047ab0a318
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047a509af0
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047a509b30
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047a509b48
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047a509b78
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+[INFO] Depex evaluation complete, scheduled 0 drivers
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047a509b98
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047a509bc8
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047a509cd0
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047a503040
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 5E39B6317DE7010C
+Support(): Already Started. on handle 55D7E071CE355A0B
+Support(): Already Started. on handle 55D7E071CE355A0B
+[INFO] Depex evaluation complete, scheduled 0 drivers
+UsbBusRecursivelyConnectWantedUsbIo: TPL before connect is 4
+UsbBusRecursivelyConnectWantedUsbIo: TPL after connect is 4
+[INFO] InstallProtocolInterface: 09576E91-6D3F-11D2-8E39-00A0C969723B @ 0x000000047a508848
+[INFO] InstallProtocolInterface: 330D4706-F2A0-4E4F-A369-B66FA8D54385 @ 0x000000047a508880
+[INFO] InstallProtocolInterface: 348C4D62-BFBD-4882-9ECE-C80BB1C4783B @ 0x0000000000000000
+MnpSyncSendPacket: No network cable detected.
+MnpSyncSendPacket: No network cable detected.

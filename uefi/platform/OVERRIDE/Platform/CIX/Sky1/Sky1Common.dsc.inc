@@ -205,7 +205,7 @@
   NetLib|NetworkPkg/Library/DxeNetLib/DxeNetLib.inf
 
 !if $(SOC_GOP_ENABLE) == TRUE
-  DpuDxe|platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
+  DpuDxe|Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
   DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
 !endif
 
@@ -881,7 +881,7 @@
 !endif
 
 !if $(SOC_GOP_ENABLE) == TRUE
-  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf {
+  Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf {
     <LibraryClasses>
        DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
   }
