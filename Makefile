@@ -6,7 +6,7 @@
 export PATH_PACKAGE_TOOL := $(CURDIR)/common/edk2-non-osi-cix-odp/Platform/CIX/Sky1/PackageTool
 export PATH_CIX_REFERENCE_PROJECT := $(CURDIR)/common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6
 
-export GCC5_AARCH64_PREFIX := $(CURDIR)/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+export GCC5_AARCH64_PREFIX ?= $(CURDIR)/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
 BUILD_OUTPUT := $(CURDIR)/Build
 BINS := $(BUILD_OUTPUT)/Firmwares
 OEM_PRIVATE_KEY := $(PATH_PACKAGE_TOOL)/Keys/oem_privatekey.pem

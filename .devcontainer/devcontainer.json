@@ -1,0 +1,21 @@
+{
+    "name": "Radxa Orion O6 Build Environment",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "workspaceFolder": "/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "postCreateCommand": "git config --global --add safe.directory /workspace && git submodule update --init --recursive 2>/dev/null || true && cd uefi/tools/acpica && git apply ../../../acpica.patch 2>/dev/null || true",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.makefile-tools"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash"
+            }
+        }
+    }
+}
