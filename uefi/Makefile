@@ -18,8 +18,10 @@ export IASL_PREFIX         := $(CURDIR)/tools/acpica/generate/unix/bin/
 
 # The UEFI build process
 all: PatinaDxeCore_ru
+
 	$(MAKE) -C edk2/BaseTools
 	$(MAKE) -C tools/acpica
+
 	. edk2/edksetup.sh --reconfig && \
 	build \
 		-a AARCH64 \
@@ -36,6 +38,7 @@ all: PatinaDxeCore_ru
 		-D VARIABLE_TYPE=SPI \
 		-D STANDARD_MM=TRUE \
 		-D SYSTEM_LOADER=common
+
 	mkdir -p $(BINS_DIR)
 	cp $(BUILD_OUTPUT)/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(BINS_DIR)/
 
@@ -43,5 +46,6 @@ all: PatinaDxeCore_ru
 PatinaDxeCore_ru:
 	cd platform/Drivers/PatinaDxeCore_ru && cargo build --target-dir $(RUST_OUT)/Drivers/PatinaDxeCore_ru
 
+# The clean target
 clean:
 	rm -rf $(BUILD_OUTPUT)
