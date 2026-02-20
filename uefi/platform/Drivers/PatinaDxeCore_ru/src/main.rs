@@ -36,8 +36,9 @@ struct SimpleLogger {
 impl SimpleLogger {
     const fn new() -> Self {
         Self {
-            //uart: UartPl011::new(0x040D_0000),     // UART2 - 3 pin debug header
-            uart: UartPl011::new(0x040e_0000),   // UART3 - On 40 pin header
+            // Configure debug port to UART3 on the 40 pin header
+            // Address defined in common/edk2-platforms-cix-odp/Silicon/CIX/Sky1/Include/MemoryMap.h
+            uart: UartPl011::new(0x040e_0000),
         }
     }
 }
@@ -117,18 +118,10 @@ static CORE: Core<RadxaO6> = Core::new(CompositeSectionExtractor::new());
 #[cfg_attr(target_os = "uefi", unsafe(export_name = "efi_main"))]
 pub extern "efiapi" fn _start(physical_hob_list: *const c_void) -> ! {
 
-    // Initialize the logger
-    log::set_logger(&LOGGER).map(|()| log::set_max_level(log::LevelFilter::Info)).unwrap();
+    // Initialize the logger, ignore errors since they can't be logged
+    let _ = log::set_logger(&LOGGER).map(|()| log::set_max_level(log::LevelFilter::Info));
     log::info!("DXE Core Platform Binary Entry");
 
     // Jump to DXE core entry point which never returns
     CORE.entry_point(physical_hob_list);
-
-//    Core::default()
-//        .init_memory(physical_hob_list)
-//        .with_config(GicBases::new(0x0e01_0000, 0x0e090000))
-//        .with_service(patina_ffs_extractors::CompositeSectionExtractor::default())
-//        .start()
-//        .unwrap();
-
 }
