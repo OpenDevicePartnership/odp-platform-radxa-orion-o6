@@ -1,12 +1,34 @@
-# PLATFORM NOTE:
-# This build needs code that is provided in a monolithic delivery that can not be easily divided into
-# a submodules that reside under this component.  Therefore, the PATH_CIX_REFERENCE_PROJECT path
-# environment variable set in the main Makefile is being used to reach outside this component folder
-# and into the common folder.
+# ODP Platform firmware build system
+#
+# ## License
+#
+# Copyright (c) Microsoft Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
 
+# Defines typically provided by the parent makefile
+ifdef BUILD_DIR
+	BUILD_DIR              := $(BUILD_DIR)/$(notdir $(CURDIR))
+else
+	BUILD_DIR              := $(CURDIR)/Build
+endif
+BINS_DIR                   ?= $(BUILD_DIR)
+COMMON_DIR                 ?= $(CURDIR)/../common
+export GCC5_AARCH64_PREFIX ?= $(CURDIR)/../tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+
+# Defines specific to this makefile
+PLATFORM_CODE_DIR      := $(COMMON_DIR)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/pm_config
+
+# Full build
 .PHONY: all
-
 all:
-	$(MAKE) -C $(PATH_CIX_REFERENCE_PROJECT)/pm_config
+	$(MAKE) -C $(PLATFORM_CODE_DIR)
 	mkdir -p $(BINS_DIR)
-	mv $(PATH_CIX_REFERENCE_PROJECT)/pm_config/csu_pm_config.bin $(BINS_DIR)/
+	mv $(PLATFORM_CODE_DIR)/csu_pm_config.bin $(BINS_DIR)/
+
+# Clean all build artifacts
+.PHONY: clean
+clean:
+	$(MAKE) -C $(PLATFORM_CODE_DIR) clean
+	rm -drf $(BUILD_DIR)
+	rm -f $(BINS_DIR)/csu_pm_config.bin
