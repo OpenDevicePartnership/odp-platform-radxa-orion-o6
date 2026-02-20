@@ -17,7 +17,7 @@ COMMON_DIR                 ?= $(CURDIR)/../common
 export GCC5_AARCH64_PREFIX ?= $(CURDIR)/../tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
 
 # Defines specific to this makefile
-RUST_OUT_DIR               := $(BUILD_DIR)/DEBUG_Rust
+RUST_OUT_DIR               := $(BUILD_DIR)/Rust
 SHELL                      := /bin/bash
 export WORKSPACE           := $(CURDIR)
 export IASL_PREFIX         := $(CURDIR)/tools/acpica/generate/unix/bin/
