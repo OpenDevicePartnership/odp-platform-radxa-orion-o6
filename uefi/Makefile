@@ -9,7 +9,7 @@ BUILD_OUTPUT ?= $(CURDIR)/Build
 BINS_DIR     ?= $(CURDIR)/Build
 RUST_OUT     := $(BUILD_OUTPUT)/DEBUG_Rust
 
-export GCC5_AARCH64_PREFIX := $(CURDIR)/../tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+export GCC5_AARCH64_PREFIX ?= $(CURDIR)/../tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
 export WORKSPACE           := $(CURDIR)
 export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(COMMON)/edk2-platforms-cix-odp:$(COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT)
 export IASL_PREFIX         := $(CURDIR)/tools/acpica/generate/unix/bin/

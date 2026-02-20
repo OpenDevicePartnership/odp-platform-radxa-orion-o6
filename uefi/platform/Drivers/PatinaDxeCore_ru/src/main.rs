@@ -1,4 +1,4 @@
-//! DXE Core Sample AARCH64 Binary for QEMU SBSA
+//! Patina DXE Core driver for Radxa O6
 //!
 //! ## License
 //!
