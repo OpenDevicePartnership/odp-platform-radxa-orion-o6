@@ -34,27 +34,27 @@ prebuilt:
 # Build the uefi component
 .PHONY: uefi
 uefi: prebuilt
-	$(MAKE) -C uefi
+	$(MAKE) -C uefi BUILD_DIR=$(BUILD_DIR)/uefi
 
 # Build the tee component
 .PHONY: tee
 tee: prebuilt
-	$(MAKE) -C tee
+	$(MAKE) -C tee BUILD_DIR=$(BUILD_DIR)/tee
 
 # Build the tf-a component
 .PHONY: tf-a
 tf-a: prebuilt
-	$(MAKE) -C tf-a
+	$(MAKE) -C tf-a BUILD_DIR=$(BUILD_DIR)/tf-a
 
 # Build the mem_config component
 .PHONY: mem_config
 mem_config: prebuilt
-	$(MAKE) -C mem_config
+	$(MAKE) -C mem_config BUILD_DIR=$(BUILD_DIR)/mem_config
 
 # Build the pm_config component
 .PHONY: pm_config
 pm_config: prebuilt
-	$(MAKE) -C pm_config
+	$(MAKE) -C pm_config BUILD_DIR=$(BUILD_DIR)/pm_config
 
 # Combine and sign the secure partitions
 .PHONY: bootloader2
