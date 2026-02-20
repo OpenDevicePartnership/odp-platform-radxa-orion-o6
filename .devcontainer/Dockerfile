@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
     device-tree-compiler \
     bc \
     python3-pyelftools \
+    python-is-python3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Download and install ARM GNU toolchain
@@ -41,6 +42,10 @@ RUN aarch64-none-elf-gcc --version && \
 
 # Install Python dependencies (cryptography is needed by edk2 build)
 RUN pip3 install --break-system-packages cryptography
+
+# Install Rust toolchain (cargo is needed by the build)
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Allow git to work with mounted volumes owned by different users
 RUN git config --global --add safe.directory '*'
