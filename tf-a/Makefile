@@ -37,5 +37,6 @@ all:
 # Clean all build artifacts
 .PHONY: clean
 clean:
-	rm -rf $(BINS_DIR)
+	rm -f $(BINS_DIR)/bl31.bin
+	rm -f $(BINS_DIR)/bl31.elf
 	rm -rf $(BUILD_DIR)

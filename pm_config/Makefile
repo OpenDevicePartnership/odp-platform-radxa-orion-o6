@@ -13,7 +13,7 @@ COMMON_DIR                 ?= $(CURDIR)/../common
 export GCC5_AARCH64_PREFIX ?= $(CURDIR)/../tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
 
 # Defines specific to this makefile
-PLATFORM_CODE_DIR      := $(COMMON_DIR)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/pm_config
+PLATFORM_CODE_DIR          := $(COMMON_DIR)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/pm_config
 
 # Full build
 .PHONY: all

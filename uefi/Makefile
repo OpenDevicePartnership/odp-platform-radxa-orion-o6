@@ -54,7 +54,7 @@ PatinaDxeCore_ru:
 # Clean all build artifacts
 .PHONY: clean
 clean:
-	rm -rf $(BINS_DIR)
+	rm -f $(BINS_DIR)/SKY1_BL33_UEFI.fd
 	rm -rf $(BUILD_DIR)
 	$(MAKE) -C edk2/BaseTools clean
 	$(MAKE) -C tools/acpica clean
