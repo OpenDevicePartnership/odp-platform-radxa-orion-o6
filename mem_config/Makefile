@@ -30,5 +30,5 @@ all:
 .PHONY: clean
 clean:
 	$(MAKE) -C $(PLATFORM_CODE_DIR) clean
-	rm -drf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR)
 	rm -f $(BINS_DIR)/memory_config.bin
