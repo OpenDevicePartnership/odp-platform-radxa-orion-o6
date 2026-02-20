@@ -33,7 +33,7 @@ prebuilt:
 
 # Build the uefi component
 .PHONY: uefi
-uefi:
+uefi: prebuilt
 	$(MAKE) -C uefi
 
 # Build the tee component
@@ -43,17 +43,17 @@ tee: prebuilt
 
 # Build the tf-a component
 .PHONY: tf-a
-tf-a:
+tf-a: prebuilt
 	$(MAKE) -C tf-a
 
 # Build the mem_config component
 .PHONY: mem_config
-mem_config:
+mem_config: prebuilt
 	$(MAKE) -C mem_config
 
 # Build the pm_config component
 .PHONY: pm_config
-pm_config:
+pm_config: prebuilt
 	$(MAKE) -C pm_config
 
 # Combine and sign the secure partitions
