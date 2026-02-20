@@ -34,9 +34,15 @@ The ACPICA patch is automatically applied on container creation.
 ```powershell
 # Interactive shell
 docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile . && docker run --rm -it -w /workspace -v "$(($PWD.Path) -replace '\\','/'):/workspace" odp-orion-o6
+
+# Build and exit
+docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile . && docker run --rm -w /workspace -v "$(($PWD.Path) -replace '\\','/'):/workspace" odp-orion-o6 make
 ```
 
 **Linux / macOS:**
 ```bash
 # Interactive shell
 docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile . && docker run --rm -it -w /workspace -v "$PWD:/workspace" odp-orion-o6
+
+# Build and exit
+docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile . && docker run --rm -w /workspace -v "$PWD:/workspace" odp-orion-o6 make
