@@ -26,17 +26,25 @@ Alternatively, you can use Docker to build in a containerized environment:
 Open this folder in VS Code and select "Reopen in Container" when prompted, or run:
 - `Dev Containers: Reopen in Container` from the command palette
 
-The ACPICA patch is automatically applied on container creation.
+The container opens in terminal mode by default (no editor tabs), dropping you
+straight into an integrated terminal. The ACPICA patch is automatically applied
+on container creation.
+
+To start the container from the command line without the VS Code UI:
+```bash
+devcontainer up --workspace-folder .
+devcontainer exec --workspace-folder . bash
+```
 
 ### Manual Docker
 
 **PowerShell:**
 ```powershell
 # Interactive shell
-docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile . && docker run --rm -it -w /workspace -v "$(($PWD.Path) -replace '\\','/'):/workspace" odp-orion-o6
+docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile . && docker run --rm -it -w /workspace -v "$($PWD.Path -replace '\\','/'):/workspace" odp-orion-o6
 
 # Build and exit
-docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile . && docker run --rm -w /workspace -v "$(($PWD.Path) -replace '\\','/'):/workspace" odp-orion-o6 make
+docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile . && docker run --rm -w /workspace -v "$($PWD.Path -replace '\\','/'):/workspace" odp-orion-o6 make
 ```
 
 **Linux / macOS:**
