@@ -6,7 +6,7 @@
 	url = https://github.com/cixtech/op-tee-cix-odp.git
 [submodule "Trusted_Firmware-A"]
 	path = tf-a/arm-trusted-firmware-cix-odp
-	url = https://github.com/cixtech/arm-trusted-firmware-cix-odp
+	url = https://github.com/cixtech/cix_opensource__arm-trusted-firmware.git
 [submodule "ACPI_Component_Architecture"]
 	path = uefi/tools/acpica
 	url = https://github.com/acpica/acpica.git
