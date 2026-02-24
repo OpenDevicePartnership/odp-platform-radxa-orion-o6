@@ -1,22 +1,27 @@
-# PLATFORM NOTE:
-# This build needs code that is provided in a monolithic delivery that can not be easily divided into
-# a submodules that reside under this component.  Therefore, the 'COMMON' path is being used to reach
-# outside this component folder and into the common folder.
+# ODP Platform firmware build system
+#
+# ## License
+#
+# Copyright (c) Microsoft Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
 
-SHELL        := /bin/bash
-COMMON       := $(CURDIR)/../common
-BUILD_OUTPUT ?= $(CURDIR)/Build
-BINS_DIR     ?= $(CURDIR)/Build
-RUST_OUT     := $(BUILD_OUTPUT)/DEBUG_Rust
-
+# Defines typically provided by the parent makefile
+PATH_BUILD_OUTPUT          ?= $(CURDIR)/Build
+PATH_BINS                  ?= $(PATH_BUILD_OUTPUT)
+PATH_COMMON                ?= $(CURDIR)/../common
 export GCC5_AARCH64_PREFIX ?= $(CURDIR)/../tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+
+# Defines specific to this makefile
+RUST_OUT_DIR               := $(PATH_BUILD_OUTPUT)/Rust
+SHELL                      := /bin/bash
 export WORKSPACE           := $(CURDIR)
-export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(COMMON)/edk2-platforms-cix-odp:$(COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT)
+export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(PATH_COMMON)/edk2-platforms-cix-odp:$(PATH_COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT_DIR)
 export IASL_PREFIX         := $(CURDIR)/tools/acpica/generate/unix/bin/
 
-.PHONY: all PatinaDxeCore_ru
+# Build Targets
+.PHONY: all PatinaDxeCore_ru clean
 
-# The UEFI build process
 all: PatinaDxeCore_ru
 
 	$(MAKE) -C edk2/BaseTools
@@ -29,7 +34,7 @@ all: PatinaDxeCore_ru
 		-p platform/O6.dsc \
 		-b DEBUG \
 		-D BOARD_NAME=evb \
-		-D PATH_BUILD_OUTPUT=$(BUILD_OUTPUT) \
+		-D PATH_BUILD_OUTPUT=$(PATH_BUILD_OUTPUT) \
 		-D BUILD_DATE=$$(date +%VM%y%m%d%H%M%SN) \
 		-D COMMIT_HASH=$$(git rev-parse --short=12 HEAD) \
 		-D SMP_ENABLE=1 \
@@ -39,13 +44,14 @@ all: PatinaDxeCore_ru
 		-D STANDARD_MM=TRUE \
 		-D SYSTEM_LOADER=common
 
-	mkdir -p $(BINS_DIR)
-	cp $(BUILD_OUTPUT)/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(BINS_DIR)/
+	mkdir -p $(PATH_BINS)
+	cp $(PATH_BUILD_OUTPUT)/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(PATH_BINS)/
 
-# Build targets for each rust module
 PatinaDxeCore_ru:
-	cd platform/Drivers/PatinaDxeCore_ru && cargo build --target-dir $(RUST_OUT)/Drivers/PatinaDxeCore_ru
+	cd platform/Drivers/PatinaDxeCore_ru && cargo build --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru
 
-# Clean target
 clean:
-	rm -rf $(BUILD_OUTPUT)
+	rm -f $(PATH_BINS)/SKY1_BL33_UEFI.fd
+	rm -rf $(PATH_BUILD_OUTPUT)
+	$(MAKE) -C edk2/BaseTools clean
+	$(MAKE) -C tools/acpica clean
