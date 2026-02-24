@@ -3,7 +3,7 @@
 	url = https://github.com/cixtech/edk2.git
 [submodule "Trusted_Execution_Environment"]
 	path = tee/op-tee-cix-odp
-	url = https://github.com/cixtech/op-tee-cix-odp.git
+	url = https://github.com/cixtech/cix_opensource__tee__op-tee.git
 [submodule "Trusted_Firmware-A"]
 	path = tf-a/arm-trusted-firmware-cix-odp
 	url = https://github.com/cixtech/cix_opensource__arm-trusted-firmware.git
