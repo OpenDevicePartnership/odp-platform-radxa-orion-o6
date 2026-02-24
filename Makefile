@@ -3,7 +3,7 @@
 # submodules that reside under individual component folders.  Therefore, the PATH_PACKAGE_TOOL and
 # PATH_CIX_REFERENCE_PROJECT environment variables will be used in other makefiles to reach outside
 # the component folders and into the common folder.
-export PATH_PACKAGE_TOOL := $(CURDIR)/common/edk2-non-osi-cix-odp/Platform/CIX/Sky1/PackageTool
+export PATH_PACKAGE_TOOL := $(CURDIR)/tool/cix_package-tool
 export PATH_CIX_REFERENCE_PROJECT := $(CURDIR)/common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6
 
 export GCC5_AARCH64_PREFIX ?= $(CURDIR)/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
@@ -15,11 +15,11 @@ OEM_PRIVATE_KEY := $(PATH_PACKAGE_TOOL)/Keys/oem_privatekey.pem
 
 all: prebuilt uefi tee tf-a mem_config pm_config bootloader2 bootloader3
 	cd $(BINS) && \
-	$(PATH_PACKAGE_TOOL)/X86_64/cix_package_tool \
+	$(PATH_PACKAGE_TOOL)/cix_package_tool \
 		-c $(CURDIR)/common/spi_flash_config_all.json \
 		-o $(BUILD_OUTPUT)/cix_flash_all.bin
 	cd $(BINS) && \
-	$(PATH_PACKAGE_TOOL)/X86_64/cix_package_tool \
+	$(PATH_PACKAGE_TOOL)/cix_package_tool \
 		-c $(CURDIR)/common/spi_flash_config_ota.json \
 		-O $(BUILD_OUTPUT)/cix_flash_ota.bin
 
@@ -61,7 +61,7 @@ bootloader2: tf-a tee prebuilt
 		--tos-fw-cert $(BINS)/tos_fw_cert.crt \
 		--soc-fw $(BINS)/bl31.bin \
 		--tos-fw $(BINS)/tee-raw.bin
-	$(PATH_PACKAGE_TOOL)/X86_64/fiptool create \
+	$(PATH_PACKAGE_TOOL)/fiptool create \
 		--soc-fw $(BINS)/bl31.bin \
 		--tos-fw $(BINS)/tee-raw.bin \
 		--trusted-key-cert $(BINS)/trusted_key.crt \
@@ -76,7 +76,7 @@ bootloader3: uefi prebuilt
 		-p $(PATH_PACKAGE_TOOL)/Keys/oem_publickey.pem \
 		-s $(OEM_PRIVATE_KEY) \
 		-o $(BINS)/trusted_key_no.crt
-	$(PATH_PACKAGE_TOOL)/X86_64/cert_uefi_create_rsa \
+	$(PATH_PACKAGE_TOOL)/cert_uefi_create_rsa \
 		--key-alg rsa \
 		--key-size 3072 \
 		--hash-alg sha256 \
@@ -87,7 +87,7 @@ bootloader3: uefi prebuilt
 		--nt-fw-key $(OEM_PRIVATE_KEY) \
 		--non-trusted-world-key $(OEM_PRIVATE_KEY) \
 		--nt-fw $(BINS)/SKY1_BL33_UEFI.fd
-	$(PATH_PACKAGE_TOOL)/X86_64/fiptool create \
+	$(PATH_PACKAGE_TOOL)/fiptool create \
 		--trusted-key-cert $(BINS)/trusted_key_no.crt \
 		--nt-fw-key-cert $(BINS)/nt_fw_key.crt \
 		--nt-fw-cert $(BINS)/nt_fw_cert.crt \
