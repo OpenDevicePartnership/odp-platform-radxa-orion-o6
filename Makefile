@@ -3,7 +3,7 @@
 # submodules that reside under individual component folders.  Therefore, the PATH_PACKAGE_TOOL and
 # PATH_CIX_REFERENCE_PROJECT environment variables will be used in other makefiles to reach outside
 # the component folders and into the common folder.
-export PATH_PACKAGE_TOOL := $(CURDIR)/tool/cix_package-tool
+export PATH_PACKAGE_TOOL := $(CURDIR)/tools/cix_package-tool
 export PATH_CIX_REFERENCE_PROJECT := $(CURDIR)/common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6
 
 export GCC5_AARCH64_PREFIX ?= $(CURDIR)/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-

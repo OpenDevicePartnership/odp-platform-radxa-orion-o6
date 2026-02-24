@@ -19,6 +19,6 @@
 [submodule "CIX_Silicon_Package2"]
 	path = common/edk2-non-osi-cix-odp
 	url = https://github.com/cixtech/edk2-non-osi.git
-[submodule "tool/cix_package-tool"]
-	path = tool/cix_package-tool
+[submodule "tools/cix_package-tool"]
+	path = tools/cix_package-tool
 	url = https://github.com/cixtech/cix_package-tool.git
