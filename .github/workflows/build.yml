@@ -1,0 +1,40 @@
+# This workflow verifies that the full build compiles successfully.
+# It runs on every push to main and on pull requests.
+#
+# The build uses the dev container Dockerfile which includes the ARM GNU toolchain,
+# Rust toolchain, required patches and all build dependencies.
+
+name: build
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Cancel in-progress runs for the same PR/branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Compile repository
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build Docker image
+        run: docker build -q -t odp-orion-o6-build -f .devcontainer/Dockerfile .
+
+      - name: Make all
+        run: |
+          docker run --rm \
+            -w /workspace \
+            -v "${{ github.workspace }}:/workspace" \
+            odp-orion-o6-build \
+            make all
