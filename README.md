@@ -1,5 +1,3 @@
-# Temporary Placeholder
-
 ODP flavor of the Radxa Orion O6 platform
 
 NOTE:
@@ -16,3 +14,20 @@ use the ./acpica.patch to update the uefi/tools/acpica submodule
 cd uefi/tools/acpica
 git apply ../../../acpica.patch
 ```
+
+## Building with Docker
+
+Alternatively, you can use Docker to build in a containerized environment:
+
+### VS Code Dev Container (Recommended)
+
+Open this folder in VS Code and select "Reopen in Container" when prompted, or run:
+- `Dev Containers: Reopen in Container` from the command palette
+- Start terminal
+
+### Manual Docker
+
+**Linux :**
+```bash
+# Interactive shell
+docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile . && docker run --rm -it -w /workspace -v "$PWD:/workspace" odp-orion-o6
