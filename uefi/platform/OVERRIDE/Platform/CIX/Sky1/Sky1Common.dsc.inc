@@ -275,6 +275,32 @@
 !endif
   EfiResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
 
+!if $(DTPM_SUPPORT) == TRUE || $(FTPM_SUPPORT) == TRUE
+  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
+  IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
+  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
+  Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+  #Tcg2PhysicalPresenceLib|SecurityPkg/Library/DxeTcg2PhysicalPresenceLib/DxeTcg2PhysicalPresenceLib.inf
+  Tcg2PhysicalPresenceLib|Platform/CIX/Sky1/Library/DxeTcg2PhysicalPresenceLib/DxeTcg2PhysicalPresenceLib.inf
+  Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
+  TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
+  TpmPlatformHierarchyLib|SecurityPkg/Library/PeiDxeTpmPlatformHierarchyLib/PeiDxeTpmPlatformHierarchyLib.inf
+  OpteeClientApiLib|Platform/CIX/Sky1/Library/OpteeClientApiLib/OpteeClientApiLib.inf
+  Tpm2DeviceLib|Platform/CIX/Sky1/Library/Tpm2DeviceLib/Tpm2DeviceLib.inf
+  !if $(DTPM_SUPPORT) == TRUE
+    DTpmDeviceLib|Platform/CIX/Sky1/Library/DTpmDeviceLib/DTpmDeviceLib.inf
+  !else
+    DTpmDeviceLib|Platform/CIX/Sky1/Library/DTpmDeviceLibNull/DTpmDeviceLibNull.inf
+  !endif
+  !if $(FTPM_SUPPORT) == TRUE
+    FTpmDeviceLib|Platform/CIX/Sky1/Library/FTpmDeviceLib/FTpmDeviceLib.inf
+  !else
+    FTpmDeviceLib|Platform/CIX/Sky1/Library/FTpmDeviceLibNull/FTpmDeviceLibNull.inf
+  !endif
+!else
+  Tcg2PhysicalPresenceLib|Platform/CIX/Sky1/Library/DxeTcg2PhysicalPresenceLibNull/DxeTcg2PhysicalPresenceLibNull.inf
+!endif
+
   # Library for Vendor Guid Variable Sync From Flash
   CixGPNVLib|Platform/CIX/Sky1/Library/CixGPNVLib/CixGPNVLib.inf
 
@@ -336,6 +362,7 @@
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
   EfiResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
   ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
+  HwMutexLib|Silicon/CIX/Sky1/Library/HwMutexLib/HwMutexRuntimeLib.inf
   PinMuxLib|Silicon/CIX/Sky1/Library/PinMuxLib/PinMuxRuntimeLib.inf
   GpioLib|Silicon/CIX/Sky1/Library/GpioLib/GpioRuntimeLib.inf
   VariablePolicyLib|MdeModulePkg/Library/VariablePolicyLib/VariablePolicyLibRuntimeDxe.inf
@@ -834,13 +861,14 @@
   Platform/CIX/Sky1/Drivers/PdDxe/PdDxe.inf {
     <LibraryClasses>
     PdLib|Platform/CIX/Sky1/Library/Rts5453hPdLib/Rts5453hPdLib.inf
+    RedriverLib|Platform/CIX/Sky1/Library/PI3DPX1207RedriverLib/PI3DPX1207RedriverLib.inf
   }
   !endif
 !endif
 
 !if $(SOC_USB_DEVICE_ENABLE) == TRUE
   Platform/CIX/Sky1/Drivers/UsbDeviceControlDxe/UsbDeviceControlDxe.inf
-  Platform/CIX/Sky1/Application/Fastboot/Fastboot.inf 
+  Platform/CIX/Sky1/Application/Fastboot/Fastboot.inf
   !if $(SOC_CDNSP_ENABLE) == TRUE
     Silicon/CIX/Sky1/Drivers/CdnspDxe/CdnspDxe.inf
   !endif
@@ -988,8 +1016,8 @@ ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf {
   MdeModulePkg/Application/VariableInfo/VariableInfo.inf
 !endif
 !if $(COMPILE_SYSTEM_LOADER) == android
-  Platform/CIX/Sky1/Application/LinuxLoader/LinuxLoader.inf 
-  Platform/CIX/Sky1/Application/ABSelect/ABSelect.inf 
+  Platform/CIX/Sky1/Application/LinuxLoader/LinuxLoader.inf
+  Platform/CIX/Sky1/Application/ABSelect/ABSelect.inf
   Platform/CIX/Sky1/Drivers/AndroidConfigDxe/AndroidConfigDxe.inf
 !endif
 
