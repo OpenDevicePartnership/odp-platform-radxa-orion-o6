@@ -13,6 +13,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 # Cancel in-progress runs for the same PR/branch
 concurrency:
@@ -31,10 +32,12 @@ jobs:
       - name: Build Docker image
         run: docker build -q -t odp-orion-o6-build -f .devcontainer/Dockerfile .
 
-      - name: Make all
+      - name: Build firmware
+        # Run via entrypoint.sh so that submodule init and acpica patch are
+        # applied before the build (entrypoint.sh passes arguments to exec).
         run: |
           docker run --rm \
             -w /workspace \
             -v "${{ github.workspace }}:/workspace" \
             odp-orion-o6-build \
-            make all
+            /entrypoint.sh make all
