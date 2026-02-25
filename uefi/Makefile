@@ -47,7 +47,7 @@ all: PatinaDxeCore_ru
 	mkdir -p $(PATH_BINS)
 	cp $(PATH_BUILD_OUTPUT)/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(PATH_BINS)/
 
-# Build targets for each rust module, will auto format and check for warnings as errors
+# Build targets for each rust module, will verify formatting and check for warnings as errors
 PatinaDxeCore_ru:
 	cd platform/Drivers/PatinaDxeCore_ru && cargo fmt -- --check
 	cd platform/Drivers/PatinaDxeCore_ru && cargo clippy --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru -- -D warnings
