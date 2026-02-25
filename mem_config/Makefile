@@ -1,12 +1,29 @@
-# PLATFORM NOTE:
-# This build needs code that is provided in a monolithic delivery that can not be easily divided into
-# a submodules that reside under this component.  Therefore, the PATH_CIX_REFERENCE_PROJECT path
-# environment variable set in the main Makefile is being used to reach outside this component folder
-# and into the common folder.
+# ODP Platform firmware build system
+#
+# ## License
+#
+# Copyright (c) Microsoft Corporation.
+#
+# SPDX-License-Identifier: Apache-2.0
 
-.PHONY: all
+# Defines typically provided by the parent makefile
+PATH_BUILD_OUTPUT          ?= $(CURDIR)/Build
+PATH_BINS                  ?= $(PATH_BUILD_OUTPUT)
+PATH_COMMON                ?= $(CURDIR)/../common
+export GCC5_AARCH64_PREFIX ?= $(CURDIR)/../tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+
+# Defines specific to this makefile
+PLATFORM_CODE_DIR          := $(PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/mem_config
+
+# Build Targets
+.PHONY: all clean
 
 all:
-	$(MAKE) -C $(PATH_CIX_REFERENCE_PROJECT)/mem_config
-	mkdir -p $(BINS_DIR)
-	mv $(PATH_CIX_REFERENCE_PROJECT)/mem_config/memory_config.bin $(BINS_DIR)/
+	$(MAKE) -C $(PLATFORM_CODE_DIR)
+	mkdir -p $(PATH_BINS)
+	mv $(PLATFORM_CODE_DIR)/memory_config.bin $(PATH_BINS)/
+
+clean:
+	$(MAKE) -C $(PLATFORM_CODE_DIR) clean
+	rm -f $(PATH_BINS)/memory_config.bin
+	rm -rf $(PATH_BUILD_OUTPUT)
