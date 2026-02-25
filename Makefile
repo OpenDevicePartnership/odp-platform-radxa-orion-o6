@@ -18,7 +18,7 @@ PATH_PACKAGE_TOOL          := $(CURDIR)/tools/cix_package-tool
 PATH_PRE_COMPILED_BINS     := $(PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Firmwares
 
 # Build Targets
-.PHONY: all prebuilt uefi tee tf-a mem_config pm_config bootloader2 bootloader3 clean
+.PHONY: all prebuilt uefi tee tf-a mem_config pm_config bootloader2 bootloader3 clean test
 
 all: prebuilt uefi tee tf-a mem_config pm_config bootloader2 bootloader3
 	cd $(PATH_BINS) && \
@@ -108,3 +108,6 @@ clean:
 	$(MAKE) -C mem_config clean
 	$(MAKE) -C pm_config clean
 	rm -rf $(PATH_BUILD_OUTPUT)
+
+test:
+	$(MAKE) -C uefi test

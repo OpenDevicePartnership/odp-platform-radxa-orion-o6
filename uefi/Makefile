@@ -20,7 +20,7 @@ export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(PATH_COMMON)/e
 export IASL_PREFIX         := $(CURDIR)/tools/acpica/generate/unix/bin/
 
 # Build Targets
-.PHONY: all PatinaDxeCore_ru clean
+.PHONY: all PatinaDxeCore_ru clean test
 
 all: PatinaDxeCore_ru
 
@@ -47,7 +47,10 @@ all: PatinaDxeCore_ru
 	mkdir -p $(PATH_BINS)
 	cp $(PATH_BUILD_OUTPUT)/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(PATH_BINS)/
 
+# Build targets for each rust module, will auto format and check for warnings as errors
 PatinaDxeCore_ru:
+	cd platform/Drivers/PatinaDxeCore_ru && cargo fmt -- --check
+	cd platform/Drivers/PatinaDxeCore_ru && cargo clippy --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru -- -D warnings
 	cd platform/Drivers/PatinaDxeCore_ru && cargo build --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru
 
 clean:
@@ -55,3 +58,10 @@ clean:
 	rm -rf $(PATH_BUILD_OUTPUT)
 	$(MAKE) -C edk2/BaseTools clean
 	$(MAKE) -C tools/acpica clean
+
+# Run unit tests on the host
+test:
+	cd platform/Drivers/PatinaDxeCore_ru && cargo test \
+		--target x86_64-unknown-linux-gnu \
+		-Z build-std=std,core,alloc,compiler_builtins,test \
+		-Z build-std-features=compiler-builtins-mem

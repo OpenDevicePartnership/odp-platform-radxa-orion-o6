@@ -14,10 +14,12 @@
 
 [dependencies]
   log = "^0.4"
+  heapless = "0.9.1"
+
+[target.'cfg(target_os = "uefi")'.dependencies]
   patina_dxe_core = "20.0.1"
   patina = "20.0.1"
   patina_ffs_extractors = "20.0.1"
-  heapless = "0.9.1"
 
 [profile.dev]
   opt-level = "s"

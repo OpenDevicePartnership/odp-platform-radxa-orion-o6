@@ -6,7 +6,7 @@
 //!
 //! SPDX-License-Identifier: Apache-2.0
 //!
-#![cfg(all(target_os = "uefi"))]
+#![cfg(target_os = "uefi")]
 #![no_std]
 #![no_main]
 
@@ -37,8 +37,7 @@ impl SimpleLogger {
     const fn new() -> Self {
         Self {
             // Configure debug port to UART3 on the 40 pin header
-            // Address defined in common/edk2-platforms-cix-odp/Silicon/CIX/Sky1/Include/MemoryMap.h
-            uart: UartPl011::new(0x040e_0000),
+            uart: UartPl011::new(dxe_core::UART_BASE),
         }
     }
 }
@@ -50,20 +49,9 @@ impl log::Log for SimpleLogger {
 
     fn log(&self, record: &log::Record) {
         if self.enabled(record.metadata()) {
-            // Simple format: [LEVEL] message
-            let level = match record.level() {
-                log::Level::Error => "ERROR",
-                log::Level::Warn => "WARN",
-                log::Level::Info => "INFO",
-                log::Level::Debug => "DEBUG",
-                log::Level::Trace => "TRACE",
-            };
-            
-            // Write to UART - format the message
-            use core::fmt::Write;
-            let mut buffer = heapless::String::<256>::new();
-            let _ = write!(buffer, "[{}] {}\r\n", level, record.args());
-            
+            let level = dxe_core::log_level_str(record.level());
+            let buffer = dxe_core::format_log_message(level, record.args());
+
             // Write each byte to UART
             for byte in buffer.as_bytes() {
                 self.uart.write_byte(*byte);
@@ -86,9 +74,7 @@ impl MemoryInfo for RadxaO6 {}
 
 impl CpuInfo for RadxaO6 {
     fn gic_bases() -> GicBases {
-        unsafe {
-            GicBases::new(0x0e01_0000, 0x0e090000)
-        }
+        unsafe { GicBases::new(dxe_core::GICD_BASE, dxe_core::GICR_BASE) }
     }
 }
 
@@ -117,7 +103,6 @@ static CORE: Core<RadxaO6> = Core::new(CompositeSectionExtractor::new());
 
 #[cfg_attr(target_os = "uefi", unsafe(export_name = "efi_main"))]
 pub extern "efiapi" fn _start(physical_hob_list: *const c_void) -> ! {
-
     // Initialize the logger, ignore errors since they can't be logged
     let _ = log::set_logger(&LOGGER).map(|()| log::set_max_level(log::LevelFilter::Info));
     log::info!("DXE Core Platform Binary Entry");
