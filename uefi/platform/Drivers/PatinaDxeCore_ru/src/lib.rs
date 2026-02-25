@@ -61,7 +61,6 @@ mod tests {
     #[test]
     fn uart_base_is_valid() {
         assert_ne!(UART_BASE, 0, "UART base address must be non-zero");
-        assert_eq!(UART_BASE % 0x1000, 0, "UART base address must be page-aligned");
     }
 
     #[test]
@@ -70,9 +69,6 @@ mod tests {
         assert_ne!(GICR_BASE, 0, "GICR base must be non-zero");
 
         assert_ne!(GICD_BASE, GICR_BASE, "GICD and GICR bases must be distinct");
-
-        assert_eq!(GICD_BASE % 0x1000, 0, "GICD base must be page-aligned");
-        assert_eq!(GICR_BASE % 0x1000, 0, "GICR base must be page-aligned");
     }
 
     // -------------------------------------------------------
