@@ -42,11 +42,20 @@ pub fn log_level_str(level: log::Level) -> &'static str {
 /// Formats a log message into a fixed-size buffer.
 ///
 /// Returns a [`heapless::String`] containing `[LEVEL] message\r\n`.
-/// If the formatted message exceeds [`LOG_BUFFER_SIZE`] bytes, it is silently truncated.
+/// If the formatted message exceeds [`LOG_BUFFER_SIZE`] bytes, the message body
+/// is truncated but the trailing `\r\n` is always guaranteed.
 pub fn format_log_message(level: &str, args: &core::fmt::Arguments<'_>) -> heapless::String<LOG_BUFFER_SIZE> {
     use core::fmt::Write;
+    const CRLF: &str = "\r\n";
     let mut buffer = heapless::String::<LOG_BUFFER_SIZE>::new();
-    let _ = write!(buffer, "[{}] {}\r\n", level, args);
+    // Write prefix and message body (may drop args if they exceed buffer capacity, but will never exceed LOG_BUFFER_SIZE)
+    let _ = write!(buffer, "[{}] {}", level, args);
+    // Ensure room for \r\n by truncating the body if necessary
+    let max_body = LOG_BUFFER_SIZE - CRLF.len();
+    if buffer.len() > max_body {
+        buffer.truncate(max_body);
+    }
+    let _ = buffer.push_str(CRLF);
     buffer
 }
 
@@ -121,6 +130,20 @@ mod tests {
 
         // Must still start with the expected prefix
         assert!(msg.starts_with("[DEBUG] "), "truncated message must retain the prefix");
+
+        // Must always end with \r\n even when truncated
+        assert!(msg.ends_with("\r\n"), "truncated message must still end with CRLF");
+    }
+
+    #[test]
+    fn format_log_message_guarantees_crlf_when_args_fills_buffer() {
+        // A body so large that prefix + body alone would exceed the buffer
+        let long = "X".repeat(LOG_BUFFER_SIZE);
+        let msg = format_log_message("ERROR", &format_args!("{}", long));
+
+        assert!(msg.len() <= LOG_BUFFER_SIZE, "message must not exceed buffer capacity");
+        assert!(msg.ends_with("\r\n"), "message must end with CRLF regardless of body length");
+        assert!(msg.starts_with("[ERROR] "), "message must retain the prefix");
     }
 
     #[test]
