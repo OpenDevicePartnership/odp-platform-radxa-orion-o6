@@ -14,7 +14,7 @@ export GCC5_AARCH64_PREFIX ?= $(CURDIR)/../tools/arm-gnu-toolchain-13.2.Rel1-x86
 
 # Defines specific to this makefile
 PATH_OEM_PRIVATE_KEY       ?= $(CURDIR)/../tools/cix_package-tool/Keys/oem_privatekey.pem
-BL32_AP_EFI_STMM_ARG       = $(if $(wildcard $(PATH_BL32_AP_EFI_STMM)),CFG_STMM_PATH=$(PATH_BINS)/BL32_AP_EFI_STMM.fd,)
+BL32_AP_EFI_STMM_ARG       = $(if $(wildcard $(PATH_BINS)/BL32_AP_EFI_STMM.fd),CFG_STMM_PATH=$(PATH_BINS)/BL32_AP_EFI_STMM.fd,)
 
 # Build Targets
 .PHONY: all clean

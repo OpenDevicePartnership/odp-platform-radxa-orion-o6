@@ -6,52 +6,58 @@
 #
 ##
 
-
-#### PATINA - BEGIN ####
-# Remove DxeMain.inf, add the bin from the rust build
+# ODP: Add Patina DXE Core driver
+# !if $(DIAGS_KERNEL_ENABLE) == TRUE
+#   INF Edk2OverridePkg/MdeModulePkg/Core/Dxe/DxeMain.inf
+# !else
+#   INF MdeModulePkg/Core/Dxe/DxeMain.inf
+# !endif
   FILE DXE_CORE = 23C9322F-2AF2-476A-BC4C-26BC88266C71 {
     SECTION PE32 = Drivers/PatinaDxeCore_ru/aarch64-unknown-uefi/debug/dxe_core.efi
     SECTION UI = "DxeCore"
   }
-#### PATINA - END ####
 
-
-#### PATINA   INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+  # ODP: The drivers commented out with the tag ODP_PRIORI are ones that were originally included
+  #      in the APRIORI section.  Patina does not support an APRIORI, so as a workaround the drivers
+  #      are forced to have a TRUE DEPEX and are placed at the beginning of the FV to be loaded first.
+  # ODP_PRIORI INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
   #
   # PI DXE Drivers producing Architectural Protocols (EFI Services)
   #
-#### PATINA   INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-#### PATINA   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
-#### PATINA   INF Platform/CIX/Sky1/Drivers/S3SaveStateDxe/S3SaveStateDxe.inf
+  # ODP: Patina provides CpuDxe support
+  # INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+  # ODP_PRIORI INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+  # ODP_PRIORI INF Platform/CIX/Sky1/Drivers/S3SaveStateDxe/S3SaveStateDxe.inf
 !if $(CFG_PARAM_MANAGE_ENABLE) == TRUE
-#### PATINA   INF Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
-#### PATINA   INF Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
+  # ODP_PRIORI INF Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
+  # ODP_PRIORI INF Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
 !endif
 !if $(TOKEN_SETUP_SUPPORT) == TRUE
   INF Platform/CIX/Sky1/Drivers/PlatformSetupVariableInitDxe/PlatformSetupVariableInitDxe.inf
 !endif
-#### PATINA   INF Silicon/CIX/Sky1/Drivers/SocDxe/SocDxe.inf
-#### PATINA   INF Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
+  # ODP_PRIORI INF Silicon/CIX/Sky1/Drivers/SocDxe/SocDxe.inf
+  # ODP_PRIORI INF Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
   INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/RngDxe/RngDxe.inf
   INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
 !if $(SOC_PWR_CLK_RST_ENABLE) == TRUE
   # SCMI Driver
-#### PATINA   INF Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
+  # ODP_PRIORI INF Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
   # power
 !if $(DIAGS_KERNEL_ENABLE) == TRUE
-#### PATINA   INF CixDiagsKernelPkg/Sky1/Drivers/PowerDxe/PowerDxe.inf
+  # ODP_PRIORI INF CixDiagsKernelPkg/Sky1/Drivers/PowerDxe/PowerDxe.inf
 !else
-#### PATINA   INF Silicon/CIX/Sky1/Drivers/PowerDxe/PowerDxe.inf
+  # ODP_PRIORI INF Silicon/CIX/Sky1/Drivers/PowerDxe/PowerDxe.inf
 !endif
   # clock
-!if $(DIAGS_KERNEL_ENABLE) == TRUE
-#### PATINA   INF CixDiagsKernelPkg/Sky1/Drivers/ClockDxe/ClockDxe.inf
-!else
-#### PATINA   INF Silicon/CIX/Sky1/Drivers/ClockDxe/ClockDxe.inf
-!endif
+  # ODP_PRIORI !if $(DIAGS_KERNEL_ENABLE) == TRUE
+  # ODP_PRIORI   INF CixDiagsKernelPkg/Sky1/Drivers/ClockDxe/ClockDxe.inf
+  # ODP_PRIORI !else
+  # ODP_PRIORI   INF Silicon/CIX/Sky1/Drivers/ClockDxe/ClockDxe.inf
+  # ODP_PRIORI !endif
 !endif
   # reset
-#### PATINA   INF Silicon/CIX/Sky1/Drivers/ResetDxe/ResetDxe.inf
+  # ODP_PRIORI INF Silicon/CIX/Sky1/Drivers/ResetDxe/ResetDxe.inf
 
 !if $(SOC_CDNSP_ENABLE) == TRUE || $(SOC_CDNSP_HOST_ENABLE) == TRUE
   INF Silicon/CIX/Sky1/Drivers/TypecPhyDxe/TypecPhyDxe.inf
@@ -85,20 +91,29 @@
 !endif
 
 !if $(STMM_SUPPORT) == TRUE
-#### PATINA   INF Platform/CIX/Sky1/Drivers/MmCommunicationDxe/ArmMmCommunication.inf
+  # ODP_PRIORI INF Platform/CIX/Sky1/Drivers/MmCommunicationDxe/ArmMmCommunication.inf
 !endif
+!if $(SOC_XSPI_ENABLE) == TRUE
 !if $(STMM_SUPPORT) == TRUE
-#### PATINA   INF Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
+  # ODP_PRIORI INF Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
 !else
-#### PATINA   INF Silicon/CIX/Sky1/Drivers/NorFlashDxe/NorFlashDxe.inf
+  # ODP_PRIORI INF Silicon/CIX/Sky1/Drivers/NorFlashDxe/NorFlashDxe.inf
+!endif
 !endif
 !if $(VARIABLE_SUPPORT) == "SPI" && $(STMM_SUPPORT) == FALSE
-#### PATINA   INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+  # ODP_PRIORI INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
 !endif
 !if $(VARIABLE_SUPPORT) == "SPI" && $(STMM_SUPPORT) == TRUE
-#### PATINA   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
+  # ODP_PRIORI INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
 !else
-#### PATINA   INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  # ODP_PRIORI INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+!endif
+!if $(EFUSE_OEM_KEY_ENABLE) == TRUE
+  INF Platform/CIX/Sky1/Drivers/EfuseOemKeyDxe/EfuseOemKeyDxe.inf
+  FILE FREEFORM = PCD(gCixPlatformTokenSpaceGuid.PcdOemPublicKeyFileGuid) {
+     SECTION RAW = Platform/CIX/Sky1/Drivers/EfuseOemKeyDxe/OemPublicKey.bin
+     SECTION UI = "OemPublicKey"
+  }
 !endif
 !if $(PCIE_HOST_ENABLE) == TRUE
   INF Silicon/CIX/Sky1/Drivers/PcieInitDxe/PcieInitDxe.inf
@@ -130,21 +145,19 @@
 !endif
 !endif
 
-!if $(DIAGS_KERNEL_ENABLE) == TRUE
-#### PATINA   INF Edk2OverridePkg/ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-!else
-#### PATINA   INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-!endif
-#### PATINA   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+# ODP: Patina provides ArmGicDxe support
+# !if $(DIAGS_KERNEL_ENABLE) == TRUE
+# INF Edk2OverridePkg/ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+# !else
+# INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+# !endif
+  # ODP_PRIORI INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 !if $(POWER_BUTTON_ENABLE) == TRUE
   INF Platform/CIX/Sky1/Drivers/PowerButtonDxe/PowerButtonDxe.inf
 !endif
-!if $(GPIO_POWER_BUTTON_ENABLE) == TRUE
-  INF Platform/CIX/Sky1/Drivers/PowerButtonDxe/GpioPowerButtonDxe.inf
-!endif
 
 #  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
-#### PATINA   INF Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
+  # ODP_PRIORI INF Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
   INF MdeModulePkg/Universal/EbcDxe/EbcDxe.inf
 
 !if $(SOC_GPIO_INTR_ENABLE) == TRUE
@@ -188,7 +201,8 @@
   #
 
   INF Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
-  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf    #### PATINA
+  # ODP: Fix for uninit pointer in precompiled driver
+  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
 
   #
   # TianoCore logo (splash screen)
@@ -302,6 +316,7 @@
 !else
   INF  Platform/CIX/Sky1/Drivers/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
 !endif
+  INF Platform/CIX/Sky1/Drivers/CapsuleUpdateDxe/CapsuleUpdateDxe.inf
   FILE FREEFORM = PCD(gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiPkcs7TestPublicKeyFileGuid) {
      SECTION RAW = BaseTools/Source/Python/Pkcs7Sign/TestRoot.cer
      SECTION UI = "Pkcs7TestRoot"
@@ -357,6 +372,20 @@
 !if $(I2S_MC_SUPPORT) == TRUE
   INF Silicon/CIX/Sky1/Drivers/I2sDxe/I2sDxe.inf
 !endif
+  # INF Platform/CIX/Sky1/Drivers/ScmiRuntimeDxe/ScmiRuntimeDxe.inf
 !if $(PI_TEST_SUPPORT) == TRUE
-  INF  Silicon/CIX/Sky1/Drivers/ArmPsciMpServicesDxe/ArmPsciMpServicesDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/ArmPsciMpServicesDxe/ArmPsciMpServicesDxe.inf
+!endif
+
+!if $(DTPM_SUPPORT) == TRUE || $(FTPM_SUPPORT) == TRUE
+  !if $(FTPM_SUPPORT) == TRUE
+    FILE FREEFORM = BC50D971-D4C9-42C4-82CB-343FB7F37896 {
+      SECTION RAW = Platform/CIX/Sky1/Bin/fTPM.bin
+    }
+    INF Platform/CIX/Sky1/Drivers/FTPMDxe/FTPMProtocol.inf
+  !endif
+  INF Platform/CIX/Sky1/Drivers/TPMVariableDxe/TPMVariableDxe.inf
+  INF SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf
+  INF Platform/CIX/Sky1/Drivers/Tcg2Acpi/Tcg2Acpi.inf
+  INF Platform/CIX/Sky1/Drivers/Tcg2Config/Tcg2ConfigDxe.inf
 !endif

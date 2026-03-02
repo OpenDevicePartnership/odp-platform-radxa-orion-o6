@@ -28,16 +28,9 @@
 !include Features/Ext4Pkg/Ext4.dsc.inc
 !endif
 [LibraryClasses.common]
-
-!if $(PRINT_TIMESTAMP_ENABLE) == TRUE
   DebugLib|Platform/CIX/Sky1/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
-!else
-  DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
-!endif
-
   PostCodeLib|Silicon/CIX/Sky1/Library/CixBasePostCodeLibMmio/BasePostCodeLibMmio.inf
   DebugPrintErrorLevelLib|MdePkg/Library/BaseDebugPrintErrorLevelLib/BaseDebugPrintErrorLevelLib.inf
-
   BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
   SafeIntLib|MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
   BmpSupportLib|MdeModulePkg/Library/BaseBmpSupportLib/BaseBmpSupportLib.inf
@@ -63,10 +56,8 @@
   HiiLib|MdeModulePkg/Library/UefiHiiLib/UefiHiiLib.inf
   UefiHiiServicesLib|MdeModulePkg/Library/UefiHiiServicesLib/UefiHiiServicesLib.inf
   SortLib|MdeModulePkg/Library/UefiSortLib/UefiSortLib.inf
-
   UefiRuntimeLib|MdePkg/Library/UefiRuntimeLib/UefiRuntimeLib.inf
   OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
-
   #
   # Ramdisk Requirements
   #
@@ -193,11 +184,13 @@
   PlatformConfigParamsHookLib|Platform/CIX/Sky1/Library/PlatformConfigParamsHookNullLib/PlatformConfigParamsHookNullLib.inf
   PlatformEnvHookLib|Platform/CIX/Sky1/Library/PlatformEnvHookNullLib/PlatformEnvHookNullLib.inf
   PlatformBootHookLib|Platform/CIX/Sky1/Library/PlatformBootHookNullLib/PlatformBootHookNullLib.inf
+!if $(SOC_XSPI_ENABLE) == TRUE
 !if $(STMM_SUPPORT) == TRUE
   NorFlashLib|Silicon/CIX/Sky1/Library/NorFlashLib/NorFlashStmmRuntimeLib.inf
   NorFlashBasicLib|Silicon/CIX/Sky1/Library/NorFlashBasicLib/NorFlashBasicStmmLib.inf
 !else
   NorFlashLib|Silicon/CIX/Sky1/Library/NorFlashLib/NorFlashLib.inf
+!endif
 !endif
   PciHostBridgeLib|Silicon/CIX/Sky1/Library/PciHostBridgeLib/PciHostBridgeLib.inf
   PciSegmentLib|Silicon/CIX/Sky1/Library/PciSegmentLib/PciSegmentLib.inf
@@ -217,7 +210,8 @@
 !endif
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
-  ArmPlatformLib|platform/OVERRIDE/Platform/CIX/Sky1/Library/PlatformLib/PlatformLib.inf    #### PATINA
+  # ODP: Change from using CIX library to ODP library to set the proper HOBs for Patina
+  ArmPlatformLib|platform/Library/PlatformLib/PlatformLib.inf # ArmPlatformLib|Platform/CIX/Sky1/Library/PlatformLib/PlatformLib.inf
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
   BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
@@ -265,6 +259,7 @@
   HwHarvestLib|Silicon/CIX/Sky1/Library/HwHarvestLib/HwHarvestLib.inf
   #CommonLib|Platform/CIX/Sky1/Library/CommonLib/CommonLib.inf
   CixS3IoLib|Platform/CIX/Sky1/Library/CixS3IoLib/CixS3IoLib.inf
+  ArmScmiLib|Silicon/CIX/Sky1/Library/ArmScmiLib/ArmScmiLib.inf
 !if $(SMBIOS_ENABLE) == TRUE
   OemMiscLib|Platform/CIX/Sky1/Library/SmbiosMiscLib/SmbiosMiscLib.inf
 !endif
@@ -431,11 +426,6 @@
   # CLEAR_MEMORY_ENABLED       0x08
   # ASSERT_BREAKPOINT_ENABLED  0x10
   # ASSERT_DEADLOOP_ENABLED    0x20
-!if $(TARGET) == RELEASE
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x21
-!else
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2f
-!endif
   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|$(DEBUG_PRINT_ERROR_LEVEL)
 
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x07
@@ -452,6 +442,7 @@
   gEmbeddedTokenSpaceGuid.PcdDmaDeviceOffset|0x00000000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"cix_sky1_alpha_0.6"
   gEfiMdePkgTokenSpaceGuid.PcdUefiVariableDefaultPlatformLangCodes|"en-US"
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision|$(BUILD_NUMBER)
 
 [PcdsFixedAtBuild.common]
   gArmPlatformTokenSpaceGuid.PcdClusterCount|1
@@ -563,9 +554,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIReclaimMemory|0
   gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiACPIMemoryNVS|0
-  # SMBIOS entry point version
-  #
-
 
   # Clearing BIT0 in this PCD prevents installing a 32-bit SMBIOS entry point,
   # if the entry point version is >= 3.0. AARCH64 OSes cannot assume the
@@ -573,8 +561,8 @@
   # don't have 32-bit addressable physical RAM), and the additional allocations
   # below 4 GB needlessly fragment the memory map. So expose the 64-bit entry
   # point only, for entry point versions >= 3.0.
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosDocRev|0x0
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0306
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
 
   gArmTokenSpaceGuid.PcdProcessorManufacturer|L"Cix Technology Group Co., Ltd."
   gArmTokenSpaceGuid.PcdProcessorAssetTag|L" "
@@ -608,7 +596,11 @@
 
 [PcdsPatchableInModule]
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialClockRate|500000000
-
+!if $(TARGET) == RELEASE
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x21
+!else
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2f
+!endif
 [PcdsDynamicHii.common.DEFAULT]
   #
   # Reset-related.
@@ -682,7 +674,6 @@
   MdeModulePkg/Core/Dxe/DxeMain.inf {
     <LibraryClasses>
       NULL|MdeModulePkg/Library/DxeCrc32GuidedSectionExtractLib/DxeCrc32GuidedSectionExtractLib.inf
-      #DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
   }
 !endif
   MdeModulePkg/Universal/PCD/Dxe/Pcd.inf {
@@ -693,7 +684,8 @@
   #
   # Architectural Protocols
   #
-#### PATINA    ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+  # ODP: Patina provides CpuDxe support
+  # ArmPkg/Drivers/CpuDxe/CpuDxe.inf
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
   Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
@@ -709,10 +701,14 @@
       NULL|StandaloneMmPkg/Library/VariableMmDependency/VariableMmDependency.inf
   }
 !endif
+!if $(SOC_XSPI_ENABLE) == TRUE
 !if $(STMM_SUPPORT) == TRUE
-  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf    #### PATINA
+  # ODP: NorFlashStmmRuntimeDxe was marking a region as useable when it was already useable
+  #      Patina found this and flagged it as an error.
+  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
 !else
   Silicon/CIX/Sky1/Drivers/NorFlashDxe/NorFlashDxe.inf
+!endif
 !endif
 !if $(VARIABLE_SUPPORT) == "SPI" && $(STMM_SUPPORT) == FALSE
   MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
@@ -729,7 +725,9 @@
       DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
   }
 !endif
-
+!if $(EFUSE_OEM_KEY_ENABLE) == TRUE
+  Platform/CIX/Sky1/Drivers/EfuseOemKeyDxe/EfuseOemKeyDxe.inf
+!endif
 !if $(PCIE_HOST_ENABLE) == TRUE
   Silicon/CIX/Sky1/Drivers/PcieInitDxe/PcieInitDxe.inf
 !endif
@@ -745,6 +743,7 @@
 !else
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
 !endif
+  Silicon/CIX/Sky1/Drivers/RngDxe/RngDxe.inf
   MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
   MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
   EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
@@ -765,11 +764,12 @@
 !endif
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
-#### PATINA    !if $(DIAGS_KERNEL_ENABLE) == TRUE
-#### PATINA      Edk2OverridePkg/ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-#### PATINA    !else
-#### PATINA      ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-#### PATINA    !endif
+# ODP: Patina provides ArmGicDxe support
+# !if $(DIAGS_KERNEL_ENABLE) == TRUE
+#   Edk2OverridePkg/ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+# !else
+#   ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+# !endif
 
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   #MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
@@ -800,7 +800,8 @@
   #
 !if $(ACPI_ENABLE) == TRUE
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-  MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  # ODP: Extra driver being compiled not included in FDF
+  # MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
   Platform/CIX/Sky1/Drivers/AcpiSocTables/AcpiSocTables.inf
   Platform/CIX/Sky1/Drivers/AcpiSocDxe/AcpiSocDxe.inf
 
@@ -860,15 +861,15 @@
   !if $(PLATFORM_PD_ENABLE) == TRUE
   Platform/CIX/Sky1/Drivers/PdDxe/PdDxe.inf {
     <LibraryClasses>
-    PdLib|Platform/CIX/Sky1/Library/Rts5453hPdLib/Rts5453hPdLib.inf
-    RedriverLib|Platform/CIX/Sky1/Library/PI3DPX1207RedriverLib/PI3DPX1207RedriverLib.inf
+      PdLib|Platform/CIX/Sky1/Library/Rts5453hPdLib/Rts5453hPdLib.inf
+      RedriverLib|Platform/CIX/Sky1/Library/PI3DPX1207RedriverLib/PI3DPX1207RedriverLib.inf
   }
   !endif
 !endif
 
 !if $(SOC_USB_DEVICE_ENABLE) == TRUE
   Platform/CIX/Sky1/Drivers/UsbDeviceControlDxe/UsbDeviceControlDxe.inf
-  Platform/CIX/Sky1/Application/Fastboot/Fastboot.inf
+  Platform/CIX/Sky1/Application/Fastboot/Fastboot.inf 
   !if $(SOC_CDNSP_ENABLE) == TRUE
     Silicon/CIX/Sky1/Drivers/CdnspDxe/CdnspDxe.inf
   !endif
@@ -914,7 +915,8 @@
        DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
   }
 
-  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf {    #### PATINA
+  # ODP: Fix for uninit pointer in precompiled driver
+  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf {
     <LibraryClasses>
       DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
   }
@@ -979,7 +981,7 @@
       PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
   }
 #  Platform/CIX/Sky1/Drivers/SystemFirmwareDescriptor/SystemFirmwareDescriptor.inf
-
+  Platform/CIX/Sky1/Drivers/CapsuleUpdateDxe/CapsuleUpdateDxe.inf
 !endif
   MdeModulePkg/Application/HelloWorld/HelloWorld.inf
 !if $(FW_UPDATE_ENABLE) == TRUE
@@ -1016,9 +1018,9 @@ ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf {
   MdeModulePkg/Application/VariableInfo/VariableInfo.inf
 !endif
 !if $(COMPILE_SYSTEM_LOADER) == android
-  Platform/CIX/Sky1/Application/LinuxLoader/LinuxLoader.inf
-  Platform/CIX/Sky1/Application/ABSelect/ABSelect.inf
-  Platform/CIX/Sky1/Drivers/AndroidConfigDxe/AndroidConfigDxe.inf
+  Platform/CIX/Sky1/Application/LinuxLoader/LinuxLoader.inf 
+  Platform/CIX/Sky1/Application/ABSelect/ABSelect.inf 
+  Platform/CIX/Sky1/Drivers/AndroidConfigDxe/AndroidConfigDxe.inf 
 !endif
 
 !if $(PD_FW_UPDATE_ENABLE) == TRUE
@@ -1030,9 +1032,23 @@ ShellPkg/DynamicCommand/HttpDynamicCommand/HttpDynamicCommand.inf {
 !endif
 
   Silicon/CIX/Sky1/Drivers/ArmPsciMpServicesDxe/ArmPsciMpServicesDxe.inf
+  # Platform/CIX/Sky1/Drivers/ScmiRuntimeDxe/ScmiRuntimeDxe.inf
 !if $(POWER_BUTTON_ENABLE) == TRUE
   Platform/CIX/Sky1/Drivers/PowerButtonDxe/PowerButtonDxe.inf
 !endif
-!if $(GPIO_POWER_BUTTON_ENABLE) == TRUE
-  Platform/CIX/Sky1/Drivers/PowerButtonDxe/GpioPowerButtonDxe.inf
+
+!if $(DTPM_SUPPORT) == TRUE || $(FTPM_SUPPORT) == TRUE
+  Platform/CIX/Sky1/Drivers/FTPMDxe/FTPMProtocol.inf
+  Platform/CIX/Sky1/Drivers/Tcg2Acpi/Tcg2Acpi.inf
+  Platform/CIX/Sky1/Drivers/TPMVariableDxe/TPMVariableDxe.inf
+  SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf {
+    <LibraryClasses>
+      HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterDxe.inf
+      Tpm2DeviceLib|Platform/CIX/Sky1/Library/Tpm2DeviceLib/Tpm2DeviceLib.inf
+      NULL|SecurityPkg/Library/Tpm2DeviceLibDTpm/Tpm2InstanceLibDTpm.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha1/HashInstanceLibSha1.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha384/HashInstanceLibSha384.inf
+  }
+  Platform/CIX/Sky1/Drivers/Tcg2Config/Tcg2ConfigDxe.inf
 !endif
