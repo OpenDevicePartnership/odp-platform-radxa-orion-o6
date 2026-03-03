@@ -87,64 +87,70 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
 
-
-#### PATINA - BEGIN
-##   Patina does not support an apriori, but does follow the same pattern as EDK II where drivers with a depex of TRUE
-##   are executed in the order placed in the FDF file.  Therefore, this section which was the original APRIORI has been
-##   changed so that each driver has a new rule to force the depex section in the FFS to TRUE and they are kept at the
-##   beginning of the FvMain section.
-
-  INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
-  #### PATINA    INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-  INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+# ODP: The drivers using RuleOverride = COMPILE_TRUE_DEPEX are ones that were originally included
+#      in the APRIORI section.  Patina does not support an APRIORI, so as a workaround the drivers
+#      are forced to have a TRUE DEPEX and are placed at the beginning of the FV to be loaded first.
+# ODP_PRIORI  APRIORI DXE {
+    INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+    # ODP: Patina provides CpuDxe support
+    # INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
 !if $(SOC_PWR_CLK_RST_ENABLE) == TRUE
+    # SCMI Driver
     INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
+    # power
     INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/PowerDxe/PowerDxe.inf
+    # clock
     INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/ClockDxe/ClockDxe.inf
 !endif
+    # reset
     INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/ResetDxe/ResetDxe.inf
     INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/S3SaveStateDxe/S3SaveStateDxe.inf
     INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/SocDxe/SocDxe.inf
 !if $(STMM_SUPPORT) == TRUE
     INF RuleOverride = BINARY_TRUE_DEPEX Platform/CIX/Sky1/Drivers/MmCommunicationDxe/ArmMmCommunication.inf
 !endif
+!if $(SOC_XSPI_ENABLE) == TRUE
 !if $(STMM_SUPPORT) == TRUE
     INF RuleOverride = COMPILE_TRUE_DEPEX platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
 !else
     INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/NorFlashDxe/NorFlashDxe.inf
 !endif
+!endif
 !if $(VARIABLE_SUPPORT) == "SPI" && $(STMM_SUPPORT) == FALSE
-  INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
 !endif
 !if $(VARIABLE_SUPPORT) == "SPI" && $(STMM_SUPPORT) == TRUE
-  INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
 !else
-  INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 !endif
-  #### PATINA    INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+
+  # ODP: Patina provides ArmGicDxe support
+  # INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
 !if $(CFG_PARAM_MANAGE_ENABLE) == TRUE
-  INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
-  INF RuleOverride = COMPILE_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
 !endif
 !if $(TOKEN_SETUP_SUPPORT) == FALSE
-  INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
+    # ODP: PlatformSetupVariableInitDxe was included when TOKEN_SETUP_SUPPORT was TRUE, so this line had no effect in the APRIORI
+    # INF Platform/CIX/Sky1/Drivers/PlatformSetupVariableInitDxe/PlatformSetupVariableInitDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
 !endif
-
-#### PATINA - END
-
-
+# ODP_PRIORI  }
 
 # inf file list has be move to Sky1Common.fdf.inc
 # please put xxx.inf to Sky1Common.fdf.inc
-!include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.fdf.inc    #### PATINA
+# ODP: Overrides necessary for Patina
+!include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.fdf.inc
 !include Platform/Radxa/Platforms/CIX/Sky1/Sky1Common.fdf.inc
   INF Platform/CIX/Sky1/Drivers/DtbUpdateDxeSi/DtbUpdateDxe.inf
 
 !if $(ACPI_ENABLE) == TRUE
-  INF RuleOverride = ACPITABLE2 platform/Drivers/AcpiPlatfomTables/AcpiPlatfomTables.inf
-  INF platform/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  INF RuleOverride = ACPITABLE2 $(ODP_O6_PLATFORM_PATH)/Drivers/AcpiPlatfomTables/AcpiPlatfomTables.inf
+  INF Platform/Radxa/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
 !endif
 
   #
@@ -158,12 +164,12 @@ READ_LOCK_STATUS   = TRUE
       SECTION RAW = Platform/CIX/Sky1/Bin/ntroot.cer //root pubkey
   }
 !if $(SMBIOS_ENABLE) == TRUE
-  INF platform/Drivers/PlatformSmbios/PlatformSmbios.inf
+  INF $(ODP_O6_PLATFORM_PATH)/Drivers/PlatformSmbios/PlatformSmbios.inf
 !endif
 
   INF Platform/Radxa/Drivers/RTL8126/RtkUndiDxe.inf
 
-  INF platform/bins/DeviceTree/DeviceTree.inf
+  INF $(ODP_O6_PLATFORM_PATH)/DeviceTree/DeviceTree.inf
 
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 16
@@ -308,6 +314,7 @@ READ_LOCK_STATUS   = TRUE
     UI        STRING="$(MODULE_NAME)" Optional
   }
 
+
 [Rule.Common.DXE_RUNTIME_DRIVER.BINARY]
   FILE DRIVER = $(NAMED_GUID) {
     DXE_DEPEX DXE_DEPEX Optional      |.depex
@@ -327,9 +334,7 @@ READ_LOCK_STATUS   = TRUE
     RAW BIN                |.bin
   }
 
-#### PATINA ####
-##   The following rules are to allow overriding the dependency expression binary in a FFS
-##   file with a flat TRUE expression
+# ODP: The following rules are to allow overriding the DEPEX binary in an FFS file to use a TRUE expression
 
 [Rule.Common.DXE_DRIVER.COMPILE_TRUE_DEPEX]
   FILE DRIVER = $(NAMED_GUID) {

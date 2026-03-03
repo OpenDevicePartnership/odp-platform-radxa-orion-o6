@@ -21,12 +21,18 @@
   PLATFORM_GUID                  = 53cfca21-0399-4802-a3c0-e86437a42183
   PLATFORM_VERSION               = 1.0
   DSC_SPECIFICATION              = 0x0001001A
-  OUTPUT_DIRECTORY               = $(PATH_BUILD_OUTPUT)
+  OUTPUT_DIRECTORY               = $(PATH_BUILD_OUTPUT)  # ODP: Allow environment variable to set remnants folder
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
-  FLASH_DEFINITION               = platform/O6.fdf
+  FLASH_DEFINITION               = platform/O6.fdf       # ODP: Use ODP flavor of the 06 DSC/FDF pair
   PCD_DYNAMIC_AS_DYNAMICEX       = TRUE
+
+
+  # ODP:  Normally all platform resources reside in the directory next to this DSC/FDF
+  #       file pair, but for initial dev, we are reaching into the provided submodule
+  DEFINE ODP_O6_PLATFORM_PATH       = Platform/Radxa/Orion/O6
+
 
 !include  Platform/CIX/Sky1/Sky1Define.dsc.inc
 !include  Platform/Radxa/RadxaDefine.dsc.inc
@@ -42,13 +48,10 @@
 ##################################################
 # Define override here for evb
 ##################################################
-
-  DEFINE DEBUG_PRINT_ERROR_LEVEL    = 0x800000CF          #### PATINA
-
   DEFINE DTB_UPDATE_ENABLE          = FALSE
   DEFINE SMBIOS_ENABLE              = FALSE
   DEFINE ACPI_ENABLE                = FALSE
-  DEFINE TOKEN_CONSOLE_PREF_SUPPORT = FALSE
+  DEFINE TOKEN_CONSOLE_PREF_SUPPORT = TRUE
   DEFINE FW_VERSION_ENABLE          = TRUE
   DEFINE SOC_PWR_CLK_RST_ENABLE     = TRUE
   DEFINE WATCH_DOG_ENABLE           = FALSE
@@ -79,12 +82,13 @@
   DEFINE DYNAMIC_GET_MEM_SIZE       = TRUE
   DEFINE SECURE_BOOT_ENABLE         = TRUE
   DEFINE DEFAULT_KEYS               = TRUE
+  DEFINE SOC_XSPI_ENABLE            = TRUE
   DEFINE FW_CONFIG_UPDATE_SUPPORT   = TRUE
   DEFINE UEFI_FW_STAGE              = Beta2
   DEFINE BOOT_LOGO_ENABLE           = FALSE
   DEFINE GLOBAL_WATCHDOG_ENABLE     = TRUE
   DEFINE FUNC_BOOT_PERF_ENABLE      = TRUE
-  DEFINE CAPSULE_ENABLE             = FALSE
+  DEFINE CAPSULE_ENABLE             = TRUE
   DEFINE POWER_BUTTON_ENABLE        = TRUE
 
 !if $(COMPILE_FASTBOOT_LOAD) == nvme
@@ -107,15 +111,12 @@
 !if $(COMPILE_SYSTEM_LOADER) == android
   DEFINE CAPSULE_ENABLE             = TRUE
   DEFINE OPTEE_AVB_ENABLE           = FALSE
-  DEFINE REBOOT_REASON_ENABLE       = TRUE
-!else
-  DEFINE REBOOT_REASON_ENABLE       = FALSE
 !endif
 
 #
 # Network definition
 #
-  DEFINE NETWORK_ENABLE                 = TRUE
+  DEFINE NETWORK_ENABLE                 = FALSE # ODP: Disabled network support
 !if $(NETWORK_ENABLE) == TRUE
   DEFINE NETWORK_IP4_ENABLE             = TRUE
   DEFINE NETWORK_SNP_ENABLE             = TRUE
@@ -137,7 +138,11 @@
 
   DEFINE LINUX_ACPI_CONFIG_OVERRIDE = TRUE
 
-!include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.dsc.inc    #### PATINA
+# ODP: Platform specific setting for changing the debug output level
+  DEFINE DEBUG_PRINT_ERROR_LEVEL    = 0x800000CF
+
+# ODP: Platform override for Sky1Common.dsc
+!include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.dsc.inc
 !include Platform/Radxa/RadxaCommon.dsc.inc
 !include Platform/Radxa/Platforms/CIX/Sky1/Sky1Common.dsc.inc
 !include NetworkPkg/NetworkDefines.dsc.inc
@@ -150,9 +155,9 @@
 ################################################################################
 
 [LibraryClasses.common]
-  PlatformConfigParamsHookLib|platform/Library/PlatformConfigParamsHookLib/PlatformConfigParamsHookLib.inf
-  PlatformEnvHookLib|platform/Library/PlatformEnvHookLib/PlatformEnvHookLib.inf
-  RealTimeClockLib|platform/Library/Hym8563RealTimeClockLib/Hym8563RealTimeClockLib.inf
+  PlatformConfigParamsHookLib|$(ODP_O6_PLATFORM_PATH)/Library/PlatformConfigParamsHookLib/PlatformConfigParamsHookLib.inf
+  PlatformEnvHookLib|$(ODP_O6_PLATFORM_PATH)/Library/PlatformEnvHookLib/PlatformEnvHookLib.inf
+  RealTimeClockLib|Platform/Radxa/Library/Hym8563RealTimeClockLib/Hym8563RealTimeClockLib.inf
 
   PlatformBootHookLib|Platform/CIX/Sky1/Merak/Library/PlatformBootHookLib/PlatformBootHookLib.inf
 
@@ -173,6 +178,13 @@
 [Components.common]
 # Network stack
   !include NetworkPkg/Network.dsc.inc
+# This modification is to fix a PXE bug.
+# If the Code Base is upgraded, this modification will cause a compilation error and should be deleted.
+  NetworkPkg/UefiPxeBcDxe/UefiPxeBcDxe.inf {
+    <PcdsFixedAtBuild>
+      gEfiNetworkPkgTokenSpaceGuid.PcdIPv4PXESupport|TRUE
+      gEfiNetworkPkgTokenSpaceGuid.PcdIPv6PXESupport|TRUE
+  }
 
   Platform/CIX/Sky1/PrePi/PeiUniCore.inf
 !if $(SHELL_EMBEDDED_ENABLE) == TRUE
@@ -192,7 +204,6 @@
       BcfgCommandLib|ShellPkg/Library/UefiShellBcfgCommandLib/UefiShellBcfgCommandLib.inf
 
     <PcdsFixedAtBuild>
-      gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0xFF
       gEfiShellPkgTokenSpaceGuid.PcdShellLibAutoInitialize|FALSE
       gEfiMdePkgTokenSpaceGuid.PcdUefiLibMaxPrintBufferSize|8000
       gEfiShellPkgTokenSpaceGuid.PcdShellFileOperationSize|0x200000
@@ -200,13 +211,13 @@
 !endif
   Platform/CIX/Sky1/Drivers/DtbUpdateDxeSi/DtbUpdateDxe.inf
 !if $(ACPI_ENABLE) == TRUE
-  platform/Drivers/AcpiPlatfomTables/AcpiPlatfomTables.inf
-  platform/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  $(ODP_O6_PLATFORM_PATH)/Drivers/AcpiPlatfomTables/AcpiPlatfomTables.inf
+  Platform/Radxa/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
 !endif
 !if $(SMBIOS_ENABLE) == TRUE
-  platform/Drivers/PlatformSmbios/PlatformSmbios.inf
+  $(ODP_O6_PLATFORM_PATH)/Drivers/PlatformSmbios/PlatformSmbios.inf
 !endif
-  platform/bins/DeviceTree/DeviceTree.inf
+  $(ODP_O6_PLATFORM_PATH)/DeviceTree/DeviceTree.inf
 
 ###################################################################################################
 # BuildOptions Section - Define the module specific tool chain flags that should be used as
@@ -272,10 +283,10 @@
   GCC:*_*_*_CC_FLAGS              = -DSOC_GPIO_INTR_ENABLE
 !endif
 
-### TODO - This should be in the .inf to pull in the proper .dec
 !if $(LINUX_ACPI_CONFIG_OVERRIDE) == TRUE
   GCC:*_*_*_ASLPP_FLAGS           = -DLINUX_ACPI_CONFIG_OVERRIDE
-  GCC:*_*_*_ASLPP_FLAGS           = -I$(WORKSPACE)/platform/Drivers
+  # ODP: This should be in the .inf to pull in the proper .dec
+  GCC:*_*_*_ASLPP_FLAGS           = -I$(WORKSPACE)/../common/edk2-platforms-cix-odp/$(ODP_O6_PLATFORM_PATH)/Drivers
 !endif
 
 !if $(STMM_SUPPORT) == TRUE
@@ -351,11 +362,7 @@
 
   # USBC0
   gCixTokenSpaceGuid.PcdUsbCDrdControl0Enable|TRUE
-!if $(COMPILE_SYSTEM_LOADER) == android
-  gCixTokenSpaceGuid.PcdUsbCDrdControl0DataRole|TRUE
-!else
   gCixTokenSpaceGuid.PcdUsbCDrdControl0DataRole|FALSE
-!endif
   # USBC1
   gCixTokenSpaceGuid.PcdUsbCControl0Enable|TRUE
   # USBC2
@@ -368,10 +375,16 @@
   gCixTokenSpaceGuid.PcdUsb2Control2Enable|TRUE
   gCixTokenSpaceGuid.PcdUsb2Control3Enable|TRUE
 
+  gCixTokenSpaceGuid.PcdAcpiI2s5Enable|TRUE
+  gCixTokenSpaceGuid.PcdAcpiI2s6Enable|TRUE
+  gCixTokenSpaceGuid.PcdAcpiI2s7Enable|TRUE
+  gCixTokenSpaceGuid.PcdAcpiI2s8Enable|TRUE
+  gCixTokenSpaceGuid.PcdAcpiI2s9Enable|TRUE
+
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x400000000
   gEfiNetworkPkgTokenSpaceGuid.PcdNetworkStackSupport|FALSE
-  gEfiNetworkPkgTokenSpaceGuid.PcdIPv4PXESupport|FALSE
-  gEfiNetworkPkgTokenSpaceGuid.PcdIPv6PXESupport|FALSE
+  gEfiNetworkPkgTokenSpaceGuid.PcdIPv4PXESupport|TRUE
+  gEfiNetworkPkgTokenSpaceGuid.PcdIPv6PXESupport|TRUE
   gEfiNetworkPkgTokenSpaceGuid.PcdIPv4HttpSupport|TRUE
   gEfiNetworkPkgTokenSpaceGuid.PcdIPv6HttpSupport|TRUE
 
@@ -410,6 +423,16 @@
   gCixPlatformTokenSpaceGuid.PcdAcpiPrefPmProf|0x01  # Desktop
   gCixTokenSpaceGuid.PcdAcpiCsiDmaEnable|FALSE
 
+  # Change for SystemReady
+  gCixTokenSpaceGuid.PcdCpuCore2En|FALSE
+  gCixTokenSpaceGuid.PcdCpuCore3En|FALSE
+  gCixTokenSpaceGuid.PcdCpuCore4En|FALSE
+  gCixTokenSpaceGuid.PcdCpuCore5En|FALSE
+  gCixTokenSpaceGuid.PcdAcpiCpuLpiState|0x1
+  gCixTokenSpaceGuid.PcdAcpiCppcType|0x02
+  gCixTokenSpaceGuid.PcdStateAfterG3|0x0
+  gCixPlatformTokenSpaceGuid.PcdAcpiSpcrEnable|TRUE
+
 [PcdsDynamicDefault.common]
 
   gEmbeddedTokenSpaceGuid.PcdDmaDeviceLimit|0x47fffffff
@@ -424,5 +447,4 @@
 !if $(COMPILE_SYSTEM_LOADER) == android
   gCixPlatformTokenSpaceGuid.AndroidFastboot|TRUE
 !endif
-
 [PcdsDynamicHii.common.DEFAULT]
