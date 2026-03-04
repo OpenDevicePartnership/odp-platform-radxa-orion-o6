@@ -77,14 +77,17 @@ mod tests {
 
     mod hardware_monitor {
         use super::read_asl;
+        use std::sync::OnceLock;
 
-        fn source() -> String {
-            read_asl("HardwareMonitor.asl")
+        /// Cached read of HardwareMonitor.asl (read once, shared across tests).
+        fn read_monitor_source() -> &'static str {
+            static CACHE: OnceLock<String> = OnceLock::new();
+            CACHE.get_or_init(|| read_asl("HardwareMonitor.asl"))
         }
 
         #[test]
         fn device_node_exists() {
-            let src = source();
+            let src = read_monitor_source();
             assert!(
                 src.contains("Device(HWMN)") || src.contains("Device (HWMN)"),
                 "HardwareMonitor.asl must define Device(HWMN)"
@@ -93,13 +96,13 @@ mod tests {
 
         #[test]
         fn has_uid() {
-            let src = source();
+            let src = read_monitor_source();
             assert!(src.contains("_UID"), "HWMN device must define _UID");
         }
 
         #[test]
         fn has_sta_method() {
-            let src = source();
+            let src = read_monitor_source();
             assert!(
                 src.contains("Method(_STA)") || src.contains("Method (_STA)"),
                 "HWMN device must define _STA method"
@@ -108,7 +111,7 @@ mod tests {
 
         #[test]
         fn has_set_fan_auto_method() {
-            let src = source();
+            let src = read_monitor_source();
             assert!(
                 src.contains("Method(SFAT") || src.contains("Method (SFAT"),
                 "HWMN device must define SFAT (Set Fan Auto) method"
@@ -117,7 +120,7 @@ mod tests {
 
         #[test]
         fn has_set_fan_mute_method() {
-            let src = source();
+            let src = read_monitor_source();
             assert!(
                 src.contains("Method(SFMT") || src.contains("Method (SFMT"),
                 "HWMN device must define SFMT (Set Fan Mute) method"
@@ -126,7 +129,7 @@ mod tests {
 
         #[test]
         fn has_set_fan_performance_method() {
-            let src = source();
+            let src = read_monitor_source();
             assert!(
                 src.contains("Method(SFPF") || src.contains("Method (SFPF"),
                 "HWMN device must define SFPF (Set Fan Performance) method"
