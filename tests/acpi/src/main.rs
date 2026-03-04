@@ -18,8 +18,8 @@ mod tests {
     use std::path::PathBuf;
 
     /// Token type for brace-depth tracking in ASL source.
-    /// Comments and strings are recognised (and skipped) so that braces
-    /// inside them do not affect the depth count.
+    /// Comments and strings are recognised and ignored during brace counting
+    /// so that braces inside them do not affect the depth count.
     #[derive(Logos, Debug, PartialEq)]
     #[logos(skip r"[ \t\r\n\f]+")]
     enum AslToken {
@@ -43,8 +43,12 @@ mod tests {
 
         // Any other single character – we just skip over it.
         #[regex(r"[^\s{}/\x22]")]
-        #[regex(r"/[^*/]")]
         Other,
+
+        // A lone `/` that doesn't start a comment (single char, lower priority
+        // than the multi-char comment regexes).
+        #[token("/")]
+        Slash,
     }
 
     /// Root of the ACPI platform tables for Radxa Orion O6.
@@ -70,7 +74,7 @@ mod tests {
 
         for candidate in &candidates {
             if candidate.exists() {
-                return (&candidate).to_path_buf();
+                return candidate.clone();
             }
         }
 
@@ -99,7 +103,10 @@ mod tests {
     /// Returns the full block including the `Device(...)` prefix and braces.
     /// Panics if the device is not found.
     fn extract_device_block(source: &str, device_name: &str) -> String {
-        // Match "Device(NAME)" or "Device (NAME)" with optional whitespace
+        // Match "Device(NAME)" or "Device (NAME)" with optional whitespace.
+        // NOTE: This initial search uses raw string matching, so a Device()
+        // reference inside a comment could produce a false positive. This is
+        // acceptable for the current ASL files.
         let patterns = [
             format!("Device({})", device_name),
             format!("Device ({})", device_name),
@@ -176,6 +183,12 @@ mod tests {
                 src.contains("Device(HWMN)") || src.contains("Device (HWMN)"),
                 "HardwareMonitor.asl must define Device(HWMN)"
             );
+        }
+
+        #[test]
+        fn has_hid() {
+            let src = read_monitor_source();
+            assert!(src.contains("_HID"), "HWMN device must define _HID");
         }
 
         #[test]
