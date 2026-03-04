@@ -38,7 +38,7 @@ mod tests {
         candidates.push(manifest_dir.join(ACPI_SUBMODULE_PATH));
 
         for candidate in candidates {
-            if candidate.exists() {
+            if candidate.is_dir() {
                 return candidate;
             }
         }
