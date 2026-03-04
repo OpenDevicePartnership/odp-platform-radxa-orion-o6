@@ -111,3 +111,4 @@ clean:
 
 test:
 	$(MAKE) -C uefi test
+	cd tests/acpi && cargo test
