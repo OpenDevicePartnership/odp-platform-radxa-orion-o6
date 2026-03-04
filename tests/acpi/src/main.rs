@@ -37,17 +37,22 @@ mod tests {
         // manifest directory is already the workspace root in some configurations.
         candidates.push(manifest_dir.join(ACPI_SUBMODULE_PATH));
 
-        for candidate in candidates {
-            if candidate.is_dir() {
-                return candidate;
+        for candidate in &candidates {
+            if candidate.exists() {
+                return (&candidate).to_path_buf();
             }
         }
 
+        let tried_paths = candidates
+            .iter()
+            .map(|p| format!("  - {}", p.display()))
+            .collect::<Vec<_>>()
+            .join("\n");
+
         panic!(
-            "Cannot locate AcpiPlatfomTables directory. \
-             Ensure the ACPI tables submodule is checked out under '{}' \
-             relative to the workspace root.",
-            ACPI_SUBMODULE_PATH
+            "Cannot locate AcpiPlatfomTables directory.\n\
+             Expected to find the ACPI tables submodule under the following paths:\n\
+             {tried_paths}"
         );
     }
 
