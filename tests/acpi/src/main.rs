@@ -58,6 +58,48 @@ mod tests {
             .unwrap_or_else(|e| panic!("Failed to read {}: {e}", path.display()))
     }
 
+    /// Extract the body of a `Device(<name>){ ... }` block from ASL source,
+    /// using brace-depth tracking to find the matching closing brace.
+    /// Returns the full block including the `Device(...)` prefix and braces.
+    /// Panics if the device is not found.
+    fn extract_device_block(source: &str, device_name: &str) -> String {
+        // Match "Device(NAME)" or "Device (NAME)" with optional whitespace
+        let patterns = [
+            format!("Device({})", device_name),
+            format!("Device ({})", device_name),
+        ];
+        let start = patterns
+            .iter()
+            .filter_map(|p| source.find(p))
+            .min()
+            .unwrap_or_else(|| panic!("Device({}) not found in source", device_name));
+
+        // Find the opening brace after Device(NAME)
+        let rest = &source[start..];
+        let open_brace = rest
+            .find('{')
+            .unwrap_or_else(|| panic!("No opening brace after Device({})", device_name));
+
+        // Walk forward matching braces to find the end of the block
+        let mut depth = 0u32;
+        let mut end = 0;
+        for (i, ch) in rest[open_brace..].char_indices() {
+            match ch {
+                '{' => depth += 1,
+                '}' => {
+                    depth -= 1;
+                    if depth == 0 {
+                        end = open_brace + i + 1; // include the closing brace
+                        break;
+                    }
+                }
+                _ => {}
+            }
+        }
+        assert!(end > 0, "Unmatched braces in Device({})", device_name);
+        rest[..end].to_string()
+    }
+
     // -----------------------------------------------------------------------
     // Ssdt.asl – verify HardwareMonitor.asl is included
     // -----------------------------------------------------------------------
@@ -76,13 +118,17 @@ mod tests {
     // -----------------------------------------------------------------------
 
     mod hardware_monitor {
-        use super::read_asl;
+        use super::{extract_device_block, read_asl};
         use std::sync::OnceLock;
 
-        /// Cached read of HardwareMonitor.asl (read once, shared across tests).
+        /// Cached extraction of the Device(HWMN) block from HardwareMonitor.asl.
+        /// Only the content within the HWMN device scope is searched.
         fn read_monitor_source() -> &'static str {
             static CACHE: OnceLock<String> = OnceLock::new();
-            CACHE.get_or_init(|| read_asl("HardwareMonitor.asl"))
+            CACHE.get_or_init(|| {
+                let full = read_asl("HardwareMonitor.asl");
+                extract_device_block(&full, "HWMN")
+            })
         }
 
         #[test]
