@@ -14,7 +14,7 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
-    use std::path::{Path, PathBuf};
+    use std::path::PathBuf;
 
     /// Root of the ACPI platform tables for Radxa Orion O6.
     fn acpi_tables_dir() -> PathBuf {
