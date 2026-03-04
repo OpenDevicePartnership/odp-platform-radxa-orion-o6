@@ -14,7 +14,38 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use logos::Logos;
     use std::path::PathBuf;
+
+    /// Token type for brace-depth tracking in ASL source.
+    /// Comments and strings are recognised (and skipped) so that braces
+    /// inside them do not affect the depth count.
+    #[derive(Logos, Debug, PartialEq)]
+    #[logos(skip r"[ \t\r\n\f]+")]
+    enum AslToken {
+        // Block comment: /* ... */
+        #[regex(r"/\*[^*]*(\*[^/][^*]*)*\*/")]
+        BlockComment,
+
+        // Line comment: // ... \n
+        #[regex(r"//[^\n]*")]
+        LineComment,
+
+        // String literal: "..."  (no escapes needed for ASL)
+        #[regex(r#""[^"]*""#)]
+        StringLiteral,
+
+        #[token("{")]
+        OpenBrace,
+
+        #[token("}")]
+        CloseBrace,
+
+        // Any other single character – we just skip over it.
+        #[regex(r"[^\s{}/\x22]")]
+        #[regex(r"/[^*/]")]
+        Other,
+    }
 
     /// Root of the ACPI platform tables for Radxa Orion O6.
     fn acpi_tables_dir() -> PathBuf {
@@ -85,16 +116,18 @@ mod tests {
             .find('{')
             .unwrap_or_else(|| panic!("No opening brace after Device({})", device_name));
 
-        // Walk forward matching braces to find the end of the block
+        // Walk forward matching braces using a logos lexer so that braces
+        // inside comments and string literals are ignored.
         let mut depth = 0u32;
         let mut end = 0;
-        for (i, ch) in rest[open_brace..].char_indices() {
-            match ch {
-                '{' => depth += 1,
-                '}' => {
+        let mut lexer = AslToken::lexer(&rest[open_brace..]);
+        while let Some(token) = lexer.next() {
+            match token {
+                Ok(AslToken::OpenBrace) => depth += 1,
+                Ok(AslToken::CloseBrace) => {
                     depth -= 1;
                     if depth == 0 {
-                        end = open_brace + i + 1; // include the closing brace
+                        end = open_brace + lexer.span().end; // include the closing brace
                         break;
                     }
                 }
