@@ -18,25 +18,36 @@ mod tests {
 
     /// Root of the ACPI platform tables for Radxa Orion O6.
     fn acpi_tables_dir() -> PathBuf {
-        // Support both running from workspace root and from tests/acpi/
-        let candidates = [
-            // From workspace root: cargo test --manifest-path tests/acpi/Cargo.toml
-            Path::new(
-                "common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables",
-            ),
-            // From tests/acpi/
-            Path::new(
-                "../../common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables",
-            ),
-        ];
-        for candidate in &candidates {
+        // Path to the ACPI tables submodule relative to the workspace root.
+        const ACPI_SUBMODULE_PATH: &str =
+            "common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables";
+
+        // Cargo sets CARGO_MANIFEST_DIR to the directory containing this crate's Cargo.toml
+        // (tests/acpi). Derive paths from this instead of the process current working directory.
+        let manifest_dir = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
+
+        let mut candidates: Vec<PathBuf> = Vec::new();
+
+        // Prefer resolving relative to the workspace root (parent of tests/, i.e. two levels up).
+        if let Some(workspace_root) = manifest_dir.parent().and_then(|p| p.parent()) {
+            candidates.push(workspace_root.join(ACPI_SUBMODULE_PATH));
+        }
+
+        // Also consider the path relative directly to the manifest directory, in case the
+        // manifest directory is already the workspace root in some configurations.
+        candidates.push(manifest_dir.join(ACPI_SUBMODULE_PATH));
+
+        for candidate in candidates {
             if candidate.exists() {
-                return candidate.to_path_buf();
+                return candidate;
             }
         }
+
         panic!(
             "Cannot locate AcpiPlatfomTables directory. \
-             Run from the workspace root or from tests/acpi/."
+             Ensure the ACPI tables submodule is checked out under '{}' \
+             relative to the workspace root.",
+            ACPI_SUBMODULE_PATH
         );
     }
 
