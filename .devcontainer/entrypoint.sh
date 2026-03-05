@@ -9,13 +9,9 @@ if [ -d "/workspace/uefi/tools/acpica" ]; then
     cd /workspace
 fi
 
-# If a command is given, run it; otherwise check for a TTY
+# If a command is given, run it; otherwise start bash
 if [ $# -gt 0 ]; then
     exec "$@"
-elif [ -t 0 ]; then
-    # Interactive terminal available (e.g. docker run -it), start bash
-    exec /bin/bash
 else
-    # No TTY (e.g. VS Code dev container), keep container alive
-    exec sleep infinity
+    exec /bin/bash
 fi

@@ -10,6 +10,11 @@ ARG GCC_TOOLCHAIN_SHA256=7fe7b8548258f079d6ce9be9144d2a10bd2bf93b551dafbf20fe7f2
 ARG RUSTUP_VERSION=1.28.2
 ARG RUSTUP_INIT_SHA256=20a06e644b0d9bd2fbdbfd52d42540bdde820ea7df86e92e533c073da0cdd43c
 
+# Non-root user configuration (override USER_UID/USER_GID to match host user)
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -30,7 +35,16 @@ RUN apt-get update && apt-get install -y \
     bc \
     python3-pyelftools \
     python-is-python3 \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user (remove pre-existing ubuntu user in Ubuntu 24.04 which occupies UID/GID 1000)
+RUN if id -u $USER_UID > /dev/null 2>&1; then userdel -f $(id -nu $USER_UID); fi \
+    && if getent group $USER_GID > /dev/null 2>&1; then groupdel $(getent group $USER_GID | cut -d: -f1); fi \
+    && groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m -s /bin/bash $USERNAME \
+    && echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Download and install ARM GNU toolchain
 RUN mkdir -p /tools && \
@@ -53,21 +67,29 @@ RUN pip3 install --break-system-packages cryptography
 
 # Install Rust toolchain (cargo is needed by the build). Newer version is required than the one available in Ubuntu 24.04 repos for edk2 build to work.
 # Uses a pinned rustup version for reproducible builds. To update, change RUSTUP_VERSION and RUSTUP_INIT_SHA256.
+# Installed system-wide so it is accessible by any user.
+ENV RUSTUP_HOME=/usr/local/rustup \
+    CARGO_HOME=/usr/local/cargo \
+    PATH="/usr/local/cargo/bin:${PATH}"
+
 RUN curl --proto '=https' --tlsv1.2 -sSf \
         "https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/x86_64-unknown-linux-gnu/rustup-init" \
         -o /tmp/rustup-init && \
     echo "${RUSTUP_INIT_SHA256} */tmp/rustup-init" | sha256sum -c - && \
     chmod +x /tmp/rustup-init && \
-    /tmp/rustup-init -y && \
-    rm /tmp/rustup-init
-ENV PATH="/root/.cargo/bin:${PATH}"
+    /tmp/rustup-init -y --no-modify-path && \
+    rm /tmp/rustup-init && \
+    chmod -R a+rw ${RUSTUP_HOME} ${CARGO_HOME}
 
 # Allow git to work with mounted volumes owned by different users
-RUN git config --global --add safe.directory /workspace
+RUN git config --system --add safe.directory /workspace
 
 # Copy entrypoint script (used for manual docker run; VS Code dev containers use onCreateCommand instead)
 COPY .devcontainer/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+# Switch to non-root user
+USER $USERNAME
 
 # Default command for manual docker run (VS Code overrides this with its own keep-alive)
 CMD ["/entrypoint.sh"]

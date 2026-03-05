@@ -1,33 +1,59 @@
-ODP flavor of the Radxa Orion O6 platform
-
-NOTE:
-To build, the GNU toolchain must be downloaded and the acpi must be patched:
-
-Select the AArch64 bare-metal target (aarch64-none-elf)
-    https://developer.arm.com/-/media/files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz?rev=a05df3001fa34105838e6fba79ee1b23&revision=a05df300-1fa3-4105-838e-6fba79ee1b23&hash=6AC1C332173F612E81ED8B19446DE4E4
-
-Extract the toolchain to directory: "/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf"
-
-use the ./acpica.patch to update the uefi/tools/acpica submodule
-
-```
-cd uefi/tools/acpica
-git apply ../../../acpica.patch
-```
+# ODP Platform — Radxa Orion O6
 
 ## Building with Docker
 
-Alternatively, you can use Docker to build in a containerized environment:
+Docker is the recommended method for building in a containerized environment.
 
 ### VS Code Dev Container (Recommended)
 
-Open this folder in VS Code and select "Reopen in Container" when prompted, or run:
-- `Dev Containers: Reopen in Container` from the command palette
-- Start terminal
+1. Open this folder in VS Code.
+2. Select **Reopen in Container** when prompted, or run `Dev Containers: Reopen in Container` from the command palette.
+3. Open a terminal and run `make`.
 
-### Manual Docker
+### Manual Docker (Linux)
 
-**Linux :**
+Build the image and launch an interactive shell (uses your host UID/GID so mounted files are owned by you):
+
 ```bash
-# Interactive shell
-docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile . && docker run --rm -it -w /workspace -v "$PWD:/workspace" odp-orion-o6
+docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile \
+  --build-arg USER_UID=$(id -u) \
+  --build-arg USER_GID=$(id -g) \
+  --build-arg USERNAME=$(whoami) . && \
+docker run --rm -it -w /workspace -v "$PWD:/workspace" odp-orion-o6
+```
+
+## Building Manually
+
+> **Note:** The steps below are only needed if you are **not** using Docker.
+
+1. Download the AArch64 bare-metal GNU toolchain (`aarch64-none-elf`):
+   <https://developer.arm.com/-/media/files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz>
+
+2. Extract it to `/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf`.
+
+3. Initialize submodules and apply the ACPICA patch:
+
+   ```bash
+   git submodule update --init --recursive
+   cd uefi/tools/acpica
+   git apply ../../../acpica.patch
+   ```
+
+## Make Targets
+
+Once inside the build environment (Dev Container or manual Docker), the following `make` targets are available:
+
+| Target | Description |
+|---|---|
+| `make` | Build everything and produce the final flash images (`cix_flash_all.bin`, `cix_flash_ota.bin`). |
+| `make uefi` | Build the UEFI firmware (EDK2). |
+| `make tee` | Build the Trusted Execution Environment (OP-TEE). |
+| `make tf-a` | Build Trusted Firmware-A (TF-A / BL31). |
+| `make mem_config` | Build the memory configuration binary. |
+| `make pm_config` | Build the power management configuration binary. |
+| `make bootloader2` | Package BL31 + OP-TEE into a signed `bootloader2.img` (requires `tf-a` and `tee`). |
+| `make bootloader3` | Package the UEFI image into a signed `bootloader3.img` (requires `uefi`). |
+| `make test` | Run UEFI unit tests. |
+| `make clean` | Remove all build artifacts. |
+
+Build outputs are placed in `Build/Binaries/`.
