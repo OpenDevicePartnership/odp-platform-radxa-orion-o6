@@ -39,7 +39,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Create non-root user (remove pre-existing ubuntu user in Ubuntu 24.04 which occupies UID/GID 1000)
-RUN if id -u $USER_UID > /dev/null 2>&1; then userdel -f $(id -nu $USER_UID); fi \
+RUN if getent passwd $USER_UID > /dev/null 2>&1; then userdel -f $(getent passwd $USER_UID | cut -d: -f1); fi \
     && if getent group $USER_GID > /dev/null 2>&1; then groupdel $(getent group $USER_GID | cut -d: -f1); fi \
     && groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m -s /bin/bash $USERNAME \
@@ -79,7 +79,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf \
     chmod +x /tmp/rustup-init && \
     /tmp/rustup-init -y --no-modify-path && \
     rm /tmp/rustup-init && \
-    chmod -R a+rw ${RUSTUP_HOME} ${CARGO_HOME}
+    chown -R $USER_UID:$USER_GID ${RUSTUP_HOME} ${CARGO_HOME}
 
 # Allow git to work with mounted volumes owned by different users
 RUN git config --system --add safe.directory /workspace

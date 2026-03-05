@@ -41,7 +41,7 @@ docker run --rm -it -w /workspace -v "$PWD:/workspace" odp-orion-o6
 
 ## Make Targets
 
-Once inside the build environment (Dev Container or manual Docker), the following `make` targets are available:
+Once inside the build environment, the following `make` targets are available:
 
 | Target | Description |
 |---|---|
