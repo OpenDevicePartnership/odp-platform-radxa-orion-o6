@@ -16,8 +16,6 @@ Build the image and launch an interactive shell (uses your host UID/GID so mount
 
 ```bash
 docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile \
-  --build-arg USER_UID=$(id -u) \
-  --build-arg USER_GID=$(id -g) \
   --build-arg USERNAME=$(whoami) . && \
 docker run --rm -it -w /workspace -v "$PWD:/workspace" odp-orion-o6
 ```

@@ -10,10 +10,8 @@ ARG GCC_TOOLCHAIN_SHA256=7fe7b8548258f079d6ce9be9144d2a10bd2bf93b551dafbf20fe7f2
 ARG RUSTUP_VERSION=1.28.2
 ARG RUSTUP_INIT_SHA256=20a06e644b0d9bd2fbdbfd52d42540bdde820ea7df86e92e533c073da0cdd43c
 
-# Non-root user configuration (override USER_UID/USER_GID to match host user)
+# Non-root user configuration, fallback to vscode if not provided.
 ARG USERNAME=vscode
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
@@ -38,11 +36,10 @@ RUN apt-get update && apt-get install -y \
     sudo \
     && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user (remove pre-existing ubuntu user in Ubuntu 24.04 which occupies UID/GID 1000)
-RUN if getent passwd $USER_UID > /dev/null 2>&1; then userdel -f $(getent passwd $USER_UID | cut -d: -f1); fi \
-    && if getent group $USER_GID > /dev/null 2>&1; then groupdel $(getent group $USER_GID | cut -d: -f1); fi \
-    && groupadd --gid $USER_GID $USERNAME \
-    && useradd --uid $USER_UID --gid $USER_GID -m -s /bin/bash $USERNAME \
+# Create non-root user (replace pre-existing ubuntu user in Ubuntu 24.04 which occupies UID/GID 1000).
+RUN userdel -f ubuntu || echo "Warning: ubuntu user does not exist, skipping userdel"; \
+    groupadd --gid 1000 $USERNAME \
+    && useradd --uid 1000 --gid 1000 -m -s /bin/bash $USERNAME \
     && echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
@@ -79,7 +76,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf \
     chmod +x /tmp/rustup-init && \
     /tmp/rustup-init -y --no-modify-path && \
     rm /tmp/rustup-init && \
-    chown -R $USER_UID:$USER_GID ${RUSTUP_HOME} ${CARGO_HOME}
+    chown -R 1000:1000 ${RUSTUP_HOME} ${CARGO_HOME}
 
 # Allow git to work with mounted volumes owned by different users
 RUN git config --system --add safe.directory /workspace
