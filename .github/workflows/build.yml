@@ -33,6 +33,17 @@ jobs:
       - name: Build Docker image
         run: docker build -q -t odp-orion-o6-build -f .devcontainer/Dockerfile .
 
+      - name: Fix workspace ownership
+        # The runner checks out files as root, but the container runs as a
+        # non-root user (UID 1000). Fix ownership so the build can write to
+        # /workspace.
+        run: |
+          docker run --rm \
+            --user root \
+            -v "${{ github.workspace }}:/workspace" \
+            odp-orion-o6-build \
+            chown -R 1000:1000 /workspace
+
       - name: Build firmware
         # Run via entrypoint.sh so that submodule init and acpica patch are
         # applied before the build (entrypoint.sh passes arguments to exec).
