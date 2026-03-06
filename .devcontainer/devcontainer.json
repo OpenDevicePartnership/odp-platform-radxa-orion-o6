@@ -6,7 +6,7 @@
     },
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-    "onCreateCommand": "git config --global --add safe.directory /workspace; git submodule update --init --recursive 2>/dev/null || echo 'Warning: git submodule update --init --recursive failed; please run it manually to investigate.'; if [ -d uefi/tools/acpica ]; then cd uefi/tools/acpica && git apply ../../../acpica.patch 2>/dev/null || echo 'Info: acpica.patch could not be applied (it may already be applied or the target files have changed).'; fi; true",
+    "onCreateCommand": "git config --global --add safe.directory /workspace; git submodule update --init --recursive 2>/dev/null || echo 'Warning: git submodule update --init --recursive failed; please run it manually to investigate.'",
     "customizations": {
         "vscode": {
             "extensions": [
