@@ -54,4 +54,4 @@ Once inside the build environment, the following `make` targets are available:
 | `make test` | Run UEFI unit tests. |
 | `make clean` | Remove all build artifacts. |
 
-Build outputs are placed in `Build/Binaries/`.
+Component binaries are placed in `Build/Binaries/`, and final flash images (`cix_flash_all.bin`, `cix_flash_ota.bin`) are written to `Build/` (`$(PATH_BUILD_OUTPUT)`).
