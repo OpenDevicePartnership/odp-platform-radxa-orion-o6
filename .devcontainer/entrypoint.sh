@@ -6,9 +6,6 @@ if [ -d "/workspace/uefi/tools/acpica" ]; then
     cd /workspace
     git submodule update --init --recursive 2>/dev/null \
         || echo "Warning: git submodule update --init --recursive failed; please run it manually to investigate."
-    cd /workspace/uefi/tools/acpica
-    git apply ../../../acpica.patch 2>/dev/null \
-        || echo "Info: acpica.patch could not be applied (it may already be applied or the target files have changed)."
     cd /workspace
 fi
 
