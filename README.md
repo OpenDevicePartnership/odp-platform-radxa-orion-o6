@@ -10,14 +10,25 @@ The recommended method for building in a containerized environment.
 2. Select **Reopen in Container** when prompted, or run `Dev Containers: Reopen in Container` from the command palette.
 3. Open a terminal and run `make`.
 
-### Manual Docker (Linux)
+### Manual Docker / Podman (Linux)
 
-Build the image and launch an interactive shell (uses your host UID/GID so mounted files are owned by you):
+Build the image and launch an interactive shell.
+Both [Docker](https://docs.docker.com/get-docker/) and [Podman](https://podman.io/) are supported.
+
+**Docker:**
 
 ```bash
 docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile \
   --build-arg USERNAME=$(whoami) . && \
 docker run --rm -it -w /workspace -v "$PWD:/workspace" odp-orion-o6
+```
+
+**Podman:**
+
+```bash
+podman build -q -t odp-orion-o6 -f .devcontainer/Dockerfile \
+  --build-arg USERNAME=$(whoami) . && \
+podman run --rm -it --userns=keep-id -w /workspace -v "$PWD:/workspace" odp-orion-o6
 ```
 
 ## Building Manually

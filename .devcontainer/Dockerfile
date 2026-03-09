@@ -75,7 +75,7 @@ RUN \
     # Allow git to work with mounted volumes owned by different users
     && git config --system --add safe.directory /workspace
 
-# Copy entrypoint script (used for manual docker run; VS Code dev containers use onCreateCommand instead)
+# Copy entrypoint script
 COPY --chmod=0755 .devcontainer/entrypoint.sh /entrypoint.sh
 
 # Switch to non-root user

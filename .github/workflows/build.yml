@@ -34,9 +34,7 @@ jobs:
         run: docker build -q -t odp-orion-o6-build -f .devcontainer/Dockerfile .
 
       - name: Fix workspace ownership
-        # The runner checks out files as root, but the container runs as a
-        # non-root user (UID 1000). Fix ownership so the build can write to
-        # /workspace.
+        # The runner checks out files as a different UID than the container user (UID 1000).
         run: |
           docker run --rm \
             --user root \
