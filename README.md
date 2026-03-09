@@ -1,8 +1,8 @@
 # ODP Platform — Radxa Orion O6
 
-## Building with Docker
+## Building with Container
 
-Docker is the recommended method for building in a containerized environment.
+The recommended method for building in a containerized environment.
 
 ### VS Code Dev Container (Recommended)
 
@@ -22,7 +22,7 @@ docker run --rm -it -w /workspace -v "$PWD:/workspace" odp-orion-o6
 
 ## Building Manually
 
-> **Note:** The steps below are only needed if you are **not** using Docker.
+> **Note:** The steps below are only needed if you are **not** using a containerized environment.
 
 1. Download the AArch64 bare-metal GNU toolchain (`aarch64-none-elf`):
    <https://developer.arm.com/-/media/files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz>
