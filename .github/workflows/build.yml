@@ -43,7 +43,7 @@ jobs:
             chown -R 1000:1000 /workspace
 
       - name: Build firmware
-        # Run via entrypoint.sh so all necassary steps are executed
+        # Run via entrypoint.sh so all necessary steps are executed
         # before the build (entrypoint.sh passes arguments to exec).
         run: |
           docker run --rm \
@@ -74,7 +74,7 @@ jobs:
             chown -R 1000:1000 /workspace
 
       - name: Build firmware
-        # Run via entrypoint.sh so all necassary steps are executed
+        # Run via entrypoint.sh so all necessary steps are executed
         # before the build (entrypoint.sh passes arguments to exec).
         run: |
           podman run --rm \
