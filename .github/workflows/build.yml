@@ -23,7 +23,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Compile repository
+    name: Compile repository (Docker)
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
