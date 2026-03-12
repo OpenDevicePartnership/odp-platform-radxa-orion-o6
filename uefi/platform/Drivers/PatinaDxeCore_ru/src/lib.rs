@@ -41,7 +41,7 @@ pub fn log_level_str(level: log::Level) -> &'static str {
 
 /// Formats a log message into a fixed-size buffer.
 ///
-/// Returns a [`heapless::String`] containing `[LEVEL] message\r\n`.
+/// Returns a [`heapless::String`] containing `[Patina {LEVEL}] message\r\n`.
 /// If the formatted message exceeds [`LOG_BUFFER_SIZE`] bytes, the message body
 /// is truncated but the trailing `\r\n` is always guaranteed.
 pub fn format_log_message(level: &str, args: &core::fmt::Arguments<'_>) -> heapless::String<LOG_BUFFER_SIZE> {
@@ -100,19 +100,19 @@ mod tests {
     #[test]
     fn format_log_message_basic() {
         let msg = format_log_message("INFO", &format_args!("hello world"));
-        assert_eq!(msg.as_str(), "[INFO] hello world\r\n");
+        assert_eq!(msg.as_str(), "[Patina INFO] hello world\r\n");
     }
 
     #[test]
     fn format_log_message_with_format_args() {
         let msg = format_log_message("ERROR", &format_args!("code={} msg={}", 99, "fail"));
-        assert_eq!(msg.as_str(), "[ERROR] code=99 msg=fail\r\n");
+        assert_eq!(msg.as_str(), "[Patina ERROR] code=99 msg=fail\r\n");
     }
 
     #[test]
     fn format_log_message_empty_body() {
         let msg = format_log_message("WARN", &format_args!(""));
-        assert_eq!(msg.as_str(), "[WARN] \r\n");
+        assert_eq!(msg.as_str(), "[Patina WARN] \r\n");
     }
 
     // -------------------------------------------------------
@@ -129,7 +129,7 @@ mod tests {
         assert!(msg.len() <= LOG_BUFFER_SIZE, "formatted message must not exceed LOG_BUFFER_SIZE bytes");
 
         // Must still start with the expected prefix
-        assert!(msg.starts_with("[DEBUG] "), "truncated message must retain the prefix");
+        assert!(msg.starts_with("[Patina DEBUG] "), "truncated message must retain the prefix");
 
         // Must always end with \r\n even when truncated
         assert!(msg.ends_with("\r\n"), "truncated message must still end with CRLF");
@@ -143,13 +143,13 @@ mod tests {
 
         assert!(msg.len() <= LOG_BUFFER_SIZE, "message must not exceed buffer capacity");
         assert!(msg.ends_with("\r\n"), "message must end with CRLF regardless of body length");
-        assert!(msg.starts_with("[ERROR] "), "message must retain the prefix");
+        assert!(msg.starts_with("[Patina ERROR] "), "message must retain the prefix");
     }
 
     #[test]
     fn format_log_message_exact_capacity() {
-        // "[INFO] " = 7 bytes, "\r\n" = 2 bytes, overhead = 9 bytes
-        const OVERHEAD: usize = "[INFO] ".len() + "\r\n".len();
+        // "[Patina INFO] " = 13 bytes, "\r\n" = 2 bytes, overhead = 15 bytes
+        const OVERHEAD: usize = "[Patina INFO] ".len() + "\r\n".len();
         let body = "B".repeat(LOG_BUFFER_SIZE - OVERHEAD);
         let msg = format_log_message("INFO", &format_args!("{}", body));
         assert_eq!(msg.len(), LOG_BUFFER_SIZE, "message should exactly fill the buffer");

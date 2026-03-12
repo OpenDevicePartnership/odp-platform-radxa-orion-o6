@@ -18,3 +18,13 @@ rustflags = [
     "-C", "link-arg=/subsystem:efi_boot_service_driver",
     "-C", "force-unwind-tables", # Generates .pdata section for stack tracing
 ]
+
+# Alias to run lib tests on the host without the UEFI/build-std conflict.
+# Usage: cargo odp-test
+[alias]
+odp-test = [
+    "test",
+    "--target", "x86_64-unknown-linux-gnu",
+    "--lib",
+    "--config", "unstable.build-std=[\"std\",\"core\",\"compiler_builtins\",\"alloc\"]",
+]
