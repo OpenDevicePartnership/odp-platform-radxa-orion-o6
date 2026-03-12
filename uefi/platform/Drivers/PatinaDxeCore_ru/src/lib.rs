@@ -49,7 +49,7 @@ pub fn format_log_message(level: &str, args: &core::fmt::Arguments<'_>) -> heapl
     const CRLF: &str = "\r\n";
     let mut buffer = heapless::String::<LOG_BUFFER_SIZE>::new();
     // Write prefix and message body (may drop args if they exceed buffer capacity, but will never exceed LOG_BUFFER_SIZE)
-    let _ = write!(buffer, "[{}] {}", level, args);
+    let _ = write!(buffer, "[Patina {}] {}", level, args);
     // Ensure room for \r\n by truncating the body if necessary
     let max_body = LOG_BUFFER_SIZE - CRLF.len();
     if buffer.len() > max_body {

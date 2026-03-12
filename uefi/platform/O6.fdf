@@ -135,8 +135,7 @@ READ_LOCK_STATUS   = TRUE
     INF RuleOverride = COMPILE_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
 !endif
 !if $(TOKEN_SETUP_SUPPORT) == FALSE
-    # ODP: PlatformSetupVariableInitDxe was included when TOKEN_SETUP_SUPPORT was TRUE, so this line had no effect in the APRIORI
-    # INF Platform/CIX/Sky1/Drivers/PlatformSetupVariableInitDxe/PlatformSetupVariableInitDxe.inf
+    INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformSetupVariableInitDxe/PlatformSetupVariableInitDxe.inf
     INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
 !endif
 # ODP_PRIORI  }
@@ -145,7 +144,7 @@ READ_LOCK_STATUS   = TRUE
 # please put xxx.inf to Sky1Common.fdf.inc
 # ODP: Overrides necessary for Patina
 !include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.fdf.inc
-!include Platform/Radxa/Platforms/CIX/Sky1/Sky1Common.fdf.inc
+!include platform/OVERRIDE/Platform/Radxa/Platforms/CIX/Sky1/Sky1Common.fdf.inc
   INF Platform/CIX/Sky1/Drivers/DtbUpdateDxeSi/DtbUpdateDxe.inf
 
 !if $(ACPI_ENABLE) == TRUE
