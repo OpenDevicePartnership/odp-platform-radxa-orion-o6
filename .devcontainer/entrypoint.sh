@@ -1,21 +1,18 @@
 #!/bin/bash
 set -e
 
-# Apply ACPICA patch if workspace is mounted
-if [ -d "/workspace/uefi/tools/acpica" ]; then
+# Apply ACPICA patch if workspace is mounted (skip if already done)
+if [ -d "/workspace/uefi/tools/acpica" ] && [ ! -f /tmp/.entrypoint-init-done ]; then
     cd /workspace
     git submodule update --init --recursive 2>/dev/null \
         || echo "Warning: git submodule update --init --recursive failed; please run it manually to investigate."
     cd /workspace
+    touch /tmp/.entrypoint-init-done
 fi
 
-# If a command is given, run it; otherwise check for a TTY
+# If a command is given, run it; otherwise start bash
 if [ $# -gt 0 ]; then
     exec "$@"
-elif [ -t 0 ]; then
-    # Interactive terminal available (e.g. docker run -it), start bash
-    exec /bin/bash
 else
-    # No TTY (e.g. VS Code dev container), keep container alive
-    exec sleep infinity
+    exec /bin/bash
 fi

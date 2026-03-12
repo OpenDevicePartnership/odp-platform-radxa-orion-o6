@@ -2,11 +2,16 @@
     "name": "Radxa Orion O6 Build Environment",
     "build": {
         "dockerfile": "Dockerfile",
-        "context": ".."
+        "context": "..",
+        "args": {
+            "USERNAME": "${localEnv:USER}"
+        }
     },
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-    "onCreateCommand": "git config --global --add safe.directory /workspace; git submodule update --init --recursive 2>/dev/null || echo 'Warning: git submodule update --init --recursive failed; please run it manually to investigate.'",
+    "remoteUser": "${localEnv:USER}",
+    "updateRemoteUserUID": true,
+    "postCreateCommand": "/entrypoint.sh true",
     "customizations": {
         "vscode": {
             "extensions": [
