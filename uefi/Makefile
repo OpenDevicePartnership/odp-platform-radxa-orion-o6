@@ -39,7 +39,7 @@ all: PatinaDxeCore_ru
 		-D COMMIT_HASH=$$(git rev-parse --short=12 HEAD) \
 		-D SMP_ENABLE=1 \
 		-D ACPI_BOOT_ENABLE=1 \
-		-D FASTBOOT_LOAD=disable \
+		-D FASTBOOT_LOAD=nvme \
 		-D VARIABLE_TYPE=SPI \
 		-D STANDARD_MM=TRUE \
 		-D SYSTEM_LOADER=common
