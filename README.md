@@ -1,68 +1,76 @@
 # ODP Platform — Radxa Orion O6
 
-## Building with Container
+This repository is designed to be a demonstraion of ODP FW and SW solutions.  It is based on a modified community version of the [CIX P1 BIOS](https://github.com/cixtech/bios) that boots the Radxa Orion O6 hardware and includes features and optimizations from the ODP organization.
 
-The recommended method for building in a containerized environment.
+Since this is a demonstration repository, there is a single build target for configuration but there is support for minor targets such as debug and release.  Details are outlined in the `docs/` directory.
 
-### VS Code Dev Container (Recommended)
+## Folder Structure and Content
 
-1. Open this folder in VS Code.
-2. Select **Reopen in Container** when prompted, or run `Dev Containers: Reopen in Container` from the command palette.
-3. Open a terminal and run `make`.
+The repository contains all resources necessary to produce a firmware binary image and an os image that can be used to boot the platform.  The top-level directories are as follows:
 
-### Manual Docker / Podman (Linux)
+- Dot-prefixed (`.devcontainer/`, `.github/`, etc.)
 
-Build the image and launch an interactive shell.
-Both [Docker](https://docs.docker.com/get-docker/) and [Podman](https://podman.io/) are supported.
+   These directories contain infrastructure and tooling for the development environment, CI/CD pipelines, etc.  No code that is part of the final images will reside in these folders.
 
-**Docker:**
+- `common/`
 
-```bash
-docker build -q -t odp-orion-o6 -f .devcontainer/Dockerfile \
-  --build-arg USERNAME=$(whoami) . && \
-docker run --rm -it -w /workspace -v "$PWD:/workspace" odp-orion-o6
-```
+   This folder contains tools, documentation, and code files shared by 1 or more of the folders that produce artifacts.  They may be directly linked by the build process of either a binary or image artifact.
 
-**Podman:**
+- `docs`
 
-```bash
-podman build -q -t odp-orion-o6 -f .devcontainer/Dockerfile \
-  --build-arg USERNAME=$(whoami) . && \
-podman run --rm -it --userns=keep-id -w /workspace -v "$PWD:/workspace" odp-orion-o6
-```
+   This folder contains detailed documentation specific to this repository.  It is intended to suppliment the `common/docs/` directory.
 
-## Building Manually
+- `bin-???`
 
-> **Note:** The steps below are only needed if you are **not** using a containerized environment.
+   The directories prefixed with `bin-` contain code to produce a single binary artifact that will be used when creating the final firmware binary image.  None of these directories will need access to code in another bin directory, but may require access to code in the common director or may require the artifact produced by another bin directory.
 
-1. Download the AArch64 bare-metal GNU toolchain (`aarch64-none-elf`):
-   <https://developer.arm.com/-/media/files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz>
+- `image-???`
 
-2. Extract it to `/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf`.
+   The directories prefixed with `image-` contain scripts and resources to stitch artifacts from the bin directories and open source repositories into final images that can be used to boot the system.
 
-3. Initialize submodules and apply the ACPICA patch:
+## Quick Start - Building
 
-   ```bash
-   git submodule update --init --recursive
-   cd uefi/tools/acpica
-   git apply ../../../acpica.patch
+The simplest way to pull the code and boot the reference system is to follow the flow used by the CI/CD GitHub action and use a Linux container.  Please refer to the [Build Details](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/main/docs/build_details.md) document for more information.
+
+1) If building in Windows, you will need to install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) to provide a Linux environment, then open a WSL command prompt to continue with step 2.
+
+   Note:  The WSL file system can be accessed from Windows by using the path `\\wsl.localhost\...` and the Windows drives can be accessed from WSL by using the path `/mnt/<drive letter>/...`.  But every access across that boundary has delays which adds significant compilation time to the build.  It is highly recommended to clone and build all within WSL then use those paths when copying build remnants.
+
+2) Clone this repository and switch to the root of the directory.
+
+   ``` bash
+   git clone https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6.git
+   cd odp-platform-radxa-orion-o6
    ```
 
-## Make Targets
+3) Install [Podman](https://podman.io/) to manage installing and running a build environment container.  Docker, which is typically used in corporate environments and supports the same command line prompts can also be installed.
 
-Once inside the build environment, the following `make` targets are available:
+4) Build a container using the information in the `.devcontainer/` directory.  Note the use of the `.` at the end of the command.
 
-| Target | Description |
-|---|---|
-| `make` | Build everything and produce the final flash images (`cix_flash_all.bin`, `cix_flash_ota.bin`). |
-| `make uefi` | Build the UEFI firmware (EDK2). |
-| `make tee` | Build the Trusted Execution Environment (OP-TEE). |
-| `make tf-a` | Build Trusted Firmware-A (TF-A / BL31). |
-| `make mem_config` | Build the memory configuration binary. |
-| `make pm_config` | Build the power management configuration binary. |
-| `make bootloader2` | Package BL31 + OP-TEE into a signed `bootloader2.img` (requires `tf-a` and `tee`). |
-| `make bootloader3` | Package the UEFI image into a signed `bootloader3.img` (requires `uefi`). |
-| `make test` | Run UEFI unit tests. |
-| `make clean` | Remove all build artifacts. |
+   ``` bash
+   podman build \
+      --tag odp-orion-o6 \
+      --file .devcontainer/Dockerfile \
+      --build-arg USERNAME=$(whoami) \
+      .
+   ```
 
-Component binaries are placed in `Build/Binaries/`, and final flash images (`cix_flash_all.bin`, `cix_flash_ota.bin`) are written to `Build/` (`$(PATH_BUILD_OUTPUT)`).
+5) Make is used to compile the code, so the following command is used to launch the container mapped to this directory, execute make within the container, then exit.  The parameter `TARGET=DEBUG` is not necessary since it is the default, it is here to demonstrate command parameters for make.
+
+   ``` bash
+   podman run \
+      --rm \
+      --interactive \
+      --tty \
+      --userns=keep-id \
+      --workdir /workspace \
+      --volume "$PWD:/workspace" \
+      odp-orion-o6 \
+      make TARGET=DEBUG
+   ```
+
+6) The directory `Build/` will be created and will contain a directory of all remnants when compiling each bin directory, a `cix-flash-all.bin` file to be written to the SPINOR and an `os_installer` directory with the image to update a USB key to install the OS to the NVME drive.
+
+## Quick Start - Booting
+
+**TBD**:  Need to document flashing pre-compiled binaries and reference binaries from the build process
