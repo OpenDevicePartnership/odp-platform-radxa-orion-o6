@@ -4,7 +4,7 @@ This repository is designed to be a demonstration of the Open Device Partnership
 
 ## Folder Structure and Content
 
-The repository contains all resources necessary to produce a firmware binary image and an os image that can be used to boot the platform.  The top-level directories are as follows:
+The repository contains all resources necessary to produce a firmware binary image and an OS image that can be used to boot the platform.  The top-level directories are as follows:
 
 - Dot-prefixed (`.devcontainer/`, `.github/`, etc.)
 
@@ -12,7 +12,7 @@ The repository contains all resources necessary to produce a firmware binary ima
 
 - `common/`
 
-   This folder contains tools, documentation, and code files shared by 1 or more of the folders that produce artifacts.  They may be directly linked by the build process of either a binary or image artifact.
+   This folder contains tools, documentation, and code files shared by one or more of the folders that produce artifacts.  They may be directly linked by the build process of either a binary or image artifact.
 
 - `docs`
 
@@ -32,7 +32,7 @@ Since this is a demonstration repository, there is a single build target for con
 
 1) If building in Windows, you will need to install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and open a command window to provide a Linux environment.  If building in Linux, skip to step 2.
 
-   Note:  The WSL file system can be accessed from Windows by using the path `\\wsl.localhost\...` and the Windows drives can be accessed from WSL by using the path `/mnt/<drive letter>/...`.  But every access across that boundary has delays which adds significant compilation time to the build.  It is highly recommended to clone and build all within WSL then use those paths when copying build remnants.
+   Note:  The WSL file system can be accessed from Windows by using the path `\\wsl.localhost\...` and the Windows drives can be accessed from WSL by using the path `/mnt/<drive letter>/...`.  But every access across that boundary has delays that add significant compilation time to the build.  It is highly recommended to clone and build all within WSL then use those paths when copying build remnants.
 
 2) Clone this repository and switch to the root of the directory.
 
@@ -94,4 +94,4 @@ Since this is a demonstration repository, there is a single build target for con
 
 ## Quick Start - Booting
 
-**TBD**:  Need to document flashing pre-compiled binaries and reference binaries from the build process
+**TBD**:  Need to document the final outputs from the build process and how to get them onto the platform
