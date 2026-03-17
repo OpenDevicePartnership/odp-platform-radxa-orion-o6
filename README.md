@@ -16,7 +16,7 @@ The repository contains all resources necessary to produce a firmware binary ima
 
 - `docs`
 
-   This folder contains detailed documentation specific to this repository.  It is intended to supplement the `common/docs/` directory.
+   This folder contains detailed documentation specific to this repository.  It is intended to supplement any documentation from common code submodules.
 
 - `bin-???`
 

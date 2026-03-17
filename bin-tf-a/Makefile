@@ -6,11 +6,10 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
-# Defines typically provided by the parent makefile
-PATH_BUILD_OUTPUT          ?= $(CURDIR)/Build
-PATH_BINS                  ?= $(PATH_BUILD_OUTPUT)
-PATH_COMMON                ?= $(CURDIR)/../common
-export GCC5_AARCH64_PREFIX ?= $(CURDIR)/../tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+# Guard: this makefile must be invoked from the root makefile
+ifndef ODP_PATH_BUILD_OUTPUT
+$(error This makefile must be invoked from the root makefile)
+endif
 
 # Build Targets
 .PHONY: all clean
@@ -22,7 +21,7 @@ all:
 		PLAT=sky1 \
 		SPD=opteed \
 		DEBUG=1 \
-		BUILD_BASE=$(PATH_BUILD_OUTPUT) \
+		BUILD_BASE=$(ODP_PATH_BUILD_OUTPUT)/tf-a \
 		CIX_BOARD=evb \
 		SMP=1 \
 		TRUSTED_BOARD_BOOT=1 \
@@ -31,11 +30,10 @@ all:
 		ROT_KEY=plat/arm/board/common/rotpk/arm_rotprivk_rsa.pem \
 		LDFLAGS="--no-warn-rwx-segments" \
 		bl31
-	mkdir -p $(PATH_BINS)
-	cp -f $(PATH_BUILD_OUTPUT)/sky1/debug/bl31.bin $(PATH_BINS)/
-	cp -f $(PATH_BUILD_OUTPUT)/sky1/debug/bl31/bl31.elf $(PATH_BINS)/
+	cp -f $(ODP_PATH_BUILD_OUTPUT)/tf-a/sky1/debug/bl31.bin $(PATH_BINS)/
+	cp -f $(ODP_PATH_BUILD_OUTPUT)/tf-a/sky1/debug/bl31/bl31.elf $(PATH_BINS)/
 
 clean:
 	rm -f $(PATH_BINS)/bl31.bin
 	rm -f $(PATH_BINS)/bl31.elf
-	rm -rf $(PATH_BUILD_OUTPUT)
+	rm -rf $(ODP_PATH_BUILD_OUTPUT)/tf-a
