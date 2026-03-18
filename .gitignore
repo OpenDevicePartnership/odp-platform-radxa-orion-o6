@@ -1,4 +1,4 @@
 /Build/
-/common/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/
+/common/tools/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf/
 **/target
 **/Cargo.lock
