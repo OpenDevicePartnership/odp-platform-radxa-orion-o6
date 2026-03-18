@@ -16,10 +16,10 @@ endif
 
 all:
 	rm -rf $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config
-	cp -rf $(PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/mem_config/ $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config/
+	cp -rf $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/mem_config/ $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config/
 	$(MAKE) -C $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config
-	mv $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config/memory_config.bin $(PATH_BINS)/
+	mv $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config/memory_config.bin $(ODP_PATH_BINS_OUTPUT)/
 
 clean:
-	rm -f $(PATH_BINS)/memory_config.bin
+	rm -f $(ODP_PATH_BINS_OUTPUT)/memory_config.bin
 	rm -rf $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config

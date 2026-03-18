@@ -15,7 +15,7 @@ endif
 RUST_OUT_DIR               := $(ODP_PATH_BUILD_OUTPUT)/uefi/Rust
 SHELL                      := /bin/bash
 export WORKSPACE           := $(CURDIR)
-export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(PATH_COMMON)/edk2-platforms-cix-odp:$(PATH_COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT_DIR)
+export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMON)/edk2-platforms-cix-odp:$(ODP_PATH_COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT_DIR)
 export IASL_PREFIX         := $(CURDIR)/tools/acpica/generate/unix/bin/
 
 # Build Targets
@@ -42,7 +42,7 @@ all: PatinaDxeCore_ru
 		-D VARIABLE_TYPE=SPI \
 		-D STANDARD_MM=TRUE \
 		-D SYSTEM_LOADER=common
-	cp $(ODP_PATH_BUILD_OUTPUT)/uefi/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(PATH_BINS)/
+	cp $(ODP_PATH_BUILD_OUTPUT)/uefi/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(ODP_PATH_BINS_OUTPUT)/
 
 # Build targets for each rust module, will verify formatting and check for warnings as errors
 PatinaDxeCore_ru:
@@ -51,7 +51,7 @@ PatinaDxeCore_ru:
 	cd platform/Drivers/PatinaDxeCore_ru && cargo build --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru
 
 clean:
-	rm -f $(PATH_BINS)/SKY1_BL33_UEFI.fd
+	rm -f $(ODP_PATH_BINS_OUTPUT)/SKY1_BL33_UEFI.fd
 	rm -rf $(ODP_PATH_BUILD_OUTPUT)/uefi
 	$(MAKE) -C edk2/BaseTools clean
 	$(MAKE) -C tools/acpica clean
