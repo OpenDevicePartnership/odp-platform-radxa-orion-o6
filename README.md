@@ -34,10 +34,10 @@ Since this is a demonstration repository, there is a single configuration but th
 
    Note:  The WSL file system can be accessed from Windows by using the path `\\wsl.localhost\...` and the Windows drives can be accessed from WSL by using the path `/mnt/<drive letter>/...`.  But every access across that boundary has delays that can add significant compilation time to the build.  It is highly recommended to clone and build within WSL then use those paths when copying build remnants.
 
-2) Clone this repository and switch to the root of the directory.
+2) Clone this repository making sure to pull all submodule code and switch to the root of the directory.
 
    ``` bash
-   git clone https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6.git
+   git clone --recurse-submodules https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6.git
    cd odp-platform-radxa-orion-o6
    ```
 
