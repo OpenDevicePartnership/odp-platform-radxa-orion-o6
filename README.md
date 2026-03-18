@@ -1,20 +1,22 @@
 # ODP Platform — Radxa Orion O6
 
-This repository is designed to be a demonstration of the Open Device Partnership firmware and software solutions.  It is based on a modified community version of the [CIX P1 BIOS](https://github.com/cixtech/bios) that boots the Radxa Orion O6 hardware and includes features and optimizations from the ODP organization.
+[![Build](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/build.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/build.yml)
+[![Test](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/test.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/test.yml)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
+> Open-source firmware for the Radxa Orion O6, built on the [CIX P1 BIOS](https://github.com/cixtech/bios) with ODP optimizations.
 
 ## Folder Structure and Content
 
-The repository contains all resources necessary to produce a firmware binary image and an OS image that can be used to boot the platform.  The top-level directories are as follows:
+The repository contains all resources necessary to produce a firmware binary image and an OS image that can be used to boot the platform.  The top-level directories are organized as follows:
 
-- Dot-prefixed (`.devcontainer/`, `.github/`, etc.) - Infrastructure and tooling for the development environment, CI/CD pipelines, etc.  No code that is part of the final images will reside in these folders.
-
-- `common/` - Tools, documentation, and code files shared by one or more of the folders that produce artifacts.
-
-- `docs` - Detailed documentation specific to this repository intended to supplement any common documentation.
-
-- `bin-???` - Directories prefixed with `bin-` produce a single binary artifact that will be used when creating the final firmware binary image.  None will link code from another bin directory, but may link code in a common directory or require an artifact from a bin directory.
-
-- `image-???` - Directories prefixed with `image-` contain scripts and resources to stitch artifacts into final images that can be used to boot the system.
+| Directory | Purpose |
+| --- | --- |
+| `.devcontainer/`, `.github/`, etc. | Infrastructure and tooling for the development environment, CI/CD pipelines, etc.  No code that is part of the final images will reside in these folders. |
+| `common/` | Tools, documentation, and code files shared by one or more of the folders that produce artifacts. |
+| `docs/` | Detailed documentation specific to this repository intended to supplement any common documentation. |
+| `bin-*/` | Each produces a single binary artifact for the firmware image.  None will link code from another bin directory, but may link code in a common directory or require an artifact from a bin directory. |
+| `image-*/` | Scripts and resources to stitch artifacts into final images that can be used to boot the system. |
 
 ## Quick Start - Building
 
