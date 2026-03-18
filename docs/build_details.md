@@ -85,6 +85,8 @@ They assume you are running Ubuntu 24.04 and the current working directory is th
    rm arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz
    ```
 
+   Note: Version 13.2.rel1 uses an embedded directory name of 13.2.Rel1.
+
 4. Install the Rust toolchain
 
    ``` bash

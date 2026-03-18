@@ -20,7 +20,7 @@ The repository contains all resources necessary to produce a firmware binary ima
 
 ## Quick Start - Building
 
-This is a demonstration repository that has a single configuration, but does support DEBUG and RELEASE targets.  The simplest way to pull the code and compile is to follow the flow used by the CI/CD GitHub action in a Linux container.  For other options, please refer to the [Build Details](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/main/docs/build_details.md) document.
+This is a demonstration repository that has a single configuration, but does support DEBUG and RELEASE targets.  The simplest way to pull the code and compile is to follow the flow used by the CI/CD GitHub action in a Linux container.  For other options, please refer to the [Build Details](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/HEAD/docs/build_details.md) document.
 
 1) If building in Windows, install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and open a command window to provide a Linux environment.  If building in Linux, skip to step 2.
 

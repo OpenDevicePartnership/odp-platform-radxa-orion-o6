@@ -23,10 +23,10 @@ ARG RUSTUP_INIT_SHA256=20a06e644b0d9bd2fbdbfd52d42540bdde820ea7df86e92e533c073da
 ARG USERNAME=vscode
 
 # Container environment variables
-ENV GCC5_AARCH64_PREFIX=/common/tools/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+ENV GCC5_AARCH64_PREFIX=/common/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
-    PATH="/usr/local/cargo/bin:/common/tools/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf/bin:${PATH}"
+    PATH="/usr/local/cargo/bin:/common/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin:${PATH}"
 
 # Using a single RUN command to minimize layers and ensure cleanup
 RUN \
