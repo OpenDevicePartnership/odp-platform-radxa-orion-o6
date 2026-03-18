@@ -53,7 +53,7 @@ Since this is a demonstration repository, there is a single configuration but th
       .
    ```
 
-5) Start the container in detached mode so that it is waiting for an execute command and its workspace is mapped to the current directory.  Note that the conntainer's default in the Dockerfile is to sleep infinitely waiting for an exec command.
+5) Start the container in detached mode so that it is waiting for an execute command and its workspace is mapped to the current directory.  Note that the container's default in the Dockerfile is to sleep infinitely waiting for an exec command.
 
    ``` bash
    podman run \

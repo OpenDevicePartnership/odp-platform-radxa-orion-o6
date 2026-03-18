@@ -21,4 +21,5 @@ all:
 	mv $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config/memory_config.bin $(PATH_BINS)/
 
 clean:
+	rm -f $(PATH_BINS)/memory_config.bin
 	rm -rf $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config
