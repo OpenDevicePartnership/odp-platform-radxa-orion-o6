@@ -23,10 +23,10 @@ ARG RUSTUP_INIT_SHA256=20a06e644b0d9bd2fbdbfd52d42540bdde820ea7df86e92e533c073da
 ARG USERNAME=vscode
 
 # Container environment variables
-ENV GCC5_AARCH64_PREFIX=/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+ENV GCC5_AARCH64_PREFIX=/common/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
-    PATH="/usr/local/cargo/bin:/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin:${PATH}"
+    PATH="/usr/local/cargo/bin:/common/tools/arm-gnu-toolchain-13.2.Rel1-x86_64-aarch64-none-elf/bin:${PATH}"
 
 # Using a single RUN command to minimize layers and ensure cleanup
 RUN \
@@ -60,14 +60,17 @@ RUN \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     #
     # Download the bare metal ARM GNU toolchain and verify its integrity
-    && mkdir -p /tools \
-    && cd /tools \
+    && mkdir -p /common/tools \
+    && cd /common/tools \
     && wget --progress=bar:force https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz \
     && echo "${GCC_TOOLCHAIN_SHA256}  arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz" | sha256sum -c - \
     && tar xf arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz \
     && rm arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz \
     && aarch64-none-elf-gcc --version \
     && echo "Toolchain installed successfully at: $(which aarch64-none-elf-gcc)" \
+    #
+    # Install Python dependencies
+    && pip3 install --break-system-packages cryptography \
     #
     # Download, install, and verify integrity of the Rust toolchain
     && curl --proto '=https' --tlsv1.2 -sSf \

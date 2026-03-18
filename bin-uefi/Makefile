@@ -19,7 +19,7 @@ export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMO
 export IASL_PREFIX         := $(CURDIR)/tools/acpica/generate/unix/bin/
 
 # Build Targets
-.PHONY: all PatinaDxeCore_ru clean test
+.PHONY: all PatinaDxeCore_ru distclean test
 
 all: PatinaDxeCore_ru
 

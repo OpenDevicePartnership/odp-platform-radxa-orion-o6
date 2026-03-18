@@ -12,7 +12,7 @@ $(error This makefile must be invoked from the root makefile)
 endif
 
 # Build Targets
-.PHONY: stitch-all pre-built bootloader2 bootloader3 clean
+.PHONY: stitch-all pre-built bootloader2 bootloader3
 
 stitch-all: bootloader2 bootloader3
 	cd $(ODP_PATH_BINS_OUTPUT) && \

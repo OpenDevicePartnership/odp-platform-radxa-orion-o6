@@ -78,7 +78,8 @@ They assume you are running Ubuntu 24.04 and the current working directory is th
    If using WSL, do not extract the files in a Windows environment then copy to the `//wsl.localhost` path since that results in losing specific file attributes Linux relies upon.
 
    ``` bash
-   cd tools
+   mkdir -p common/tools
+   cd common/tools
    wget https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz
    tar xf arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz
    rm arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz

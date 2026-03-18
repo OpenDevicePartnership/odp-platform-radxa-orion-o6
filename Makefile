@@ -16,7 +16,7 @@ export ODP_PATH_OEM_PRIVATE_KEY    ?= $(ODP_PATH_PACKAGE_TOOL)/Keys/oem_privatek
 export ODP_PATH_PRE_COMPILED_BINS  ?= $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Firmwares
 
 # Build targets are all PHONY and rely on the module's makefiles to determine if a build is necessary
-.PHONY: all pre-built uefi tee tf-a mem_config pm_config image-bootchain clean test
+.PHONY: all pre-built uefi tee tf-a mem_config pm_config image-bootchain clean distclean test
 
 # Targets for 'all' are order specific.  Pre-built first, binary builds next to over-write the pre-builts if they
 # exist, then the final image stitching.

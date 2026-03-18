@@ -12,7 +12,7 @@ $(error This makefile must be invoked from the root makefile)
 endif
 
 # Build Targets
-.PHONY: all clean
+.PHONY: all
 
 all:
 	rm -rf $(ODP_PATH_BUILD_OUTPUT)/bin-pm_config

@@ -12,7 +12,7 @@ $(error This makefile must be invoked from the root makefile)
 endif
 
 # Build Targets
-.PHONY: all clean
+.PHONY: all
 
 all:
 	$(MAKE) -C arm-trusted-firmware-cix-odp \
