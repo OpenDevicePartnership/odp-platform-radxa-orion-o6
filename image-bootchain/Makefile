@@ -79,8 +79,3 @@ bootloader3:
 		--nt-fw-cert $(ODP_PATH_BINS_OUTPUT)/nt_fw_cert.crt \
 		--nt-fw $(ODP_PATH_BINS_OUTPUT)/SKY1_BL33_UEFI.fd \
 		$(ODP_PATH_BINS_OUTPUT)/bootloader3.img
-
-clean:
-	rm -f $(ODP_PATH_BINS_OUTPUT)/bootloader2.img
-	rm -f $(ODP_PATH_BINS_OUTPUT)/bootloader3.img
-	rm -rf $(ODP_PATH_BUILD_OUTPUT)

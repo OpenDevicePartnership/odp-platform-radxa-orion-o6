@@ -20,6 +20,3 @@ all:
 	$(MAKE) -C $(ODP_PATH_BUILD_OUTPUT)/bin-pm_config
 	mv $(ODP_PATH_BUILD_OUTPUT)/bin-pm_config/csu_pm_config.bin $(ODP_PATH_BINS_OUTPUT)/
 
-clean:
-	rm -f $(ODP_PATH_BINS_OUTPUT)/csu_pm_config.bin
-	rm -rf $(ODP_PATH_BUILD_OUTPUT)/bin-pm_config

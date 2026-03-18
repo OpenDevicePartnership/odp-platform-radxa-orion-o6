@@ -28,6 +28,3 @@ all:
 		LDFLAGS="--no-warn-rwx-segments"
 	cp -rf $(ODP_PATH_BUILD_OUTPUT)/bin-tee/core/tee-raw.bin $(ODP_PATH_BINS_OUTPUT)/
 
-clean:
-	rm -f $(ODP_PATH_BINS_OUTPUT)/tee-raw.bin
-	rm -rf $(ODP_PATH_BUILD_OUTPUT)/bin-tee

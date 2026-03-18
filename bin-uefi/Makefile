@@ -50,9 +50,8 @@ PatinaDxeCore_ru:
 	cd platform/Drivers/PatinaDxeCore_ru && cargo clippy --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru -- -D warnings
 	cd platform/Drivers/PatinaDxeCore_ru && cargo build --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru
 
-clean:
-	rm -f $(ODP_PATH_BINS_OUTPUT)/SKY1_BL33_UEFI.fd
-	rm -rf $(ODP_PATH_BUILD_OUTPUT)/uefi
+# Specific clean to remove remnants from tools that don't have a way to put remnants in the Build directory
+distclean:
 	$(MAKE) -C edk2/BaseTools clean
 	$(MAKE) -C tools/acpica clean
 

@@ -44,9 +44,13 @@ pm_config:
 image-bootchain:
 	$(MAKE) -C image-bootchain stitch-all
 
-# Each module's make should not leave any remnant outside the 'Build' directory
+# Each module's make should not leave any remnant outside the 'Build' directory so a normal clean just removes './Build'
 clean:
 	rm -rf $(ODP_PATH_BUILD_OUTPUT)
+
+# Distclean is a more thorough clean that targets modules that might have things like build tool remnants
+distclean: clean
+	$(MAKE) -C bin-uefi distclean
 
 # Each module should have its own test target
 test:

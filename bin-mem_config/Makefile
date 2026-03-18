@@ -20,6 +20,3 @@ all:
 	$(MAKE) -C $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config
 	mv $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config/memory_config.bin $(ODP_PATH_BINS_OUTPUT)/
 
-clean:
-	rm -f $(ODP_PATH_BINS_OUTPUT)/memory_config.bin
-	rm -rf $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config

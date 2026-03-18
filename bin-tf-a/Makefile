@@ -32,8 +32,3 @@ all:
 		bl31
 	cp -f $(ODP_PATH_BUILD_OUTPUT)/tf-a/sky1/debug/bl31.bin $(ODP_PATH_BINS_OUTPUT)/
 	cp -f $(ODP_PATH_BUILD_OUTPUT)/tf-a/sky1/debug/bl31/bl31.elf $(ODP_PATH_BINS_OUTPUT)/
-
-clean:
-	rm -f $(ODP_PATH_BINS_OUTPUT)/bl31.bin
-	rm -f $(ODP_PATH_BINS_OUTPUT)/bl31.elf
-	rm -rf $(ODP_PATH_BUILD_OUTPUT)/tf-a
