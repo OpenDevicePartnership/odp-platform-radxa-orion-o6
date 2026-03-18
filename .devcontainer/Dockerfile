@@ -60,6 +60,7 @@ RUN \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     #
     # Download the bare metal ARM GNU toolchain and verify its integrity
+    # WARNING, the compressed file uses the name 13.2.rel1 but the extracted folder uses 13.2.Rel1
     && mkdir -p /common/tools \
     && cd /common/tools \
     && wget --progress=bar:force https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz \
