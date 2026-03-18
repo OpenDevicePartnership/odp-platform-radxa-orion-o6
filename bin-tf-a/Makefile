@@ -21,7 +21,7 @@ all:
 		PLAT=sky1 \
 		SPD=opteed \
 		DEBUG=1 \
-		BUILD_BASE=$(ODP_PATH_BUILD_OUTPUT)/tf-a \
+		BUILD_BASE=$(ODP_PATH_BUILD_OUTPUT)/bin-tf-a \
 		CIX_BOARD=evb \
 		SMP=1 \
 		TRUSTED_BOARD_BOOT=1 \
@@ -30,5 +30,7 @@ all:
 		ROT_KEY=plat/arm/board/common/rotpk/arm_rotprivk_rsa.pem \
 		LDFLAGS="--no-warn-rwx-segments" \
 		bl31
-	cp -f $(ODP_PATH_BUILD_OUTPUT)/tf-a/sky1/debug/bl31.bin $(ODP_PATH_BINS_OUTPUT)/
-	cp -f $(ODP_PATH_BUILD_OUTPUT)/tf-a/sky1/debug/bl31/bl31.elf $(ODP_PATH_BINS_OUTPUT)/
+
+	mkdir -p $(ODP_PATH_BINS_OUTPUT)
+	cp -f $(ODP_PATH_BUILD_OUTPUT)/bin-tf-a/sky1/debug/bl31.bin $(ODP_PATH_BINS_OUTPUT)/
+	cp -f $(ODP_PATH_BUILD_OUTPUT)/bin-tf-a/sky1/debug/bl31/bl31.elf $(ODP_PATH_BINS_OUTPUT)/

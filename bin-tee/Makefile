@@ -26,5 +26,7 @@ all:
 		CFG_ARM64_core=y \
 		CFG_USER_TA_TARGETS=ta_arm64 \
 		LDFLAGS="--no-warn-rwx-segments"
-	cp -rf $(ODP_PATH_BUILD_OUTPUT)/bin-tee/core/tee-raw.bin $(ODP_PATH_BINS_OUTPUT)/
+
+	mkdir -p $(ODP_PATH_BINS_OUTPUT)
+	cp -f $(ODP_PATH_BUILD_OUTPUT)/bin-tee/core/tee-raw.bin $(ODP_PATH_BINS_OUTPUT)/
 
