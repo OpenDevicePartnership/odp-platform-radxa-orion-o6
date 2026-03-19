@@ -1,17 +1,17 @@
 [submodule "Tianocore_EDKII"]
-	path = uefi/edk2
+	path = bin-uefi/edk2
 	url = https://github.com/cixtech/edk2.git
 [submodule "Trusted_Execution_Environment"]
-	path = tee/op-tee-cix-odp
+	path = bin-tee/op-tee-cix-odp
 	url = https://github.com/cixtech/cix_opensource__tee__op-tee.git
 [submodule "Trusted_Firmware-A"]
-	path = tf-a/arm-trusted-firmware-cix-odp
+	path = bin-tf-a/arm-trusted-firmware-cix-odp
 	url = https://github.com/cixtech/cix_opensource__arm-trusted-firmware.git
 [submodule "ACPI_Component_Architecture"]
-	path = uefi/tools/acpica
+	path = bin-uefi/tools/acpica
 	url = https://github.com/acpica/acpica.git
 [submodule "Mbed_TLS"]
-	path = tf-a/mbedtls
+	path = bin-tf-a/mbedtls
 	url = https://github.com/Mbed-TLS/mbedtls.git
 [submodule "CIX_Silicon_Package1"]
 	path = common/edk2-platforms-cix-odp
@@ -20,5 +20,5 @@
 	path = common/edk2-non-osi-cix-odp
 	url = https://github.com/cixtech/edk2-non-osi.git
 [submodule "cix_package-tool"]
-	path = tools/cix_package-tool
+	path = image-bootchain/cix_package-tool
 	url = https://github.com/cixtech/cix_package-tool.git

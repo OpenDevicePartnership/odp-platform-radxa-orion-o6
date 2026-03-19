@@ -63,8 +63,8 @@ mod tests {
 
         let mut candidates: Vec<PathBuf> = Vec::new();
 
-        // Prefer resolving relative to the workspace root (parent of tests/, i.e. two levels up).
-        if let Some(workspace_root) = manifest_dir.parent().and_then(|p| p.parent()) {
+        // Prefer resolving relative to the workspace root (common/tests/acpi -> three levels up).
+        if let Some(workspace_root) = manifest_dir.parent().and_then(|p| p.parent()).and_then(|p| p.parent()) {
             candidates.push(workspace_root.join(ACPI_SUBMODULE_PATH));
         }
 

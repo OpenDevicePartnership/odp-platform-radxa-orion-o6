@@ -43,14 +43,12 @@ jobs:
             chown -R 1000:1000 /workspace
 
       - name: Build firmware
-        # Run via entrypoint.sh so all necessary steps are executed
-        # before the build (entrypoint.sh passes arguments to exec).
         run: |
           docker run --rm \
             -w /workspace \
             -v "${{ github.workspace }}:/workspace" \
             odp-orion-o6-build \
-            /entrypoint.sh make all
+            make all
 
   build-podman:
     runs-on: ubuntu-latest
@@ -74,11 +72,9 @@ jobs:
             chown -R 1000:1000 /workspace
 
       - name: Build firmware
-        # Run via entrypoint.sh so all necessary steps are executed
-        # before the build (entrypoint.sh passes arguments to exec).
         run: |
           podman run --rm \
             -w /workspace \
             -v "${{ github.workspace }}:/workspace" \
             odp-orion-o6-build \
-            /entrypoint.sh make all
+            make all
