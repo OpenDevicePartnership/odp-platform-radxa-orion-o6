@@ -102,7 +102,7 @@ mod tests {
             .unwrap_or_else(|e| panic!("Failed to read {}: {e}", path.display()))
     }
 
-    /// Extract the body of a `<keyword>(<name>){ ... }` block from ASL source,
+    /// Extract the full `<keyword>(<name>){ ... }` block from ASL source,
     /// using brace-depth tracking to find the matching closing brace.
     /// Returns the full block including the prefix and braces.
     /// Panics if the block is not found.
