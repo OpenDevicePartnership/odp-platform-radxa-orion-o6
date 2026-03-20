@@ -64,7 +64,11 @@ mod tests {
         let mut candidates: Vec<PathBuf> = Vec::new();
 
         // Prefer resolving relative to the workspace root (common/tests/acpi -> three levels up).
-        if let Some(workspace_root) = manifest_dir.parent().and_then(|p| p.parent()).and_then(|p| p.parent()) {
+        if let Some(workspace_root) = manifest_dir
+            .parent()
+            .and_then(|p| p.parent())
+            .and_then(|p| p.parent())
+        {
             candidates.push(workspace_root.join(ACPI_SUBMODULE_PATH));
         }
 
@@ -138,51 +142,10 @@ mod tests {
         rest[..end].to_string()
     }
 
-    /// Extract the body of a `Device(<name>){ ... }` block from ASL source,
-    /// using brace-depth tracking to find the matching closing brace.
-    /// Returns the full block including the `Device(...)` prefix and braces.
-    /// Panics if the device is not found.
+    /// Extract the body of a `Device(<name>){ ... }` block from ASL source.
+    /// Convenience wrapper around [`extract_named_block`] with `keyword = "Device"`.
     fn extract_device_block(source: &str, device_name: &str) -> String {
-        // Match "Device(NAME)" or "Device (NAME)" with optional whitespace.
-        // NOTE: This initial search uses raw string matching, so a Device()
-        // reference inside a comment could produce a false positive. This is
-        // acceptable for the current ASL files.
-        let patterns = [
-            format!("Device({})", device_name),
-            format!("Device ({})", device_name),
-        ];
-        let start = patterns
-            .iter()
-            .filter_map(|p| source.find(p))
-            .min()
-            .unwrap_or_else(|| panic!("Device({}) not found in source", device_name));
-
-        // Find the opening brace after Device(NAME)
-        let rest = &source[start..];
-        let open_brace = rest
-            .find('{')
-            .unwrap_or_else(|| panic!("No opening brace after Device({})", device_name));
-
-        // Walk forward matching braces using a logos lexer so that braces
-        // inside comments and string literals are ignored.
-        let mut depth = 0u32;
-        let mut end = 0;
-        let mut lexer = AslToken::lexer(&rest[open_brace..]);
-        while let Some(token) = lexer.next() {
-            match token {
-                Ok(AslToken::OpenBrace) => depth += 1,
-                Ok(AslToken::CloseBrace) => {
-                    depth -= 1;
-                    if depth == 0 {
-                        end = open_brace + lexer.span().end; // include the closing brace
-                        break;
-                    }
-                }
-                _ => {}
-            }
-        }
-        assert!(end > 0, "Unmatched braces in Device({})", device_name);
-        rest[..end].to_string()
+        extract_named_block(source, "Device", device_name)
     }
 
     // -----------------------------------------------------------------------
@@ -213,8 +176,6 @@ mod tests {
 
     mod hardware_monitor {
         use super::{extract_device_block, read_asl};
-        #[allow(unused_imports)]
-        use super::extract_named_block;
         use std::sync::OnceLock;
 
         /// Cached extraction of the Device(HWMN) block from HardwareMonitor.asl.
@@ -306,9 +267,7 @@ mod tests {
 
             fn device_block() -> &'static str {
                 static CACHE: OnceLock<String> = OnceLock::new();
-                CACHE.get_or_init(|| {
-                    extract_device_block(read_thermal_source(), "TMPT")
-                })
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "TMPT"))
             }
 
             #[test]
@@ -323,7 +282,10 @@ mod tests {
             #[test]
             fn has_hid() {
                 let src = device_block();
-                assert!(src.contains("MSFT000A"), "TMPT device must have HID MSFT000A");
+                assert!(
+                    src.contains("MSFT000A"),
+                    "TMPT device must have HID MSFT000A"
+                );
             }
 
             #[test]
@@ -364,9 +326,7 @@ mod tests {
 
             fn device_block() -> &'static str {
                 static CACHE: OnceLock<String> = OnceLock::new();
-                CACHE.get_or_init(|| {
-                    extract_device_block(read_thermal_source(), "CIO1")
-                })
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "CIO1"))
             }
 
             #[test]
@@ -381,7 +341,10 @@ mod tests {
             #[test]
             fn has_hid() {
                 let src = device_block();
-                assert!(src.contains("MSFT000B"), "CIO1 device must have HID MSFT000B");
+                assert!(
+                    src.contains("MSFT000B"),
+                    "CIO1 device must have HID MSFT000B"
+                );
             }
 
             #[test]
@@ -413,9 +376,7 @@ mod tests {
 
             fn device_block() -> &'static str {
                 static CACHE: OnceLock<String> = OnceLock::new();
-                CACHE.get_or_init(|| {
-                    extract_device_block(read_thermal_source(), "MPCT")
-                })
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "MPCT"))
             }
 
             #[test]
@@ -430,7 +391,10 @@ mod tests {
             #[test]
             fn has_hid() {
                 let src = device_block();
-                assert!(src.contains("MSFT000D"), "MPCT device must have HID MSFT000D");
+                assert!(
+                    src.contains("MSFT000D"),
+                    "MPCT device must have HID MSFT000D"
+                );
             }
 
             #[test]
@@ -502,9 +466,7 @@ mod tests {
 
             fn device_block() -> &'static str {
                 static CACHE: OnceLock<String> = OnceLock::new();
-                CACHE.get_or_init(|| {
-                    extract_device_block(read_thermal_source(), "PLCD")
-                })
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "PLCD"))
             }
 
             #[test]
@@ -519,7 +481,10 @@ mod tests {
             #[test]
             fn has_hid() {
                 let src = device_block();
-                assert!(src.contains("MSFT000F"), "PLCD device must have HID MSFT000F");
+                assert!(
+                    src.contains("MSFT000F"),
+                    "PLCD device must have HID MSFT000F"
+                );
             }
 
             #[test]
@@ -542,9 +507,7 @@ mod tests {
 
             fn device_block() -> &'static str {
                 static CACHE: OnceLock<String> = OnceLock::new();
-                CACHE.get_or_init(|| {
-                    extract_device_block(read_thermal_source(), "MPSC")
-                })
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "MPSC"))
             }
 
             #[test]
@@ -559,7 +522,10 @@ mod tests {
             #[test]
             fn has_hid() {
                 let src = device_block();
-                assert!(src.contains("MSFT0010"), "MPSC device must have HID MSFT0010");
+                assert!(
+                    src.contains("MSFT0010"),
+                    "MPSC device must have HID MSFT0010"
+                );
             }
 
             #[test]
@@ -582,9 +548,7 @@ mod tests {
 
             fn device_block() -> &'static str {
                 static CACHE: OnceLock<String> = OnceLock::new();
-                CACHE.get_or_init(|| {
-                    extract_device_block(read_thermal_source(), "MPSI")
-                })
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "MPSI"))
             }
 
             #[test]
@@ -599,7 +563,10 @@ mod tests {
             #[test]
             fn has_hid() {
                 let src = device_block();
-                assert!(src.contains("MSFT0011"), "MPSI device must have HID MSFT0011");
+                assert!(
+                    src.contains("MSFT0011"),
+                    "MPSI device must have HID MSFT0011"
+                );
             }
 
             #[test]
@@ -622,9 +589,7 @@ mod tests {
 
             fn device_block() -> &'static str {
                 static CACHE: OnceLock<String> = OnceLock::new();
-                CACHE.get_or_init(|| {
-                    extract_device_block(read_thermal_source(), "SOC0")
-                })
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "SOC0"))
             }
 
             #[test]
@@ -639,7 +604,10 @@ mod tests {
             #[test]
             fn has_hid() {
                 let src = device_block();
-                assert!(src.contains("CIXHA037"), "SOC0 device must have HID CIXHA037");
+                assert!(
+                    src.contains("CIXHA037"),
+                    "SOC0 device must have HID CIXHA037"
+                );
             }
 
             #[test]
@@ -662,9 +630,7 @@ mod tests {
 
             fn device_block() -> &'static str {
                 static CACHE: OnceLock<String> = OnceLock::new();
-                CACHE.get_or_init(|| {
-                    extract_device_block(read_thermal_source(), "MTPT")
-                })
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "MTPT"))
             }
 
             #[test]
@@ -679,7 +645,10 @@ mod tests {
             #[test]
             fn has_hid() {
                 let src = device_block();
-                assert!(src.contains("MSFT0012"), "MTPT device must have HID MSFT0012");
+                assert!(
+                    src.contains("MSFT0012"),
+                    "MTPT device must have HID MSFT0012"
+                );
             }
 
             #[test]
