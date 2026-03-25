@@ -57,7 +57,7 @@ clean:
 # Distclean is a more thorough clean that targets modules that might have things like build tool remnants
 distclean: clean
 	$(MAKE) -C bin-uefi distclean
-	rm -rf "$(dirname "$(dirname "${ODP_PATH_GCC5_PREFIX}")")"
+	rm -rf "$$(dirname "$$(dirname "$(ODP_PATH_GCC5_PREFIX)")")"
 
 # Each module should have its own test target
 test:

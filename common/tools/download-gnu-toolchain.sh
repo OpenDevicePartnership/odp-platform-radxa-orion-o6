@@ -27,11 +27,11 @@ set -e
 #    GNU_TOOLCHAIN_PATH   = $(ODP_PATH_COMMON)/tools/gnu-toolchain
 GNU_TOOLCHAIN_PATH="$(dirname "$(dirname "${ODP_PATH_GCC5_PREFIX}")")"
 
-# On any error during the download phase, this message will be displayed to show how they can manually download
-error_exit() {
+# On any error during the download phase, display how to manually download
+download_error() {
     echo "ERROR: Failed to download and extract the GNU toolchain"
     echo ""
-    echo "If your environment does not have access to the internet, the image can be downloaded manually:"
+    echo "If your environment does not have access to the internet, the archive can be downloaded manually:"
     echo "  URL:  ${GCC_URL}"
     echo ""
     echo "Then decompressed to the proper directory:"
@@ -42,11 +42,10 @@ error_exit() {
 
 # Download the package if the directory does not exist
 if [ ! -d "${GNU_TOOLCHAIN_PATH}" ]; then
-    trap error_exit ERR
-
-    mkdir -p "${GNU_TOOLCHAIN_PATH}"
+    trap download_error ERR
 
     # Download the compressed archive and verify the sha256 hash
+    mkdir -p "${GNU_TOOLCHAIN_PATH}"
     wget --progress=bar:force -O "${GNU_TOOLCHAIN_PATH}/${GCC_ARCHIVE}" "${GCC_URL}"
     echo "${GCC_SHA256}  ${GNU_TOOLCHAIN_PATH}/${GCC_ARCHIVE}" | sha256sum -c -
 
@@ -57,15 +56,21 @@ if [ ! -d "${GNU_TOOLCHAIN_PATH}" ]; then
     trap - ERR
 fi
 
-# Run gcc using the environment variable to confirm the defined path and version are correct
-INSTALLED_VERSION=$("${ODP_PATH_GCC5_PREFIX}gcc" --version 2>/dev/null | head -1)
-if echo "${INSTALLED_VERSION}" | grep -q "${GCC_VERSION}"; then
-    echo "Using GNU Toolchain ${GCC_VERSION}"
-else
+# On any error during the version check phase, display how to clean and retry.
+version_error() {
     echo ""
     echo "ERROR: Build requires GNU toolchain version ${GCC_VERSION}."
     echo ""
     echo "  Run 'make distclean' to remove all build remnants then recompile to download the correct version."
     echo ""
     exit 1
-fi
+}
+
+# Run gcc version prompt using the environment variable prefix to confirm the defined path and version are correct
+trap version_error ERR
+INSTALLED_VERSION=$("${ODP_PATH_GCC5_PREFIX}gcc" --version 2>/dev/null | head -1)
+echo "${INSTALLED_VERSION}" | grep -q "${GCC_VERSION}"
+trap - ERR
+
+# Success message
+echo "Using GNU Toolchain ${GCC_VERSION}"
