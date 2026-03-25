@@ -48,7 +48,7 @@ image-bootchain:
 
 # Download the GNU toolchain if not present and verify the correct version is available.
 toolchain:
-	source $(ODP_PATH_COMMON)/tools/download-gnu-toolchain $(ODP_PATH_COMMON)/tools/gnu-toolchain
+	$(ODP_PATH_COMMON)/tools/download-gnu-toolchain.sh
 
 # Each module's make should not leave any remnant outside the 'Build' directory so a normal clean just removes './Build'
 clean:
@@ -57,7 +57,7 @@ clean:
 # Distclean is a more thorough clean that targets modules that might have things like build tool remnants
 distclean: clean
 	$(MAKE) -C bin-uefi distclean
-	rm -rf $(ODP_PATH_COMMON)/tools/gnu-toolchain
+	rm -rf "$(dirname "$(dirname "${ODP_PATH_GCC5_PREFIX}")")"
 
 # Each module should have its own test target
 test:

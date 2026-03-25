@@ -6,7 +6,7 @@ The recommended method for compilation is using a container as outlined in the r
 
 Makefiles are used to build the final output of this repository.  Running `make` or `make all` in the root will invoke each binary and image folder's makefile, create a sub-folder in the `Build` directory named after the corresponding binary or image, and place all build remnants along with the final output in that sub-folder.
 
-Executing `make` copies all pre-compiled binaries first, builds binaries with code files, then stitches the output firmware binary.  The table below describes each target available in the root Makefile.  For example, the command `make tee` will re-compile the tee firmware binary and `make image-bootchain` will re-stitch the full bootchain binary with the new tee binary.
+Executing `make` will download and verify the necessary build tools, collect all pre-compiled binaries, build the platform specific binaries, then stitch the output firmware binary.  The table below describes each target available in the root Makefile.  For example, the command `make tee` will re-compile the tee firmware binary and `make image-bootchain` will re-stitch the full bootchain binary with the new tee binary.
 
 | Command | Description |
 | --- | --- |

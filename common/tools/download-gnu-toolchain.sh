@@ -1,6 +1,7 @@
 #!/bin/bash
-# Script to be 'sourced' in a bash environment to download if not present, then verify the proper version of the GNU
-# toolchain is available.
+# Script to download (if not present) and verify the proper version of the GNU toolchain is available.  It uses the
+# ODP_PATH_GCC5_PREFIX environment variable to determine where the toolchain should be installed and the gcc
+# executable name.
 #
 # ## License
 #
@@ -19,8 +20,12 @@ GCC_SHA256="7fe7b8548258f079d6ce9be9144d2a10bd2bf93b551dafbf20fe7f2e44e014b8"
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# The toolchain's absolute path should be the first parameter passed to the script
-GNU_TOOLCHAIN_PATH="$1"
+# Expectation is that ODP_PATH_GCC5_PREFIX is already set to where the gcc executable will be.  Use that variable data
+# to determine where the toolchain should be installed.
+# Example:
+#    ODP_PATH_GCC5_PREFIX = $(ODP_PATH_COMMON)/tools/gnu-toolchain/bin/aarch64-none-elf-
+#    GNU_TOOLCHAIN_PATH   = $(ODP_PATH_COMMON)/tools/gnu-toolchain
+GNU_TOOLCHAIN_PATH="$(dirname "$(dirname "${ODP_PATH_GCC5_PREFIX}")")"
 
 # On any error during the download phase, this message will be displayed to show how they can manually download
 error_exit() {
