@@ -1,3 +1,4 @@
 /Build/
 **/target
 **/Cargo.lock
+/common/tools/gnu-toolchain/

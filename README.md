@@ -52,6 +52,7 @@ This is a demonstration repository that has a single configuration, but does sup
       --detach \
       --name odp-build \
       --userns=keep-id \
+      --network=host \
       --workdir /workspace \
       --volume "$PWD:/workspace" \
       odp-orion-o6
