@@ -63,10 +63,4 @@ The project's [Dockerfile](https://github.com/OpenDevicePartnership/odp-platform
 
 To set up a native Linux or WSL environment, walk through the Dockerfile and locate sections that have the tag `[Local Build]`.  They document each area necessary to evaluate to properly setup a local build environment.  In most places, the entire section can be just copied and pasted into a Linux environment, but Dockerfiles will chain commands in each instruction section by using `&&` to minimize Docker image layers which is not necessary when installing locally, so each command can be run independently in your shell.
 
-Keep in mind when mirroring commands from the Dockerfile in your local environment:
-
-- Most paths are defined as absolute paths in the container `/common/tools`.  These need to be changed to your environment by using a relative path `./common/tools`, or the proper absolute path `~/<workspace>/common/tools`.
-- The `ARG` values defined near the top of the Dockerfile (URLs, SHA256 checksums, versions) need to be substituted into the actual shell commands when running manually.
-- If running in WSL, extracting archives in a Windows filesystem then moving them to a WSL path will cause the Linux file attributes to be lost.
-
 The other instructions not tagged by `[Local Build]` are strictly for container builds and should not be needed to setup a local environment.
