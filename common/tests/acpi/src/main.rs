@@ -64,7 +64,11 @@ mod tests {
         let mut candidates: Vec<PathBuf> = Vec::new();
 
         // Prefer resolving relative to the workspace root (common/tests/acpi -> three levels up).
-        if let Some(workspace_root) = manifest_dir.parent().and_then(|p| p.parent()).and_then(|p| p.parent()) {
+        if let Some(workspace_root) = manifest_dir
+            .parent()
+            .and_then(|p| p.parent())
+            .and_then(|p| p.parent())
+        {
             candidates.push(workspace_root.join(ACPI_SUBMODULE_PATH));
         }
 
@@ -98,33 +102,26 @@ mod tests {
             .unwrap_or_else(|e| panic!("Failed to read {}: {e}", path.display()))
     }
 
-    /// Extract the body of a `Device(<name>){ ... }` block from ASL source,
+    /// Extract the full `<keyword>(<name>){ ... }` block from ASL source,
     /// using brace-depth tracking to find the matching closing brace.
-    /// Returns the full block including the `Device(...)` prefix and braces.
-    /// Panics if the device is not found.
-    fn extract_device_block(source: &str, device_name: &str) -> String {
-        // Match "Device(NAME)" or "Device (NAME)" with optional whitespace.
-        // NOTE: This initial search uses raw string matching, so a Device()
-        // reference inside a comment could produce a false positive. This is
-        // acceptable for the current ASL files.
+    /// Returns the full block including the prefix and braces.
+    /// Panics if the block is not found.
+    fn extract_named_block(source: &str, keyword: &str, name: &str) -> String {
         let patterns = [
-            format!("Device({})", device_name),
-            format!("Device ({})", device_name),
+            format!("{}({})", keyword, name),
+            format!("{} ({})", keyword, name),
         ];
         let start = patterns
             .iter()
             .filter_map(|p| source.find(p))
             .min()
-            .unwrap_or_else(|| panic!("Device({}) not found in source", device_name));
+            .unwrap_or_else(|| panic!("{}({}) not found in source", keyword, name));
 
-        // Find the opening brace after Device(NAME)
         let rest = &source[start..];
         let open_brace = rest
             .find('{')
-            .unwrap_or_else(|| panic!("No opening brace after Device({})", device_name));
+            .unwrap_or_else(|| panic!("No opening brace after {}({})", keyword, name));
 
-        // Walk forward matching braces using a logos lexer so that braces
-        // inside comments and string literals are ignored.
         let mut depth = 0u32;
         let mut end = 0;
         let mut lexer = AslToken::lexer(&rest[open_brace..]);
@@ -134,15 +131,21 @@ mod tests {
                 Ok(AslToken::CloseBrace) => {
                     depth -= 1;
                     if depth == 0 {
-                        end = open_brace + lexer.span().end; // include the closing brace
+                        end = open_brace + lexer.span().end;
                         break;
                     }
                 }
                 _ => {}
             }
         }
-        assert!(end > 0, "Unmatched braces in Device({})", device_name);
+        assert!(end > 0, "Unmatched braces in {}({})", keyword, name);
         rest[..end].to_string()
+    }
+
+    /// Extract the body of a `Device(<name>){ ... }` block from ASL source.
+    /// Convenience wrapper around [`extract_named_block`] with `keyword = "Device"`.
+    fn extract_device_block(source: &str, device_name: &str) -> String {
+        extract_named_block(source, "Device", device_name)
     }
 
     // -----------------------------------------------------------------------
@@ -155,6 +158,15 @@ mod tests {
         assert!(
             ssdt.contains(r#"include("HardwareMonitor.asl")"#),
             "Ssdt.asl must include HardwareMonitor.asl"
+        );
+    }
+
+    #[test]
+    fn ssdt_includes_msft_mptf() {
+        let ssdt = read_asl("Ssdt.asl");
+        assert!(
+            ssdt.contains(r#"include("MSFTThermal.asl")"#),
+            "Ssdt.asl must include MSFTThermal.asl"
         );
     }
 
@@ -231,6 +243,425 @@ mod tests {
                 src.contains("Method(SFPF") || src.contains("Method (SFPF"),
                 "HWMN device must define SFPF (Set Fan Performance) method"
             );
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // MSFTThermal.asl – device node validation
+    // -----------------------------------------------------------------------
+
+    mod msft_mptf {
+        use super::{extract_device_block, extract_named_block, read_asl};
+        use std::sync::OnceLock;
+
+        /// Cached contents of MSFTThermal.asl.
+        fn read_thermal_source() -> &'static str {
+            static CACHE: OnceLock<String> = OnceLock::new();
+            CACHE.get_or_init(|| read_asl("MSFTThermal.asl"))
+        }
+
+        // -- TMPT: Skin temperature sensor (MSFT000A) ----------------------
+
+        mod tmpt {
+            use super::*;
+
+            fn device_block() -> &'static str {
+                static CACHE: OnceLock<String> = OnceLock::new();
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "TMPT"))
+            }
+
+            #[test]
+            fn device_node_exists() {
+                let src = device_block();
+                assert!(
+                    src.contains("Device(TMPT)") || src.contains("Device (TMPT)"),
+                    "MSFTThermal.asl must define Device(TMPT)"
+                );
+            }
+
+            #[test]
+            fn has_hid() {
+                let src = device_block();
+                assert!(
+                    src.contains("MSFT000A"),
+                    "TMPT device must have HID MSFT000A"
+                );
+            }
+
+            #[test]
+            fn has_uid() {
+                let src = device_block();
+                assert!(src.contains("_UID"), "TMPT device must define _UID");
+            }
+
+            #[test]
+            fn has_sta() {
+                let src = device_block();
+                assert!(src.contains("_STA"), "TMPT device must define _STA");
+            }
+
+            #[test]
+            fn has_tmp_method() {
+                let src = device_block();
+                assert!(
+                    src.contains("Method(_TMP") || src.contains("Method (_TMP"),
+                    "TMPT device must define _TMP method"
+                );
+            }
+
+            #[test]
+            fn has_dsm_method() {
+                let src = device_block();
+                assert!(
+                    src.contains("Method(_DSM") || src.contains("Method (_DSM"),
+                    "TMPT device must define _DSM method"
+                );
+            }
+        }
+
+        // -- CIO1: Customized IO Driver (MSFT000B) -------------------------
+
+        mod cio1 {
+            use super::*;
+
+            fn device_block() -> &'static str {
+                static CACHE: OnceLock<String> = OnceLock::new();
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "CIO1"))
+            }
+
+            #[test]
+            fn device_node_exists() {
+                let src = device_block();
+                assert!(
+                    src.contains("Device(CIO1)") || src.contains("Device (CIO1)"),
+                    "MSFTThermal.asl must define Device(CIO1)"
+                );
+            }
+
+            #[test]
+            fn has_hid() {
+                let src = device_block();
+                assert!(
+                    src.contains("MSFT000B"),
+                    "CIO1 device must have HID MSFT000B"
+                );
+            }
+
+            #[test]
+            fn has_uid() {
+                let src = device_block();
+                assert!(src.contains("_UID"), "CIO1 device must define _UID");
+            }
+
+            #[test]
+            fn has_sta() {
+                let src = device_block();
+                assert!(src.contains("_STA"), "CIO1 device must define _STA");
+            }
+
+            #[test]
+            fn has_dsm_method() {
+                let src = device_block();
+                assert!(
+                    src.contains("Method(_DSM") || src.contains("Method (_DSM"),
+                    "CIO1 device must define _DSM method"
+                );
+            }
+        }
+
+        // -- MPCT: MPTFCore Driver (MSFT000D) ------------------------------
+
+        mod mpct {
+            use super::*;
+
+            fn device_block() -> &'static str {
+                static CACHE: OnceLock<String> = OnceLock::new();
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "MPCT"))
+            }
+
+            #[test]
+            fn device_node_exists() {
+                let src = device_block();
+                assert!(
+                    src.contains("Device(MPCT)") || src.contains("Device (MPCT)"),
+                    "MSFTThermal.asl must define Device(MPCT)"
+                );
+            }
+
+            #[test]
+            fn has_hid() {
+                let src = device_block();
+                assert!(
+                    src.contains("MSFT000D"),
+                    "MPCT device must have HID MSFT000D"
+                );
+            }
+
+            #[test]
+            fn has_uid() {
+                let src = device_block();
+                assert!(src.contains("_UID"), "MPCT device must define _UID");
+            }
+
+            #[test]
+            fn has_sta() {
+                let src = device_block();
+                assert!(src.contains("_STA"), "MPCT device must define _STA");
+            }
+        }
+
+        // -- TPOL: Thermal Policy Client (MSFT000E) – ThermalZone ----------
+
+        mod tpol {
+            use super::*;
+
+            fn zone_block() -> &'static str {
+                static CACHE: OnceLock<String> = OnceLock::new();
+                CACHE.get_or_init(|| {
+                    extract_named_block(read_thermal_source(), "THERMALZone", "TPOL")
+                })
+            }
+
+            #[test]
+            fn thermal_zone_exists() {
+                let src = zone_block();
+                assert!(
+                    src.contains("THERMALZone(TPOL)") || src.contains("THERMALZone (TPOL)"),
+                    "MSFTThermal.asl must define ThermalZone(TPOL)"
+                );
+            }
+
+            #[test]
+            fn has_hid() {
+                let src = zone_block();
+                assert!(src.contains("MSFT000E"), "TPOL zone must have HID MSFT000E");
+            }
+
+            #[test]
+            fn has_uid() {
+                let src = zone_block();
+                assert!(src.contains("_UID"), "TPOL zone must define _UID");
+            }
+
+            #[test]
+            fn has_sta() {
+                let src = zone_block();
+                assert!(src.contains("_STA"), "TPOL zone must define _STA");
+            }
+
+            #[test]
+            fn has_dsm_method() {
+                let src = zone_block();
+                assert!(
+                    src.contains("Method(_DSM") || src.contains("Method (_DSM"),
+                    "TPOL zone must define _DSM method"
+                );
+            }
+        }
+
+        // -- PLCD: Power Limit Client Driver (MSFT000F) --------------------
+
+        mod plcd {
+            use super::*;
+
+            fn device_block() -> &'static str {
+                static CACHE: OnceLock<String> = OnceLock::new();
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "PLCD"))
+            }
+
+            #[test]
+            fn device_node_exists() {
+                let src = device_block();
+                assert!(
+                    src.contains("Device (PLCD)") || src.contains("Device(PLCD)"),
+                    "MSFTThermal.asl must define Device(PLCD)"
+                );
+            }
+
+            #[test]
+            fn has_hid() {
+                let src = device_block();
+                assert!(
+                    src.contains("MSFT000F"),
+                    "PLCD device must have HID MSFT000F"
+                );
+            }
+
+            #[test]
+            fn has_uid() {
+                let src = device_block();
+                assert!(src.contains("_UID"), "PLCD device must define _UID");
+            }
+
+            #[test]
+            fn has_sta() {
+                let src = device_block();
+                assert!(src.contains("_STA"), "PLCD device must define _STA");
+            }
+        }
+
+        // -- MPSC: Power Source Client Driver (MSFT0010) -------------------
+
+        mod mpsc {
+            use super::*;
+
+            fn device_block() -> &'static str {
+                static CACHE: OnceLock<String> = OnceLock::new();
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "MPSC"))
+            }
+
+            #[test]
+            fn device_node_exists() {
+                let src = device_block();
+                assert!(
+                    src.contains("Device(MPSC)") || src.contains("Device (MPSC)"),
+                    "MSFTThermal.asl must define Device(MPSC)"
+                );
+            }
+
+            #[test]
+            fn has_hid() {
+                let src = device_block();
+                assert!(
+                    src.contains("MSFT0010"),
+                    "MPSC device must have HID MSFT0010"
+                );
+            }
+
+            #[test]
+            fn has_uid() {
+                let src = device_block();
+                assert!(src.contains("_UID"), "MPSC device must define _UID");
+            }
+
+            #[test]
+            fn has_sta() {
+                let src = device_block();
+                assert!(src.contains("_STA"), "MPSC device must define _STA");
+            }
+        }
+
+        // -- MPSI: Signal IO Client Driver (MSFT0011) ----------------------
+
+        mod mpsi {
+            use super::*;
+
+            fn device_block() -> &'static str {
+                static CACHE: OnceLock<String> = OnceLock::new();
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "MPSI"))
+            }
+
+            #[test]
+            fn device_node_exists() {
+                let src = device_block();
+                assert!(
+                    src.contains("Device(MPSI)") || src.contains("Device (MPSI)"),
+                    "MSFTThermal.asl must define Device(MPSI)"
+                );
+            }
+
+            #[test]
+            fn has_hid() {
+                let src = device_block();
+                assert!(
+                    src.contains("MSFT0011"),
+                    "MPSI device must have HID MSFT0011"
+                );
+            }
+
+            #[test]
+            fn has_uid() {
+                let src = device_block();
+                assert!(src.contains("_UID"), "MPSI device must define _UID");
+            }
+
+            #[test]
+            fn has_sta() {
+                let src = device_block();
+                assert!(src.contains("_STA"), "MPSI device must define _STA");
+            }
+        }
+
+        // -- SOC0: Domain SOC0 (CIXHA037) ----------------------------------
+
+        mod soc0 {
+            use super::*;
+
+            fn device_block() -> &'static str {
+                static CACHE: OnceLock<String> = OnceLock::new();
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "SOC0"))
+            }
+
+            #[test]
+            fn device_node_exists() {
+                let src = device_block();
+                assert!(
+                    src.contains("Device (SOC0)") || src.contains("Device(SOC0)"),
+                    "MSFTThermal.asl must define Device(SOC0)"
+                );
+            }
+
+            #[test]
+            fn has_hid() {
+                let src = device_block();
+                assert!(
+                    src.contains("CIXHA037"),
+                    "SOC0 device must have HID CIXHA037"
+                );
+            }
+
+            #[test]
+            fn has_uid() {
+                let src = device_block();
+                assert!(src.contains("_UID"), "SOC0 device must define _UID");
+            }
+
+            #[test]
+            fn has_sta() {
+                let src = device_block();
+                assert!(src.contains("_STA"), "SOC0 device must define _STA");
+            }
+        }
+
+        // -- MTPT: Power Tracker (MSFT0012) --------------------------------
+
+        mod mtpt {
+            use super::*;
+
+            fn device_block() -> &'static str {
+                static CACHE: OnceLock<String> = OnceLock::new();
+                CACHE.get_or_init(|| extract_device_block(read_thermal_source(), "MTPT"))
+            }
+
+            #[test]
+            fn device_node_exists() {
+                let src = device_block();
+                assert!(
+                    src.contains("Device (MTPT)") || src.contains("Device(MTPT)"),
+                    "MSFTThermal.asl must define Device(MTPT)"
+                );
+            }
+
+            #[test]
+            fn has_hid() {
+                let src = device_block();
+                assert!(
+                    src.contains("MSFT0012"),
+                    "MTPT device must have HID MSFT0012"
+                );
+            }
+
+            #[test]
+            fn has_uid() {
+                let src = device_block();
+                assert!(src.contains("_UID"), "MTPT device must define _UID");
+            }
+
+            #[test]
+            fn has_sta() {
+                let src = device_block();
+                assert!(src.contains("_STA"), "MTPT device must define _STA");
+            }
         }
     }
 }

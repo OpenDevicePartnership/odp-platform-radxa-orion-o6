@@ -17,18 +17,40 @@ export ODP_PATH_OEM_PRIVATE_KEY    := $(ODP_PATH_PACKAGE_TOOL)/Keys/oem_privatek
 export ODP_PATH_PRE_COMPILED_BINS  := $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Firmwares
 export ODP_PATH_GCC5_PREFIX        := $(ODP_PATH_COMMON)/tools/gnu-toolchain/bin/aarch64-none-elf-
 
+# MSFTThermal.asl feature flags – set to 1 to enable the corresponding device nodes.
+# These override the defaults (0) in the submodule file via build-time patching.
+MPTF_THERMAL_ENABLE            ?= 1
+MPTF_BATTERY_AND_PSU_ENABLE    ?= 1
+MPTF_POWERLIMIT_ENABLE         ?= 1
+MPTF_CUSTOMIZE_IO_SIGNALSS_ENABLE ?= 1
+MPTF_POWER_TRACKER             ?= 1
+
+MSFT_THERMAL_ASL := $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/MSFTThermal.asl
+
 # Build targets are all PHONY and rely on the module's makefiles to determine if a build is necessary
-.PHONY: all pre-built uefi tee tf-a mem_config pm_config image-bootchain toolchain clean distclean test
+.PHONY: all pre-built uefi tee tf-a mem_config pm_config image-bootchain clean distclean test patch-msft-mptf
 
 # Targets for 'all' are order specific.  Toolchain first, copy the pre-built binaries, build the platform binaries,
 # then final image stitch.
 all: toolchain pre-built uefi tee tf-a mem_config pm_config image-bootchain
 
+# Patch MSFTThermal.asl feature flags before UEFI build.
+# The sed expressions replace the default #define values with the Make variable values.
+# This modifies the submodule working tree; `make clean` restores the original.
+patch-msft-mptf:
+	@sed -i \
+		-e 's/^\(#define MPTF_THERMAL_ENABLE\) .*/\1 $(MPTF_THERMAL_ENABLE)/' \
+		-e 's/^\(#define MPTF_BATTERY_AND_PSU_ENABLE\) .*/\1 $(MPTF_BATTERY_AND_PSU_ENABLE)/' \
+		-e 's/^\(#define MPTF_POWERLIMIT_ENABLE\) .*/\1 $(MPTF_POWERLIMIT_ENABLE)/' \
+		-e 's/^\(#define MPTF_CUSTOMIZE_IO_SIGNALSS_ENABLE\) .*/\1 $(MPTF_CUSTOMIZE_IO_SIGNALSS_ENABLE)/' \
+		-e 's/^\(#define MPTF_POWER_TRACKER\) .*/\1 $(MPTF_POWER_TRACKER)/' \
+		$(MSFT_THERMAL_ASL)
+
 # Module targets to allow individual module builds
 pre-built:
 	$(MAKE) -C image-bootchain pre-built
 
-uefi:
+uefi: patch-msft-mptf
 	$(MAKE) -C bin-uefi all
 
 tee:
@@ -51,7 +73,10 @@ toolchain:
 	$(ODP_PATH_COMMON)/tools/download-gnu-toolchain.sh
 
 # Each module's make should not leave any remnant outside the 'Build' directory so a normal clean just removes './Build'
+# Also restore MSFTThermal.asl to its committed state in the submodule.
 clean:
+	git -C $(ODP_PATH_COMMON)/edk2-platforms-cix-odp checkout -- \
+		Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/MSFTThermal.asl 2>/dev/null || true
 	rm -rf $(ODP_PATH_BUILD_OUTPUT)
 
 # Distclean is a more thorough clean that targets modules that might have things like build tool remnants
