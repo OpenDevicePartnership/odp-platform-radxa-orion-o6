@@ -28,11 +28,11 @@ MPTF_POWER_TRACKER             ?= 1
 MSFT_THERMAL_ASL := $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/MSFTThermal.asl
 
 # Build targets are all PHONY and rely on the module's makefiles to determine if a build is necessary
-.PHONY: all pre-built uefi tee tf-a mem_config pm_config image-bootchain clean distclean test patch-msft-mptf
+.PHONY: all pre-built uefi tee tf-a mem_config pm_config image-bootchain clean distclean test patch-msft-mptf toolchain
 
 # Targets for 'all' are order specific.  Toolchain first, copy the pre-built binaries, build the platform binaries,
 # then final image stitch.
-all: toolchain pre-built uefi tee tf-a mem_config pm_config image-bootchain
+all: pre-built uefi tee tf-a mem_config pm_config image-bootchain
 
 # Patch MSFTThermal.asl feature flags before UEFI build.
 # The sed expressions replace the default #define values with the Make variable values.
@@ -50,13 +50,13 @@ patch-msft-mptf:
 pre-built:
 	$(MAKE) -C image-bootchain pre-built
 
-uefi: patch-msft-mptf
+uefi: toolchain patch-msft-mptf
 	$(MAKE) -C bin-uefi all
 
-tee:
+tee: toolchain
 	$(MAKE) -C bin-tee all
 
-tf-a:
+tf-a: toolchain
 	$(MAKE) -C bin-tf-a all
 
 mem_config:
