@@ -9,13 +9,13 @@
 SHELL := /bin/bash
 
 # Defines used by this and all child makefiles
-export ODP_PATH_BUILD_OUTPUT       ?= $(CURDIR)/Build
+export ODP_PATH_BUILD_OUTPUT       ?= $(CURDIR)/build
 export ODP_PATH_BINS_OUTPUT        := $(ODP_PATH_BUILD_OUTPUT)/image-bootchain
 export ODP_PATH_COMMON             := $(CURDIR)/common
 export ODP_PATH_PACKAGE_TOOL       := $(CURDIR)/image-bootchain/cix_package-tool
 export ODP_PATH_OEM_PRIVATE_KEY    := $(ODP_PATH_PACKAGE_TOOL)/Keys/oem_privatekey.pem
-export ODP_PATH_PRE_COMPILED_BINS  := $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Firmwares
-export ODP_PATH_GCC5_PREFIX        := $(ODP_PATH_COMMON)/tools/gnu-toolchain/bin/aarch64-none-elf-
+export ODP_PATH_DOWNLOADS          := $(CURDIR)/downloads
+export ODP_PATH_GCC5_PREFIX        := $(ODP_PATH_DOWNLOADS)/gnu-toolchain/bin/aarch64-none-elf-
 
 # MSFTThermal.asl feature flags – set to 1 to enable the corresponding device nodes.
 # These override the defaults (0) in the submodule file via build-time patching.
@@ -72,17 +72,18 @@ image-bootchain:
 toolchain:
 	$(ODP_PATH_COMMON)/tools/download-gnu-toolchain.sh
 
-# Each module's make should not leave any remnant outside the 'Build' directory so a normal clean just removes './Build'
-# Also restore MSFTThermal.asl to its committed state in the submodule.
+# Each module's make should not leave any remnant outside the 'build' directory so a normal clean just removes
+# './build' plus any patches to submodule files.
 clean:
 	git -C $(ODP_PATH_COMMON)/edk2-platforms-cix-odp checkout -- \
 		Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/MSFTThermal.asl 2>/dev/null || true
 	rm -rf $(ODP_PATH_BUILD_OUTPUT)
 
-# Distclean is a more thorough clean that targets modules that might have things like build tool remnants
+# Distclean is a more thorough clean to target modules that might have things like build tool remnants and also
+# removes the './downloads' directory.
 distclean: clean
 	$(MAKE) -C bin-uefi distclean
-	rm -rf "$$(dirname "$$(dirname "$(ODP_PATH_GCC5_PREFIX)")")"
+	rm -rf $(ODP_PATH_DOWNLOADS)
 
 # Each module should have its own test target
 test:
