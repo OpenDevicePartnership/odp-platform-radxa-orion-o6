@@ -33,52 +33,21 @@ This is a demonstration repository that has a single configuration, but does sup
    cd odp-platform-radxa-orion-o6
    ```
 
-3) Install a container manager to build and run the development container.  [Docker](https://www.docker.com/get-started/) is typically used in corporate environments, but [Podman](https://podman.io/) is an open source manager that is a little simpler to get started with and what this demonstration is using.
+3) Install a container manager to build and run the development container.  [Docker](https://www.docker.com/get-started/) is often used in corporate environments, but [Podman](https://podman.io/) is an open source manager that is a little simpler to get started with and what this demonstration is using.
 
-4) Build the container using the data in the .devcontainer directory.  Note the use of the `.` at the end of the command.
-
-   ``` bash
-   podman build \
-      --tag odp-orion-o6 \
-      --file .devcontainer/Dockerfile \
-      --build-arg USERNAME=$(whoami) \
-      .
-   ```
-
-5) Start the container in detached mode so that it is waiting for an execute command and its workspace is mapped to the current directory.  Note that the Dockerfile configured the container to sleep infinitely waiting for an exec command by default.
+4) Build, run, and enter the container using this repository as the workspace.  The `./common/tools/enter-container.sh` bash script was written to perform the necessary steps using Podman.  If Docker was installed in step 3, the script CONTAINER_TOOL_NAME variable will need to be updated.
 
    ``` bash
-   podman run \
-      --detach \
-      --name odp-build \
-      --userns=keep-id \
-      --network=host \
-      --workdir /workspace \
-      --volume "$PWD:/workspace" \
-      odp-orion-o6
+   ./common/tools/enter-container.sh
    ```
 
-   The above command assigns the name `odp-build` so that the next time you want to start the container (for instance after a reboot), you only need to execute the following without having to build it again:
+5) Once in the container, execute `make` from the `/workspace` directory to compile and place all remnants in the `build/` directory.
 
    ``` bash
-   podman start odp-build 
+   make
    ```
 
-6) The Dockerfile installs Rust with a minimal profile to save about 700MB of disk space which skips the clippy, rust-docs, and rustfmt components.  If you want all normal Rust tools in your container, run the following command only once after building the container.  All settings will be saved across multiple start commands.
-
-   ``` bash
-   podman exec -it odp-build rustup component add rust-docs clippy rustfmt
-   ```
-
-7) Use the container exec command to execute `make` within the container. The first compilation may take a while to download and build all tools, but the container volume is kept by Podman so the next build will be significantly faster.
-
-   ``` bash
-   podman exec -it odp-build make
-   ```
-
-   The directory `build/` will be created with all of the build remnants.  And the command line text `make` can be replaced with any command that is needed to be executed within the container.  For example, `make TARGET=RELEASE` will compile in release mode.
-
-8) A reboot will automatically shutdown the container, but to force it down, `podman stop odp-build` can be executed to release resources.  Or to remove it entirely from Podman's cache, `podman rm odp-build` can be executed.
+Since the container `/workspace` directory was mapped to the repository directory, the `build/` directory can be accessed either inside or outside the container.
 
 ## Quick Start - Booting
 
