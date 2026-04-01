@@ -66,7 +66,7 @@ RUN pip3 install --break-system-packages cryptography
 RUN curl --proto '=https' --tlsv1.2 -sSf "${RUSTUP_URL}" -o /tmp/rustup-init \
     && echo "${RUSTUP_INIT_SHA256} */tmp/rustup-init" | sha256sum -c - \
     && chmod +x /tmp/rustup-init \
-    && /tmp/rustup-init -y --no-modify-path \
+    && /tmp/rustup-init -y --profile minimal --no-modify-path \
     && rm /tmp/rustup-init \
     && chown -R 1000:1000 ${RUSTUP_HOME} ${CARGO_HOME}
 
