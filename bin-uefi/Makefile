@@ -17,6 +17,7 @@ SHELL                      := /bin/bash
 export WORKSPACE           := $(CURDIR)
 export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMON)/edk2-platforms-cix-odp:$(ODP_PATH_COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT_DIR)
 export IASL_PREFIX         := $(CURDIR)/tools/acpica/generate/unix/bin/
+export GCC5_AARCH64_PREFIX := $(ODP_PATH_GCC5_PREFIX)
 
 # Build Targets
 .PHONY: all PatinaDxeCore_ru distclean test

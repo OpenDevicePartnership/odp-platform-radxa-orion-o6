@@ -1,14 +1,35 @@
 # Build Details
 
-The recommended method for building is using a container and following the steps outlined in the root README.md file, but the following outlines other options for the build process.
+The recommended method for compilation is using a container as outlined in the root README.md file.  The sections below, however, describe the targets supported in the build infrastructure and how to update a Linux environment to compile without the container.  Windows can be configured to compile, but due to the complicated nature of getting the proper tools installed, it will not be covered in this documentation.
 
 ## Make Targets
 
-Makefiles are used to build the final output of this repository.  Running `make` or `make all` in the root will invoke each binary and image folder's makefile, create a sub-folder in the `Build` directory named after the corresponding binary or image, and place all build remnants along with the final output in that sub-folder.
+Makefiles are used to build the final output of this repository.  Running `make` or `make all` in the root will invoke each binary and image folder's makefile, create a sub-folder in the `build` directory named after the corresponding binary or image, and place all build remnants along with the final output in that sub-folder.
 
-Executing `make` copies all pre-compiled binaries first, builds binaries with code files, then stitches the output firmware binary.  If for example a user wants to re-build just the tee component then stitch the image again, the command `make tee` will re-compile the tee firmware binary and `make image-bootchain` will re-stitch the full bootchain binary with the new tee binary.
+Executing `make` will download and verify the necessary build tools, collect all pre-compiled binaries, build the platform specific binaries, then stitch the output firmware binary.  The table below describes each target available in the root Makefile.  For example, the command `make tee` will re-compile the tee firmware binary and `make image-bootchain` will re-stitch the full bootchain binary with the new tee binary.
 
-And the build infrastructure supports two targets, `TARGET=DEBUG` (default) and `TARGET=RELEASE`.
+| Command | Description |
+| --- | --- |
+| `make all` | Default target.  Downloads platform build tools, copies pre-built binaries, builds all firmware binaries, then stitches the final bootchain image. |
+| `make pre-built` | Copies pre-compiled binary artifacts to the build output directory. |
+| `make uefi` | Builds the UEFI firmware binary. |
+| `make tee` | Builds the Trusted Execution Environment (OP-TEE) firmware binary. |
+| `make tf-a` | Builds the Trusted Firmware-A (TF-A/BL31) binary. |
+| `make mem_config` | Builds the memory configuration binary. |
+| `make pm_config` | Builds the power management configuration binary. |
+| `make image-bootchain` | Stitches all binary artifacts into the final bootchain firmware images. |
+| `make toolchain` | Downloads and verifies any toolchains necessary for the build. |
+| `make clean` | Removes the `build/` directory and all build remnants. |
+| `make distclean` | Performs a `clean` and additionally removes build tool remnants and the downloaded GNU toolchain. |
+| `make test` | Runs unit tests for modules that support them. |
+
+The infrastructure also supports two compilation targets, debug (default) and release.
+
+| Command | Description |
+| --- | --- |
+| `make` | Builds a debug 'flavor' of the repository code |
+| `make TARGET=DEBUG` | Builds a debug 'flavor' of the repository code |
+| `make TARGET=RELEASE` | Builds a release 'flavor' of the repository code |
 
 ## Visual Studio Remote Session in the Dev Container
 
@@ -36,62 +57,10 @@ The link above provides full instructions for setting up this scenario using the
 
 VSCode will use the devcontainer.json and Dockerfile files to launch a remote development environment within the container that allows running `make` in a terminal, performing git commands, editing files, etc.
 
-## Building Manually
+## Building Outside a Container
 
-If you wish to build the FW in a native Linux environment or in WSL without a container, the following steps can be followed.
+The project's [Dockerfile](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/HEAD/.devcontainer/Dockerfile) is the authoritative reference for every tool and dependency required to build.  The `FROM` tag at the top of the file specifies the expected OS and version the file was written against, so if you are using a different distribution, package names may differ.
 
-They assume you are running Ubuntu 24.04 and the current working directory is the root of this repository.  Other distributions may require different package names.
+To set up a native Linux or WSL environment, walk through the Dockerfile and locate sections that have the tag `[Local Build]`.  They document each area necessary to evaluate to properly setup a local build environment.  In most places, the entire section can be just copied and pasted into a Linux environment, but Dockerfiles will chain commands in each instruction section by using `&&` to minimize Docker image layers which is not necessary when installing locally, so each command can be run independently in your shell.
 
-1. Install the required system packages
-
-   ``` bash
-   sudo apt-get update
-   sudo apt-get install -y \
-      build-essential \
-      git \
-      python3 \
-      python3-pip \
-      python3-setuptools \
-      uuid-dev \
-      iasl \
-      nasm \
-      bison \
-      flex \
-      libssl-dev \
-      wget \
-      curl \
-      xz-utils \
-      device-tree-compiler \
-      bc \
-      python3-pyelftools \
-      python-is-python3
-   ```
-
-2. Install the Python `cryptography` package
-
-   ``` bash
-   pip3 install cryptography
-   ```
-
-3. Download and extract the AArch64 bare-metal GNU toolchain version 13.2
-
-   If using WSL, do not extract the files in a Windows environment then copy to the `//wsl.localhost` path since that results in losing specific file attributes Linux relies upon.
-
-   ``` bash
-   mkdir -p common/tools
-   cd common/tools
-   wget https://developer.arm.com/-/media/Files/downloads/gnu/13.2.rel1/binrel/arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz
-   tar xf arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz
-   rm arm-gnu-toolchain-13.2.rel1-x86_64-aarch64-none-elf.tar.xz
-   ```
-
-   Note: Version 13.2.rel1 uses an embedded directory name of 13.2.Rel1.
-
-4. Install the Rust toolchain
-
-   ``` bash
-   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-   source "$HOME/.cargo/env"
-   ```
-
-From here you can run any of the make targets, work with Git, etc.
+The other instructions not tagged by `[Local Build]` are strictly for container builds and should not be needed to setup a local environment.

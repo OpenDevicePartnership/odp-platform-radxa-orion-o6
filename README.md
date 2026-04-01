@@ -52,6 +52,7 @@ This is a demonstration repository that has a single configuration, but does sup
       --detach \
       --name odp-build \
       --userns=keep-id \
+      --network=host \
       --workdir /workspace \
       --volume "$PWD:/workspace" \
       odp-orion-o6
@@ -63,15 +64,21 @@ This is a demonstration repository that has a single configuration, but does sup
    podman start odp-build 
    ```
 
-6) Use the container exec command to execute `make` within the container. The first compilation may take a while to download and build all tools, but the container volume is kept by Podman so the next build will be significantly faster.
+6) The Dockerfile installs Rust with a minimal profile to save about 700MB of disk space which skips the clippy, rust-docs, and rustfmt components.  If you want all normal Rust tools in your container, run the following command only once after building the container.  All settings will be saved across multiple start commands.
+
+   ``` bash
+   podman exec -it odp-build rustup component add rust-docs clippy rustfmt
+   ```
+
+7) Use the container exec command to execute `make` within the container. The first compilation may take a while to download and build all tools, but the container volume is kept by Podman so the next build will be significantly faster.
 
    ``` bash
    podman exec -it odp-build make
    ```
 
-   The directory `Build/` will be created with all of the build remnants.  And the command line text `make` can be replaced with any command that is needed to be executed within the container.  For example, `make TARGET=RELEASE` will compile in release mode.
+   The directory `build/` will be created with all of the build remnants.  And the command line text `make` can be replaced with any command that is needed to be executed within the container.  For example, `make TARGET=RELEASE` will compile in release mode.
 
-7) A reboot will automatically shutdown the container, but to force it down, `podman stop odp-build` can be executed to release resources.  Or to remove it entirely from Podman's cache, `podman rm odp-build` can be executed.
+8) A reboot will automatically shutdown the container, but to force it down, `podman stop odp-build` can be executed to release resources.  Or to remove it entirely from Podman's cache, `podman rm odp-build` can be executed.
 
 ## Quick Start - Booting
 

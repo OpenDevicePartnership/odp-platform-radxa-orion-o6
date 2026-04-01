@@ -27,7 +27,7 @@ stitch-all: bootloader2 bootloader3
 pre-built:
 	mkdir -p $(ODP_PATH_BINS_OUTPUT)
 	cp -f $(ODP_PATH_PACKAGE_TOOL)/Firmwares/* $(ODP_PATH_BINS_OUTPUT)/
-	cp -f $(ODP_PATH_PRE_COMPILED_BINS)/* $(ODP_PATH_BINS_OUTPUT)/
+	cp -f $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Firmwares/* $(ODP_PATH_BINS_OUTPUT)/
 	head -c 8192 /dev/zero | tr '\000' '\377' > $(ODP_PATH_BINS_OUTPUT)/dummy.bin
 
 bootloader2:
