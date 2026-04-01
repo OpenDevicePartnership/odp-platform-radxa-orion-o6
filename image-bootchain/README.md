@@ -1,4 +1,4 @@
-# Build Details
+# ODP Platform — Bootchain Details
 
 The recommended method for compilation is using a container as outlined in the root README.md file.  The sections below, however, describe the targets supported in the build infrastructure and how to update a Linux environment to compile without the container.  Windows can be configured to compile, but due to the complicated nature of getting the proper tools installed, it will not be covered in this documentation.
 
