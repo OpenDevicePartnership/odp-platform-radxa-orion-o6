@@ -8,24 +8,36 @@ This repository contains the bare minimum firmware and OS image resources needed
 
 ## Folder Structure and Content
 
-The top-level directories are organized as follows:
+The top-level directories each contain a **README.md** file with detailed build instructions, design notes, and component-specific information.  Start with the [image-bootchain readme](image-bootchain/README.md) file for the best end-to-end overview of how all pieces fit together, including available make targets, hardware details, and working with individual components.
 
 | Directory | Purpose |
 | --- | --- |
-| `.devcontainer/`, `.github/`, etc. | Infrastructure and tooling for the development environment, CI/CD pipelines, etc.  No code that is part of the final images will reside in these folders. |
-| `common/` | Tools, documentation, and code files shared by one or more of the folders that produce artifacts. |
-| `bin-*/` | Each directory makefile will produce a single binary artifact for the firmware image.  None will link code from another bin directory, but may link code from the common directory or require an artifact from another bin directory. |
-| `image-*/` | Scripts and resources to stitch artifacts into final images that can be used to boot the system. |
+| .devcontainer/ and .github/ | Infrastructure and tooling for the development environment, CI/CD pipelines, etc.  No code that is part of the final images will reside in these folders. |
+| common/ | Tools, documentation, and code files shared by one or more of the folders that produce artifacts. |
+| bin-*/ | Each directory makefile will produce a single binary artifact for the firmware image.  None will link code from another bin directory, but may link code from the common directory or require an artifact from another bin directory. |
+| image-*/ | Scripts and resources to stitch artifacts into final images that can be used to boot the system. |
+
+The folder layout is very different than the original CIX P1 BIOS repository, but the boot flow is the same using the sequence **TF-A (BL31) → OP-TEE → UEFI → OS** and it makes heavy use of Git submodules to demonstrate how only minimal changes to external code are needed to support the ODP features.  The [.gitmodules](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/HEAD/.gitmodules) file lists all references and be sure to clone with `--recurse-submodules` or run `git submodule update --init --recursive` after cloning to fully populate the submodule directories.
+
+In the root of the repository are several pertinent files for contributing:
+
+| File | Purpose |
+| --- | --- |
+| LICENSE | MIT license covering original code in this repository. |
+| CODE_OF_CONDUCT.md | Community interaction and behavior guidelines. |
+| CONTRIBUTING.md | How to submit issues, pull requests, and contribution licensing terms. |
+| CODEOWNERS | GitHub CODEOWNERS file defining required reviewers for pull requests. |
+| SECURITY.md | Vulnerability disclosure and embargo policy. |
 
 ## Quick Start
 
-This repository has a single configuration for simplicity, but does support DEBUG and RELEASE targets.  The fastest way to compile is to follow the flow used by the CI/CD GitHub action in a Linux container.  For other options, please refer to the [image-bootchain/README.md](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/HEAD/image-bootchain/README.md) file.
+This repository has a single configuration for simplicity, but does support DEBUG and RELEASE targets.  The fastest way to compile is to follow the flow used by the CI/CD GitHub action in a Linux container, but for other options, please refer to the [image-bootchain readme](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/HEAD/image-bootchain/README.md) file.
 
 1) If building in Windows, install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and open a command window to provide a Linux environment.  If building in Linux, skip to step 2.
 
    Note:  The WSL file system can be accessed from Windows by using the path `\\wsl.localhost\...` and the Windows drives can be accessed from WSL by using the path `/mnt/<drive letter>/...`.  But every access across that boundary has delays that can add significant time to the build.  It is highly recommended to clone and build within WSL then use those paths when copying build remnants.
 
-2) Clone this repository making sure to pull all submodule code and switch to the root of the directory.
+2) Be sure [Git](https://github.com/git-guides/install-git) is installed then clone this repository making sure to pull all submodule code and switch to the root of the directory.
 
    ``` bash
    git clone --recurse-submodules https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6.git
@@ -34,7 +46,7 @@ This repository has a single configuration for simplicity, but does support DEBU
 
 3) Install a container manager to build and run the development container.  [Docker](https://www.docker.com/get-started/) is often used in corporate environments, but [Podman](https://podman.io/) is an open source manager that is a little simpler to get started with and what this demonstration is using.
 
-4) Build, run, and enter the container using this repository as the workspace.  The `./common/tools/enter-container.sh` bash script was written to perform the necessary steps using Podman.  If Docker was installed in step 3, the script CONTAINER_TOOL_NAME variable will need to be updated.
+4) Build, run, and enter the container using this repository as the workspace.  The **enter-container.sh** bash script was written to perform the necessary steps using Podman.
 
    ``` bash
    ./common/tools/enter-container.sh
