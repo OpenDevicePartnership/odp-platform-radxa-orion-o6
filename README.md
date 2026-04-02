@@ -23,7 +23,7 @@ In the root of the repository are several pertinent files for contributing:
 
 | File | Purpose |
 | --- | --- |
-| LICENSE | MIT license covering original code in this repository. |
+| LICENSE | License information covering this repository. |
 | CODE_OF_CONDUCT.md | Community interaction and behavior guidelines. |
 | CONTRIBUTING.md | How to submit issues, pull requests, and contribution licensing terms. |
 | CODEOWNERS | GitHub CODEOWNERS file defining required reviewers for pull requests. |
