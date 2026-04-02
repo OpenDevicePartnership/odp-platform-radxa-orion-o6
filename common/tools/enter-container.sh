@@ -1,5 +1,5 @@
 #!/bin/bash
-# enter-podman-container.sh
+# enter-container.sh (Podman-based development container helper)
 #
 # The following script builds an ODP development container image, starts it running, and enters it at an interactive
 # bash prompt with the project root mapped to /workspace.  The container is configured to run with the user as host
