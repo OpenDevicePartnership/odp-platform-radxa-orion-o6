@@ -17,7 +17,7 @@ The top-level directories are organized as follows:
 | `bin-*/` | Each directory makefile will produce a single binary artifact for the firmware image.  None will link code from another bin directory, but may link code from the common directory or require an artifact from another bin directory. |
 | `image-*/` | Scripts and resources to stitch artifacts into final images that can be used to boot the system. |
 
-## Quick Start - Building
+## Quick Start
 
 This repository has a single configuration for simplicity, but does support DEBUG and RELEASE targets.  The fastest way to compile is to follow the flow used by the CI/CD GitHub action in a Linux container.  For other options, please refer to the [image-bootchain/README.md](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/HEAD/image-bootchain/README.md) file.
 
@@ -46,8 +46,6 @@ This repository has a single configuration for simplicity, but does support DEBU
    make
    ```
 
-Since the container `/workspace` directory was mapped to the repository directory, the `build/` directory can be accessed either inside or outside the container.
+   Since the container `/workspace` directory was mapped to the repository directory, the `build/` directory can be accessed either inside or outside the container.
 
-## Quick Start - Booting
-
-**TBD**:  Need to document the final outputs from the build process and how to get them onto the platform
+6) **TBD Task #36:**  [Radxa OS Creation and Booting Documentation](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/issues/36)
