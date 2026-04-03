@@ -5,6 +5,7 @@ The Open Device Partnership project welcomes the responsible disclosure of vulne
 ## Initial Contact
 
 All security bugs in Open Device Partnership should be reported to the security team.
+
 To do so, please reach out in the form of a
 [Github Security Advisory](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities).
 
