@@ -10,7 +10,7 @@
     "ec_file": "ec_fw.bin",
     "sec_debug_file": "",
     "xip_file": "dummy.bin",
-    "image_count": 7,
+    "image_count": 8,
     "image_header_groups": [
         {
             "image_type": 1,
@@ -53,6 +53,12 @@
             "address": "0x3FE000",
             "size": "0x402000",
             "file": "bootloader3.img"
+        },
+        {
+            "image_type": 8,
+            "address": "0x101000",
+            "size": "0x6000",
+            "file": "sfh_fw.bin"
         }
     ]
 }

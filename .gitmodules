@@ -10,9 +10,6 @@
 [submodule "ACPI_Component_Architecture"]
 	path = bin-uefi/tools/acpica
 	url = https://github.com/acpica/acpica.git
-[submodule "Mbed_TLS"]
-	path = bin-tf-a/mbedtls
-	url = https://github.com/Mbed-TLS/mbedtls.git
 [submodule "CIX_Silicon_Package1"]
 	path = common/edk2-platforms-cix-odp
 	url = https://github.com/cixtech/edk2-platforms.git
