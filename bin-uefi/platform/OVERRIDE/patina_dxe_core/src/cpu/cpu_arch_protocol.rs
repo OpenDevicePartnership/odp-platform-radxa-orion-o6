@@ -215,13 +215,41 @@ impl EfiCpuArchProtocolImpl {
                 get_timer_value,
                 set_memory_attributes,
                 number_of_timers: 0,
-                dma_buffer_alignment: 0,
+                dma_buffer_alignment: Self::cache_writeback_granule(),
             },
 
             // private data
             cpu,
             interrupt_manager,
         }
+    }
+
+    /// Returns the cache writeback granule size by reading CTR_EL0.
+    /// This is used for DMA buffer alignment to prevent cache coherency issues.
+    /// Falls back to the data cache minimum line length if the writeback granule field is zero.
+    #[cfg(target_arch = "aarch64")]
+    fn cache_writeback_granule() -> u32 {
+        // SAFETY: CTR_EL0 is a read-only system register accessible at all exception levels.
+        let ctr_el0: u64 = unsafe {
+            let val: u64;
+            core::arch::asm!("mrs {}, ctr_el0", out(reg) val);
+            val
+        };
+        // CWG (Cache Writeback Granule): CTR_EL0 bits [27:24]
+        let cwg = ((ctr_el0 >> 24) & 0xF) as u32;
+        if cwg > 0 {
+            4 << cwg
+        } else {
+            // If CWG is 0, use DminLine (bits [19:16]) as fallback
+            let dminline = ((ctr_el0 >> 16) & 0xF) as u32;
+            4 << dminline
+        }
+    }
+
+    #[cfg(not(target_arch = "aarch64"))]
+    fn cache_writeback_granule() -> u32 {
+        // Default for non-aarch64 targets (e.g., tests on x86_64)
+        64
     }
 }
 
