@@ -1,0 +1,234 @@
+//! UEFI Interrupt Module
+//!
+//! This module provides implementation for handling interrupts.
+//!
+//! This module provides implementation for [InterruptManager]. The [Interrupts] struct is the only accessible struct
+//! when using this module. The other structs are architecture specific implementations and replace the [Interrupts]
+//! struct at compile time based on the target architecture.
+//!
+//! If compiling for AARCH64, the `gic_manager` module is also available.
+//!
+//! ## License
+//!
+//! Copyright (c) Microsoft Corporation.
+//!
+//! SPDX-License-Identifier: Apache-2.0
+//!
+
+use core::ops::{Deref, DerefMut};
+use patina::{error::EfiError, pi::protocols::cpu_arch::EfiSystemContext};
+
+mod exception_handling;
+
+// The aarch64 module contains all exception handlers and architecture specific code, of little testing value.
+#[coverage(off)]
+#[cfg(any(target_arch = "aarch64", test))]
+mod aarch64;
+#[coverage(off)]
+#[cfg(not(target_os = "uefi"))]
+mod stub;
+#[cfg(any(target_arch = "x86_64", test))]
+mod x64;
+
+#[cfg(target_arch = "aarch64")]
+pub use aarch64::gic_manager;
+
+// For std builds, publish the stub version of the interrupt functions.
+cfg_if::cfg_if! {
+    if #[cfg(not(target_os = "uefi"))] {
+        /// A stand in implementation of the Interrupts struct. This will be architecture structure defined by the platform
+        /// compilation.
+        pub type Interrupts = stub::InterruptsStub;
+
+        /// Enables CPU interrupts.
+        #[coverage(off)]
+        pub fn enable_interrupts() {}
+
+        /// Disables CPU interrupts.
+        #[coverage(off)]
+        pub fn disable_interrupts() {}
+
+        /// Gets the current state of CPU interrupts.
+        #[coverage(off)]
+        pub fn get_interrupt_state() -> Result<bool, EfiError> {
+            Ok(false)
+        }
+
+    } else if #[cfg(target_arch = "x86_64")] {
+        pub type Interrupts = x64::InterruptsX64;
+        pub use x64::enable_interrupts;
+        pub use x64::disable_interrupts;
+        pub use x64::get_interrupt_state;
+    } else if #[cfg(target_arch = "aarch64")] {
+        pub type Interrupts = aarch64::InterruptsAarch64;
+        pub use aarch64::enable_interrupts;
+        pub use aarch64::disable_interrupts;
+        pub use aarch64::get_interrupt_state;
+    }
+}
+
+/// Republished structure for x64 exception context as defined by the UEFI specification.
+pub type ExceptionContextX64 = r_efi::protocols::debug_support::SystemContextX64;
+/// Republished structure for AArch64 exception context as defined by the UEFI specification.
+pub type ExceptionContextAArch64 = r_efi::protocols::debug_support::SystemContextAArch64;
+
+cfg_if::cfg_if! {
+    if #[cfg(any(test, doc))] {
+        /// The wrapped architecture specific exception context structure. This will be the appropriate structure based on the
+        /// target architecture. See [`ExceptionContextX64`] and [`ExceptionContextAArch64`] for the specific structures.
+        pub type ExceptionContextArch = stub::ExceptionContextStub;
+    } else if #[cfg(target_arch = "x86_64")] {
+        pub type ExceptionContextArch = ExceptionContextX64;
+    } else if #[cfg(target_arch = "aarch64")] {
+        pub type ExceptionContextArch = ExceptionContextAArch64;
+    }
+}
+
+/// Zero-cost wrapper for the architectural specific context structure.
+/// The internal structure are defined by the UEFI specification section 18.2.
+///
+/// ## Testing
+///
+/// This structure uses generics to allow for easier testing across architectures.
+#[derive(Debug, Clone, Copy)]
+pub struct ExceptionContext<T = ExceptionContextArch>(T);
+
+impl<T> Deref for ExceptionContext<T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl<T> DerefMut for ExceptionContext<T> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+/// Type for storing the exception type. This should correspond to the architecture
+/// specific interrupt type ID.
+pub type ExceptionType = usize;
+
+/// This macro pretty prints registers in groups of four per line.
+/// The expected input is a list of name, value pairs.
+#[macro_export]
+macro_rules! log_registers {
+    ( $( $name:expr, $value:expr ),+ $(,)? ) => {
+        let registers = [$(($name, $value),)+];
+        for chunk in registers.chunks(4) {
+            match chunk {
+                [c1, c2, c3, c4] => {
+                    log::error!(
+                        "{:>4}:  {:#018X}   {:>4}:  {:#018X}   {:>4}:  {:#018X}   {:>4}:  {:#018X}",
+                        c1.0, c1.1, c2.0, c2.1, c3.0, c3.1, c4.0, c4.1
+                    );
+                },
+                [c1, c2, c3] => {
+                    log::error!(
+                        "{:>4}:  {:#018X}   {:>4}:  {:#018X}   {:>4}:  {:#018X}",
+                        c1.0, c1.1, c2.0, c2.1, c3.0, c3.1
+                    );
+                },
+                [c1, c2] => {
+                    log::error!(
+                        "{:>4}:  {:#018X}   {:>4}:  {:#018X}",
+                        c1.0, c1.1, c2.0, c2.1,
+                    );
+                },
+                [c1] => {
+                    log::error!(
+                        "{:>4}:  {:#018X}",
+                        c1.0, c1.1
+                    );
+                },
+                _ => {
+                    log::error!("");
+                }
+            }
+        }
+    };
+}
+
+/// Trait for converting the architecture specific context structures into the
+/// UEFI System Context structure.
+pub(crate) trait EfiSystemContextFactory {
+    /// Creates a EfiSystemContext wrapper pointing to the architecture specific context.
+    fn create_efi_system_context(&mut self) -> EfiSystemContext;
+}
+
+/// Trait for dumping stack trace for architecture specific context.
+pub(crate) trait EfiExceptionStackTrace {
+    /// Dump the stack trace for architecture specific context.
+    fn dump_stack_trace(&self);
+
+    /// Dump system context registers for architecture specific context.
+    fn dump_system_context_registers(&self);
+}
+
+/// Trait for structs that implement and manage interrupts.
+///
+/// Generic trait that can be used to abstract the architecture and platform
+/// specifics for handling interrupts and exceptions. The interrupt manage will
+/// configure the hardware to take interrupts, manage the entry point for interrupts,
+/// and provide a callback mechanism for callers to handle exceptions.
+///
+pub trait InterruptManager {
+    /// Registers a callback for the given exception type.
+    fn register_exception_handler(&self, exception_type: ExceptionType, handler: HandlerType) -> Result<(), EfiError> {
+        exception_handling::register_exception_handler(exception_type, handler)
+    }
+
+    /// Removes the registered exception handlers for the given exception type.
+    fn unregister_exception_handler(&self, exception_type: ExceptionType) -> Result<(), EfiError> {
+        exception_handling::unregister_exception_handler(exception_type)
+    }
+}
+
+/// Type for storing the handler for a given exception.
+pub enum HandlerType {
+    /// No handler is registered.
+    None,
+    /// Handler is a UEFI compliant routine.
+    UefiRoutine(patina::pi::protocols::cpu_arch::InterruptHandler),
+    /// Handler is a implementation of the interrupt handler trait.
+    Handler(&'static dyn InterruptHandler),
+}
+
+impl HandlerType {
+    /// Returns true if the handler is None.
+    fn is_none(&self) -> bool {
+        matches!(self, HandlerType::None)
+    }
+}
+
+/// Trait for structs to handle interrupts.
+///
+/// Interrupt handlers are expected to be static and are called from the exception
+/// handler. Because exceptions can be reentrant, any mutable state within the
+/// handler is expected to leverage internal locking.
+///
+pub trait InterruptHandler<T = ExceptionContextArch>: Sync {
+    /// Invoked when the registered interrupt is triggered.
+    ///
+    /// Upon return, the processor will be resumed from the exception with any
+    /// changes made to the provided exception context. If it is not safe to resume,
+    /// then the handler should panic or otherwise halt the system.
+    ///
+    fn handle_interrupt(&'static self, exception_type: ExceptionType, context: &mut ExceptionContext<T>);
+}
+
+#[coverage(off)]
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_exception_context_deref() {
+        let mut exception_context = ExceptionContext(0u64);
+        *exception_context = 42;
+        let exception_context = exception_context;
+        assert_eq!(*exception_context, 42u64);
+    }
+}
