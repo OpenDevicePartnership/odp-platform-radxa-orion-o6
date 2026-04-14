@@ -30,3 +30,8 @@
 [features]
   default = ["compatibility_mode_allowed"]
   compatibility_mode_allowed = ["patina_dxe_core/compatibility_mode_allowed"]
+
+# OVERRIDE changes
+[patch.crates-io]
+  patina_dxe_core = { path = "../../OVERRIDE/patina_dxe_core" }
+  patina_internal_cpu = { path = "../../OVERRIDE/patina_internal_cpu" }

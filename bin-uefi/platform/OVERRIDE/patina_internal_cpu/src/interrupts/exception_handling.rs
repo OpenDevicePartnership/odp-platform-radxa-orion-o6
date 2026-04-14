@@ -1,0 +1,229 @@
+//! Module for architecture agnostic handling of exceptions. These have to be
+//! statically defined
+//!
+//! ## License
+//!
+//! Copyright (C) Microsoft Corporation.
+//!
+//! SPDX-License-Identifier: Apache-2.0
+//!
+
+use patina::{error::EfiError, pi::protocols::cpu_arch::EfiExceptionType};
+use spin::rwlock::RwLock;
+
+use crate::interrupts::EfiExceptionStackTrace;
+
+use super::{EfiSystemContextFactory, ExceptionContext, ExceptionType, HandlerType};
+
+// Architecture-specific exception type counts.
+// x86_64: 256 IDT entries
+// AArch64: 4 types (Synchronous, IRQ, FIQ, SError)
+const NUM_EXCEPTION_TYPES_X86_64: usize = 256;
+const NUM_EXCEPTION_TYPES_AARCH64: usize = 4;
+
+// Different architecture have a different number of exception types.
+const NUM_EXCEPTION_TYPES: ExceptionType = if cfg!(test) || cfg!(target_arch = "x86_64") {
+    NUM_EXCEPTION_TYPES_X86_64
+} else if cfg!(target_arch = "aarch64") {
+    NUM_EXCEPTION_TYPES_AARCH64
+} else {
+    panic!("Unimplemented architecture!");
+};
+
+// The static exception handlers are needed to track the global state. RwLock is
+// used to allow potential nested exceptions.
+static EXCEPTION_HANDLERS: [RwLock<HandlerType>; NUM_EXCEPTION_TYPES] = {
+    // This clippy warning can be ignored. We are purposefully generating a different `INIT` const for each element.
+    #[allow(clippy::declare_interior_mutable_const)]
+    const INIT: RwLock<HandlerType> = RwLock::new(HandlerType::None);
+    [INIT; NUM_EXCEPTION_TYPES]
+};
+
+/// Registers a handler callback for the provided exception type.
+///
+/// # Errors
+///
+/// Returns [`InvalidParameter`](EfiError::InvalidParameter) if the exception type is above the expected range.
+/// Returns [`AlreadyStarted`](EfiError::AlreadyStarted) if a callback has already been registered.
+///
+pub(crate) fn register_exception_handler(exception_type: ExceptionType, handler: HandlerType) -> Result<(), EfiError> {
+    if handler.is_none() {
+        return Err(EfiError::InvalidParameter);
+    }
+
+    if exception_type >= NUM_EXCEPTION_TYPES {
+        return Err(EfiError::InvalidParameter);
+    }
+
+    let mut entry = EXCEPTION_HANDLERS[exception_type].write();
+    if !(*entry).is_none() {
+        return Err(EfiError::AlreadyStarted);
+    }
+
+    *entry = handler;
+    Ok(())
+}
+
+/// Removes a handler callback for the provided exception type.
+///
+/// # Errors
+///
+/// Returns [`InvalidParameter`](EfiError::InvalidParameter) if the exception type is above the expected range.
+/// Returns [`InvalidParameter`](EfiError::InvalidParameter) if no callback currently exists.
+///
+pub(crate) fn unregister_exception_handler(exception_type: ExceptionType) -> Result<(), EfiError> {
+    if exception_type >= NUM_EXCEPTION_TYPES {
+        return Err(EfiError::InvalidParameter);
+    }
+
+    let mut entry = EXCEPTION_HANDLERS[exception_type].write();
+    if (*entry).is_none() {
+        return Err(EfiError::InvalidParameter);
+    }
+
+    *entry = HandlerType::None;
+    Ok(())
+}
+
+// This function does actually have coverage but no_mangle functions confuse the coverage tool.
+#[coverage(off)]
+/// The architecture agnostic entry of the exception handler stack.
+///
+/// This will be invoked by the architectures assembly entry and so requires
+/// EFIAPI for a consistent calling convention.
+///
+/// # Panics
+///
+/// Panics if no callback has been registered for a given exception or the handler
+/// read lock cannot be acquired.
+///
+#[unsafe(no_mangle)]
+extern "efiapi" fn exception_handler(exception_type: usize, context: &mut ExceptionContext) {
+    let handler_lock =
+        EXCEPTION_HANDLERS[exception_type].try_read().expect("Failed to read lock in exception handler!");
+
+    match *handler_lock {
+        HandlerType::UefiRoutine(handler) => {
+            let efi_system_context = context.create_efi_system_context();
+            handler(exception_type as EfiExceptionType, efi_system_context);
+        }
+        HandlerType::Handler(handler) => {
+            handler.handle_interrupt(exception_type, context);
+        }
+        HandlerType::None => {
+            log::error!("Unhandled Exception! {exception_type:#X}");
+            log::error!("");
+            context.dump_system_context_registers();
+            log::error!("");
+            context.dump_stack_trace();
+            panic!("Unhandled Exception! {exception_type:#X}");
+        }
+    }
+}
+
+#[cfg(test)]
+#[coverage(off)]
+mod tests {
+    extern crate std;
+
+    use patina::pi::protocols::cpu_arch::EfiSystemContext;
+
+    use super::*;
+    use crate::interrupts::InterruptManager;
+    use core::sync::atomic::AtomicBool;
+    use serial_test::serial;
+
+    const CALLBACK_EXCEPTION: usize = 0;
+    const HANDLER_EXCEPTION: usize = 1;
+    static mut CALLBACK_INVOKED: bool = false;
+
+    struct TestHandler {
+        pub invoked: AtomicBool,
+    }
+
+    impl crate::interrupts::InterruptHandler for TestHandler {
+        fn handle_interrupt(&'static self, exception_type: usize, _context: &mut ExceptionContext) {
+            assert!(exception_type == HANDLER_EXCEPTION);
+            self.invoked.store(true, core::sync::atomic::Ordering::SeqCst);
+        }
+    }
+
+    extern "efiapi" fn test_callback(exception_type: EfiExceptionType, _context: EfiSystemContext) {
+        assert!(exception_type == CALLBACK_EXCEPTION as EfiExceptionType);
+        // SAFETY: This is a test only static mutable variable.
+        unsafe { CALLBACK_INVOKED = true };
+    }
+
+    #[test]
+    fn test_uefi_routine() {
+        let mut context = ExceptionContext(crate::interrupts::stub::ExceptionContextStub {});
+        register_exception_handler(NUM_EXCEPTION_TYPES, HandlerType::UefiRoutine(test_callback))
+            .expect_err("Allowed invalid exception number!");
+
+        register_exception_handler(CALLBACK_EXCEPTION, HandlerType::UefiRoutine(test_callback))
+            .expect("Failed to register exception handler!");
+        register_exception_handler(CALLBACK_EXCEPTION, HandlerType::UefiRoutine(test_callback))
+            .expect_err("Allowed double register!");
+        exception_handler(CALLBACK_EXCEPTION, &mut context);
+        // SAFETY: This is a test only static mutable variable.
+        assert!(unsafe { CALLBACK_INVOKED });
+        unregister_exception_handler(CALLBACK_EXCEPTION).expect("Failed to unregister handler!");
+        unregister_exception_handler(CALLBACK_EXCEPTION).expect_err("Allowed double unregister!");
+    }
+
+    #[test]
+    #[serial(exception_handlers)]
+    fn test_handler() {
+        let mut context = ExceptionContext(crate::interrupts::stub::ExceptionContextStub {});
+        let handler = Box::leak(Box::new(TestHandler { invoked: AtomicBool::new(false) }));
+
+        register_exception_handler(NUM_EXCEPTION_TYPES, HandlerType::Handler(handler))
+            .expect_err("Allowed invalid exception number!");
+
+        register_exception_handler(HANDLER_EXCEPTION, HandlerType::Handler(handler))
+            .expect("Failed to register exception handler!");
+        register_exception_handler(HANDLER_EXCEPTION, HandlerType::Handler(handler))
+            .expect_err("Allowed double register!");
+
+        exception_handler(HANDLER_EXCEPTION, &mut context);
+        assert!(handler.invoked.load(core::sync::atomic::Ordering::SeqCst));
+
+        unregister_exception_handler(HANDLER_EXCEPTION).expect("Failed to unregister handler!");
+        unregister_exception_handler(HANDLER_EXCEPTION).expect_err("Allowed double unregister!");
+    }
+
+    #[test]
+    #[serial(exception_handlers)]
+    fn test_with_interrupt_manager() {
+        let mut context = ExceptionContext(crate::interrupts::stub::ExceptionContextStub {});
+        let handler = Box::leak(Box::new(TestHandler { invoked: AtomicBool::new(false) }));
+        let interrupt_manager = crate::interrupts::stub::InterruptsStub::new();
+
+        interrupt_manager
+            .register_exception_handler(HANDLER_EXCEPTION, HandlerType::Handler(handler))
+            .expect("Failed to register exception handler!");
+
+        exception_handler(HANDLER_EXCEPTION, &mut context);
+        assert!(handler.invoked.load(core::sync::atomic::Ordering::SeqCst));
+
+        interrupt_manager.unregister_exception_handler(HANDLER_EXCEPTION).expect("Failed to unregister handler!");
+    }
+
+    #[test]
+    fn test_invalid_input() {
+        register_exception_handler(NUM_EXCEPTION_TYPES, HandlerType::UefiRoutine(test_callback))
+            .expect_err("Allowed N+1 exception type registration!");
+
+        unregister_exception_handler(NUM_EXCEPTION_TYPES).expect_err("Allowed N+1 exception type un-registration!");
+
+        register_exception_handler(0, HandlerType::None).expect_err("Allowed none exception handler registration!");
+    }
+
+    #[test]
+    fn test_num_exception_types() {
+        // Verify expected exception type counts per architecture.
+        // If changing these values, verify they match the assembly definitions.
+        assert_eq!(NUM_EXCEPTION_TYPES_X86_64, 256);
+        assert_eq!(NUM_EXCEPTION_TYPES_AARCH64, 4);
+    }
+}
