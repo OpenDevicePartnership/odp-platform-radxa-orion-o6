@@ -81,4 +81,12 @@ pub trait Cpu {
     /// DeviceError      - If an error occurred while reading the timer.
     /// InvalidParameter - timer_index is not valid or TimerValue is NULL.
     fn get_timer_value(&self, timer_index: u32) -> Result<(u64, u64), EfiError>;
+
+    /// Returns the cache writeback granule size in bytes.
+    ///
+    /// This value is used to populate the `dma_buffer_alignment` field in the
+    /// `EFI_CPU_ARCH_PROTOCOL`. DMA buffer allocations must be aligned to this
+    /// boundary to prevent cache coherency issues where a writeback of an
+    /// adjacent dirty cache line could corrupt DMA data.
+    fn cache_writeback_granule(&self) -> u32;
 }

@@ -47,4 +47,8 @@ impl Cpu for EfiCpuStub {
     fn get_timer_value(&self, _timer_index: u32) -> Result<(u64, u64), EfiError> {
         Ok((0, 0))
     }
+
+    fn cache_writeback_granule(&self) -> u32 {
+        64
+    }
 }

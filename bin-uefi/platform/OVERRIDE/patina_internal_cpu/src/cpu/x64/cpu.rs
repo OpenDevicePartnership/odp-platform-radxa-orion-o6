@@ -173,6 +173,12 @@ impl Cpu for EfiCpuX64 {
 
         Ok((timer_value, self.timer_period))
     }
+
+    fn cache_writeback_granule(&self) -> u32 {
+        // x86_64 has cache-coherent DMA, so this value is only used as a
+        // safe alignment default. 64 bytes matches the typical cache line size.
+        64
+    }
 }
 
 impl Default for EfiCpuX64 {

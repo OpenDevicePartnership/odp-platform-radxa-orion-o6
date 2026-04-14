@@ -35,8 +35,12 @@ impl EfiCpuAarch64 {
 
         loop {
             match _op {
-                CpuFlushType::EfiCpuFlushTypeWriteBack => self.clean_data_entry_by_mva(aligned_addr),
-                CpuFlushType::EfiCpuFlushTypeInvalidate => self.invalidate_data_cache_entry_by_mva(aligned_addr),
+                CpuFlushType::EfiCpuFlushTypeWriteBack => {
+                    self.clean_data_entry_by_mva(aligned_addr)
+                }
+                CpuFlushType::EfiCpuFlushTypeInvalidate => {
+                    self.invalidate_data_cache_entry_by_mva(aligned_addr)
+                }
                 CpuFlushType::EfiCpuFlushTypeWriteBackInvalidate => {
                     self.clean_and_invalidate_data_entry_by_mva(aligned_addr)
                 }
@@ -138,6 +142,33 @@ impl Cpu for EfiCpuAarch64 {
 
     fn get_timer_value(&self, _timer_index: u32) -> Result<(u64, u64), EfiError> {
         Err(EfiError::Unsupported)
+    }
+
+    fn cache_writeback_granule(&self) -> u32 {
+        cfg_if::cfg_if! {
+            if #[cfg(all(not(test), target_arch = "aarch64"))] {
+
+                // SAFETY: CTR_EL0 is a read-only system register accessible at all exception levels
+                let ctr_el0 = unsafe {
+                    let ctr_el0: u64;
+                    asm!("mrs {}, ctr_el0", out(reg) ctr_el0);
+                    ctr_el0
+                };
+
+                // CWG (Cache Writeback Granule): CTR_EL0 bits [27:24]
+                let cwg = ((ctr_el0 >> 24) & 0xF) as u32;
+
+                // CWG is Log2 of the max size in words
+                if cwg > 0 {
+                    4 << cwg
+                } else {
+                    2048  // Default to 2K if register contains 0 per Armv8-A spec
+                }
+            } else {
+                // For test mode or non-aarch64 platforms, return 64 bytes
+                64_u32
+            }
+        }
     }
 }
 
