@@ -19,10 +19,6 @@ stitch-all: bootloader2 bootloader3
 	$(ODP_PATH_PACKAGE_TOOL)/cix_package_tool \
 		-c $(ODP_PATH_COMMON)/spi_flash_config_all.json \
 		-o $(ODP_PATH_BUILD_OUTPUT)/cix_flash_all.bin
-	cd $(ODP_PATH_BINS_OUTPUT) && \
-	$(ODP_PATH_PACKAGE_TOOL)/cix_package_tool \
-		-c $(ODP_PATH_COMMON)/spi_flash_config_ota.json \
-		-O $(ODP_PATH_BUILD_OUTPUT)/cix_flash_ota.bin
 
 pre-built:
 	mkdir -p $(ODP_PATH_BINS_OUTPUT)

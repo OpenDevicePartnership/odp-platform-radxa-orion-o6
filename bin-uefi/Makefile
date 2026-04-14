@@ -12,7 +12,7 @@ $(error This makefile must be invoked from the root makefile)
 endif
 
 # Defines specific to this makefile
-RUST_OUT_DIR               := $(ODP_PATH_BUILD_OUTPUT)/uefi/Rust
+RUST_OUT_DIR               := $(ODP_PATH_BUILD_OUTPUT)/bin-uefi/Rust
 SHELL                      := /bin/bash
 export WORKSPACE           := $(CURDIR)
 export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMON)/edk2-platforms-cix-odp:$(ODP_PATH_COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT_DIR)

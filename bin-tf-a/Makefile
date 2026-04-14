@@ -17,7 +17,6 @@ endif
 all:
 	$(MAKE) -C arm-trusted-firmware-cix-odp \
 		CROSS_COMPILE=$(ODP_PATH_GCC5_PREFIX) \
-		MBEDTLS_DIR=../mbedtls \
 		PLAT=sky1 \
 		SPD=opteed \
 		DEBUG=1 \

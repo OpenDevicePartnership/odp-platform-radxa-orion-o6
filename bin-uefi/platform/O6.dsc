@@ -27,6 +27,7 @@
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = platform/O6.fdf       # ODP: Use ODP flavor of the 06 DSC/FDF pair
   PCD_DYNAMIC_AS_DYNAMICEX       = TRUE
+  BUILD_NUMBER                   = 0x00000004
 
 
   # ODP:  Normally all platform resources reside in the directory next to this DSC/FDF
@@ -90,6 +91,8 @@
   DEFINE FUNC_BOOT_PERF_ENABLE      = TRUE
   DEFINE CAPSULE_ENABLE             = TRUE
   DEFINE POWER_BUTTON_ENABLE        = TRUE
+  DEFINE DTPM_SUPPORT               = TRUE
+  DEFINE FTPM_SUPPORT               = FALSE
 
 !if $(COMPILE_FASTBOOT_LOAD) == nvme
   DEFINE PCIE_HOST_ENABLE           = TRUE
@@ -375,11 +378,11 @@
   gCixTokenSpaceGuid.PcdUsb2Control2Enable|TRUE
   gCixTokenSpaceGuid.PcdUsb2Control3Enable|TRUE
 
-  gCixTokenSpaceGuid.PcdAcpiI2s5Enable|TRUE
-  gCixTokenSpaceGuid.PcdAcpiI2s6Enable|TRUE
-  gCixTokenSpaceGuid.PcdAcpiI2s7Enable|TRUE
-  gCixTokenSpaceGuid.PcdAcpiI2s8Enable|TRUE
-  gCixTokenSpaceGuid.PcdAcpiI2s9Enable|TRUE
+  gCixTokenSpaceGuid.PcdAcpiI2s5Enable|FALSE
+  gCixTokenSpaceGuid.PcdAcpiI2s6Enable|FALSE
+  gCixTokenSpaceGuid.PcdAcpiI2s7Enable|FALSE
+  gCixTokenSpaceGuid.PcdAcpiI2s8Enable|FALSE
+  gCixTokenSpaceGuid.PcdAcpiI2s9Enable|FALSE
 
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x400000000
   gEfiNetworkPkgTokenSpaceGuid.PcdNetworkStackSupport|FALSE
@@ -433,6 +436,15 @@
   gCixTokenSpaceGuid.PcdStateAfterG3|0x0
   gCixPlatformTokenSpaceGuid.PcdAcpiSpcrEnable|TRUE
 
+  gCixPlatformTokenSpaceGuid.PcdDTPMSupport|$(DTPM_SUPPORT)
+  gCixPlatformTokenSpaceGuid.PcdFTPMSupport|$(FTPM_SUPPORT)
+  gCixPlatformTokenSpaceGuid.PcdDTPMSpiBus|0x0          # 0:SPI1=0x04090000  1:SPI2=0x040A0000
+  gCixPlatformTokenSpaceGuid.PcdDTPMSpiChipSelect|0x1   # 1:Slave Select 0   2:Slave Select 1
+  gCixPlatformTokenSpaceGuid.PcdActiveTpmInterfaceType|0x01
+
+  gCixTokenSpaceGuid.PcdAcpiUart0Enable|FALSE
+  gCixTokenSpaceGuid.PcdAcpiCIXUart1DriverEnable|TRUE
+
 [PcdsDynamicDefault.common]
 
   gEmbeddedTokenSpaceGuid.PcdDmaDeviceLimit|0x47fffffff
@@ -443,6 +455,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|600
 
   gCixPlatformTokenSpaceGuid.PcdDynamicUint64Test|0x11111111
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{0x5a, 0xf2, 0x6b, 0x28, 0xc3, 0xc2, 0x8c, 0x40, 0xb3, 0xb4, 0x25, 0xe6, 0x75, 0x8b, 0x73, 0x17}
 
 !if $(COMPILE_SYSTEM_LOADER) == android
   gCixPlatformTokenSpaceGuid.AndroidFastboot|TRUE

@@ -15,9 +15,8 @@
 // GicBases are u64 because they are used with the `GenericGic` implementation which expects u64 addresses, even on 32-bit platforms.
 // UartPl011 base is usize because the `UartPl011` implementation expects a usize address.
 
-/// UART3 base address on the 40-pin header (debug port).
-/// Defined in common/edk2-platforms-cix-odp/Silicon/CIX/Sky1/Include/MemoryMap.h
-pub const UART_BASE: usize = 0x040e_0000;
+/// UART base address values defined in common/edk2-platforms-cix-odp/Silicon/CIX/Sky1/Include/MemoryMap.h
+pub const UART_BASE: usize = 0x040D_0000; // (FCH_BASE + FCH_UART2_SMN_OFFSET)
 
 /// GIC Distributor base address.
 pub const GICD_BASE: u64 = 0x0e01_0000;
