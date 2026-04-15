@@ -1,5 +1,5 @@
 {
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "rust-analyzer.checkOnSave": true,
     "rust-analyzer.check.allTargets": false,
     "rust-analyzer.cargo.target": "thumbv8m.main-none-eabihf",
