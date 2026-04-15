@@ -11,11 +11,12 @@
 
 # =====================================================================================================================
 # GCC toolchain version information
+# https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
 # =====================================================================================================================
-GCC_VERSION="13.2.rel1"
+GCC_VERSION="15.2.rel1"
 GCC_ARCHIVE="arm-gnu-toolchain-${GCC_VERSION}-x86_64-aarch64-none-elf.tar.xz"
 GCC_URL="https://developer.arm.com/-/media/Files/downloads/gnu/${GCC_VERSION}/binrel/${GCC_ARCHIVE}"
-GCC_SHA256="7fe7b8548258f079d6ce9be9144d2a10bd2bf93b551dafbf20fe7f2e44e014b8"
+GCC_SHA256="66f7ce7c1bf662f589a4caf440812375f3cd8000a033ccf0971127a0726d6921"
 
 # Exit immediately if a command exits with a non-zero status
 set -e
@@ -69,7 +70,7 @@ version_error() {
 # Run gcc version prompt using the environment variable prefix to confirm the defined path and version are correct
 trap version_error ERR
 INSTALLED_VERSION=$("${ODP_PATH_GCC5_PREFIX}gcc" --version 2>/dev/null | head -1)
-echo "${INSTALLED_VERSION}" | grep -q "${GCC_VERSION}"
+echo "${INSTALLED_VERSION}" | grep -qi "${GCC_VERSION}"
 trap - ERR
 
 # Success message
