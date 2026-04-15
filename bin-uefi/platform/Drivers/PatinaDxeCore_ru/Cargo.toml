@@ -17,9 +17,9 @@
   heapless = "0.9.1"
 
 [target.'cfg(target_os = "uefi")'.dependencies]
-  patina_dxe_core = "20.0.1"
-  patina = "20.0.1"
-  patina_ffs_extractors = "20.0.1"
+  patina = { git = "https://github.com/rogurr/patina.git", rev = "8a5877d650d6acdadfb0f2b6d1070496de6b7f2c" }
+  patina_dxe_core = { git = "https://github.com/rogurr/patina.git", rev = "8a5877d650d6acdadfb0f2b6d1070496de6b7f2c" }
+  patina_ffs_extractors = { git = "https://github.com/rogurr/patina.git", rev = "8a5877d650d6acdadfb0f2b6d1070496de6b7f2c" }
 
 [profile.dev]
   opt-level = "s"

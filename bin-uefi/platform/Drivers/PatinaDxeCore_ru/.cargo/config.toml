@@ -1,3 +1,6 @@
+[env]
+PATINA_CONFIG_VERSION = "1"
+
 [build]
 target = "aarch64-unknown-uefi"
 
