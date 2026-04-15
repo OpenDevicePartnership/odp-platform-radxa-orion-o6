@@ -7,9 +7,6 @@
 [submodule "Trusted_Firmware-A"]
 	path = bin-tf-a/arm-trusted-firmware-cix-odp
 	url = https://github.com/cixtech/cix_opensource__arm-trusted-firmware.git
-[submodule "ACPI_Component_Architecture"]
-	path = bin-uefi/tools/acpica
-	url = https://github.com/acpica/acpica.git
 [submodule "CIX_Silicon_Package1"]
 	path = common/edk2-platforms-cix-odp
 	url = https://github.com/cixtech/edk2-platforms.git

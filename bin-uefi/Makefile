@@ -16,7 +16,6 @@ RUST_OUT_DIR               := $(ODP_PATH_BUILD_OUTPUT)/bin-uefi/Rust
 SHELL                      := /bin/bash
 export WORKSPACE           := $(CURDIR)
 export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMON)/edk2-platforms-cix-odp:$(ODP_PATH_COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT_DIR)
-export IASL_PREFIX         := $(CURDIR)/tools/acpica/generate/unix/bin/
 export GCC5_AARCH64_PREFIX := $(ODP_PATH_GCC5_PREFIX)
 
 # Build Targets
@@ -25,7 +24,6 @@ export GCC5_AARCH64_PREFIX := $(ODP_PATH_GCC5_PREFIX)
 all: PatinaDxeCore_ru
 
 	$(MAKE) -C edk2/BaseTools
-	$(MAKE) -C tools/acpica
 
 	. edk2/edksetup.sh --reconfig && \
 	build \
@@ -56,7 +54,6 @@ PatinaDxeCore_ru:
 # Specific clean to remove remnants from tools that don't have a way to put remnants in the Build directory
 distclean:
 	$(MAKE) -C edk2/BaseTools clean
-	$(MAKE) -C tools/acpica clean
 
 # Run unit tests on the host
 test:
