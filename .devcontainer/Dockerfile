@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-setuptools \
     uuid-dev \
-    iasl \
+    acpica-tools \
     nasm \
     bison \
     flex \
