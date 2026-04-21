@@ -14,8 +14,8 @@ The top-level directories each contain a **README.md** file with detailed build 
 | --- | --- |
 | .devcontainer/ and .github/ | Infrastructure and tooling for the development environment, CI/CD pipelines, etc.  These folders contain no code that is part of the final images. |
 | common/ | Tools, documentation, and code files shared by one or more of the folders that produce artifacts. |
-| mod-*/ | Each module directory's Makefile will produce a single binary artifact to be used in one of the postbuild processes.  None of these will link code from another `mod-*/` directory, but may link code from `common/` or consume an artifact produced by another module. |
-| postbuild-*/ | Scripts and resources to stitch modules into final images that can be used to boot the system. |
+| mod/... | Each module directory's Makefile will produce a single binary artifact to be used in one of the postbuild processes.  None of these will link code from another `mod/...` directory, but may link code from `common/` or consume an artifact produced by another module. |
+| postbuild/... | Scripts and resources to stitch modules into final images that can be used to boot the system. |
 
 The folder layout is very different than the original CIX P1 BIOS repository, but the boot flow is the same using the sequence **TF-A (BL31) → OP-TEE → UEFI → OS** and it makes heavy use of Git submodules to demonstrate how only minimal changes to external code are needed to support ODP features.  The [.gitmodules](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/HEAD/.gitmodules) file lists all references.  Be sure to clone with `--recurse-submodules` or run `git submodule update --init --recursive` after cloning to fully populate the submodule directories.
 
