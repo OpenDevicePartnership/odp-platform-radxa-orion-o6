@@ -12,7 +12,7 @@ $(error This makefile must be invoked from the root makefile)
 endif
 
 # Defines specific to this makefile
-RUST_OUT_DIR               := $(ODP_PATH_BUILD_OUTPUT)/bin-uefi/Rust
+RUST_OUT_DIR               := $(ODP_PATH_BUILD_OUTPUT)/mod/uefi/Rust
 SHELL                      := /bin/bash
 export WORKSPACE           := $(CURDIR)
 export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMON)/edk2-platforms-cix-odp:$(ODP_PATH_COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT_DIR)
@@ -32,7 +32,7 @@ all: PatinaDxeCore_ru
 		-p platform/O6.dsc \
 		-b DEBUG \
 		-D BOARD_NAME=evb \
-		-D PATH_BUILD_OUTPUT=$(ODP_PATH_BUILD_OUTPUT)/bin-uefi \
+		-D PATH_BUILD_OUTPUT=$(ODP_PATH_BUILD_OUTPUT)/mod/uefi \
 		-D BUILD_DATE=$$(date +%VM%y%m%d%H%M%SN) \
 		-D COMMIT_HASH=$$(git rev-parse --short=12 HEAD) \
 		-D SMP_ENABLE=1 \
@@ -43,7 +43,7 @@ all: PatinaDxeCore_ru
 		-D SYSTEM_LOADER=common
 
 	mkdir -p $(ODP_PATH_BINS_OUTPUT)
-	cp $(ODP_PATH_BUILD_OUTPUT)/bin-uefi/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(ODP_PATH_BINS_OUTPUT)/
+	cp $(ODP_PATH_BUILD_OUTPUT)/mod/uefi/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(ODP_PATH_BINS_OUTPUT)/
 
 # Build targets for each rust module, will verify formatting and check for warnings as errors
 PatinaDxeCore_ru:
