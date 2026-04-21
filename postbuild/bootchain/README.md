@@ -8,18 +8,18 @@ All of the details below assume a Linux environment.  A Windows environment can 
 
 Makefiles are used to build the final output of this repository.  Running `make` or `make all` in the root will invoke each binary and image folder's makefile, create a sub-folder in the `build` directory named after the corresponding binary or image, and place all build remnants along with the final output in that sub-folder.
 
-Executing `make` will download and verify the necessary build tools, collect all pre-compiled binaries, build the platform-specific binaries, then stitch the output firmware binary.  The table below describes each target available in the root Makefile.  For example, the command `make tee` will re-compile the tee firmware binary and `make image-bootchain` will re-stitch the full bootchain binary with the new tee binary.
+Executing `make` will download and verify the necessary build tools, collect all pre-compiled binaries, build the platform-specific binaries, then stitch the output firmware binary.  The table below describes each target available in the root Makefile.  For example, the command `make tee` will re-compile the tee firmware binary and `make bootchain` will re-stitch the full bootchain binary with the new tee binary.
 
 | Command | Description |
 | --- | --- |
 | `make all` | Default target.  Downloads platform build tools, copies pre-built binaries, builds all firmware binaries, then stitches the final bootchain image. |
 | `make pre-built` | Copies pre-compiled binary artifacts to the build output directory. |
-| `make uefi` | Builds the UEFI firmware binary. |
-| `make tee` | Builds the Trusted Execution Environment (OP-TEE) firmware binary. |
-| `make tf-a` | Builds the Trusted Firmware-A (TF-A/BL31) binary. |
-| `make mem_config` | Builds the memory configuration binary. |
-| `make pm_config` | Builds the power management configuration binary. |
-| `make image-bootchain` | Stitches all binary artifacts into the final bootchain firmware images. |
+| `make uefi` | Builds the UEFI firmware binary module. |
+| `make tee` | Builds the Trusted Execution Environment (OP-TEE) firmware binary module. |
+| `make tf-a` | Builds the Trusted Firmware-A (TF-A/BL31) binary module. |
+| `make mem_config` | Builds the memory configuration binary module. |
+| `make pm_config` | Builds the power management configuration binary module. |
+| `make bootchain` | Stitches all binary module artifacts into the final bootchain firmware images. |
 | `make toolchain` | Downloads and verifies any toolchains necessary for the build. |
 | `make clean` | Removes the `build/` directory and all build remnants. |
 | `make distclean` | Performs a `clean` and additionally removes build tool remnants and the downloaded GNU toolchain. |
@@ -97,7 +97,7 @@ Also if the process of removing the chip and flashing in a stand-alone device is
 
 The Orion O6 does not come with a pre-installed NVME drive, but does support a PCIe Gen4 x4 m.2 NVMe SSD in 2230, 2242, 2260, and 2280 sizes that can be purchased separately.
 
-The online documentation has instructions for booting and installing the OS from a [USB drive](https://docs.radxa.com/en/orion/o6/getting-started/install-system/nvme-system/no-nvme-reader), and instructions for installing the OS while the NVME drive is inserted into a [USB to M.2 NVMe SSD enclosure](https://docs.radxa.com/en/orion/o6/getting-started/install-system/nvme-system/nvme-reader).  Both methods are used by the ODP team and the [./image-os/README.md](https://github.com/radxa/edk2/blob/HEAD/image-os/README.md) file covers building the Windows image with ODP specific changes.
+The online documentation has instructions for booting and installing the OS from a [USB drive](https://docs.radxa.com/en/orion/o6/getting-started/install-system/nvme-system/no-nvme-reader), and instructions for installing the OS while the NVME drive is inserted into a [USB to M.2 NVMe SSD enclosure](https://docs.radxa.com/en/orion/o6/getting-started/install-system/nvme-system/nvme-reader).  Both methods are used by the ODP team and the [postbuild/os/README.md](https://github.com/radxa/edk2/blob/HEAD/postbuild/os/README.md) file covers building the Windows image with ODP specific changes.
 
 ### Serial Debug Logs
 
