@@ -1,11 +1,11 @@
 [submodule "Tianocore_EDKII"]
-	path = bin-uefi/edk2
+	path = mod/uefi/edk2
 	url = https://github.com/cixtech/edk2.git
 [submodule "Trusted_Execution_Environment"]
-	path = bin-tee/op-tee-cix-odp
+	path = mod/tee/op-tee-cix-odp
 	url = https://github.com/rogurr/cix_opensource__tee__op-tee.git
 [submodule "Trusted_Firmware-A"]
-	path = bin-tf-a/arm-trusted-firmware-cix-odp
+	path = mod/tf-a/arm-trusted-firmware-cix-odp
 	url = https://github.com/cixtech/cix_opensource__arm-trusted-firmware.git
 [submodule "CIX_Silicon_Package1"]
 	path = common/edk2-platforms-cix-odp
@@ -14,5 +14,5 @@
 	path = common/edk2-non-osi-cix-odp
 	url = https://github.com/cixtech/edk2-non-osi.git
 [submodule "cix_package-tool"]
-	path = image-bootchain/cix_package-tool
+	path = postbuild/bootchain/cix_package-tool
 	url = https://github.com/cixtech/cix_package-tool.git

@@ -8,14 +8,14 @@ This repository contains the bare minimum firmware and OS image resources needed
 
 ## Folder Structure and Content
 
-The top-level directories each contain a **README.md** file with detailed build instructions, design notes, and component-specific information.  Refer to the [image-bootchain README.md](image-bootchain/README.md) file for the best end-to-end overview of how all pieces fit together, including available make targets, hardware details, and working with individual components.
+The top-level directories each contain a **README.md** file with detailed build instructions, design notes, and component-specific information.  Refer to the [postbuild/bootchain/README.md](postbuild/bootchain/README.md) file for the best end-to-end overview of how all pieces fit together, including available make targets, hardware details, and working with individual components.
 
 | Directory | Purpose |
 | --- | --- |
 | .devcontainer/ and .github/ | Infrastructure and tooling for the development environment, CI/CD pipelines, etc.  These folders contain no code that is part of the final images. |
 | common/ | Tools, documentation, and code files shared by one or more of the folders that produce artifacts. |
-| bin-*/ | Each directory's Makefile will produce a single binary artifact for the firmware image.  None link code from another `bin-*/` directory, but may link code from `common/` or consume an artifact produced by one. |
-| image-*/ | Scripts and resources to stitch artifacts into final images that can be used to boot the system. |
+| mod/... | Each module directory's Makefile will produce a single binary artifact to be used in one of the postbuild processes.  None of these will link code from another `mod/...` directory, but may link code from `common/` or consume an artifact produced by another module. |
+| postbuild/... | Scripts and resources to stitch modules into final images that can be used to boot the system. |
 
 The folder layout is very different than the original CIX P1 BIOS repository, but the boot flow is the same using the sequence **TF-A (BL31) → OP-TEE → UEFI → OS** and it makes heavy use of Git submodules to demonstrate how only minimal changes to external code are needed to support ODP features.  The [.gitmodules](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/HEAD/.gitmodules) file lists all references.  Be sure to clone with `--recurse-submodules` or run `git submodule update --init --recursive` after cloning to fully populate the submodule directories.
 
@@ -31,7 +31,7 @@ In the root of the repository are several pertinent files for contributing:
 
 ## Quick Start
 
-This repository uses a single build configuration for simplicity but supports both DEBUG and RELEASE targets.  The fastest way to compile is to replicate the CI/CD GitHub Actions workflow inside a Linux container, but for other options, please refer to the [image-bootchain README.md](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/HEAD/image-bootchain/README.md) file.
+This repository uses a single build configuration for simplicity but supports both DEBUG and RELEASE targets.  The fastest way to compile is to replicate the CI/CD GitHub Actions workflow inside a Linux container, but for other options, please refer to the [postbuild/bootchain/README.md](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/blob/HEAD/postbuild/bootchain/README.md) file.
 
 1) If building in Windows, install [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) and open a command window to provide a Linux environment.  If building in Linux, skip to step 2.
 

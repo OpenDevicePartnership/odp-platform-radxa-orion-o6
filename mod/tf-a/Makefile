@@ -20,7 +20,7 @@ all:
 		PLAT=sky1 \
 		SPD=opteed \
 		DEBUG=1 \
-		BUILD_BASE=$(ODP_PATH_BUILD_OUTPUT)/bin-tf-a \
+		BUILD_BASE=$(ODP_PATH_BUILD_OUTPUT)/mod/tf-a \
 		CIX_BOARD=evb \
 		SMP=1 \
 		TRUSTED_BOARD_BOOT=1 \
@@ -31,5 +31,5 @@ all:
 		bl31
 
 	mkdir -p $(ODP_PATH_BINS_OUTPUT)
-	cp -f $(ODP_PATH_BUILD_OUTPUT)/bin-tf-a/sky1/debug/bl31.bin $(ODP_PATH_BINS_OUTPUT)/
-	cp -f $(ODP_PATH_BUILD_OUTPUT)/bin-tf-a/sky1/debug/bl31/bl31.elf $(ODP_PATH_BINS_OUTPUT)/
+	cp -f $(ODP_PATH_BUILD_OUTPUT)/mod/tf-a/sky1/debug/bl31.bin $(ODP_PATH_BINS_OUTPUT)/
+	cp -f $(ODP_PATH_BUILD_OUTPUT)/mod/tf-a/sky1/debug/bl31/bl31.elf $(ODP_PATH_BINS_OUTPUT)/

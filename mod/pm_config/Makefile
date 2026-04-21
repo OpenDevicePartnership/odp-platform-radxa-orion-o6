@@ -15,10 +15,10 @@ endif
 .PHONY: all
 
 all:
-	rm -rf $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config
-	cp -rf $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/mem_config/ $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config/
-	$(MAKE) -C $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config
+	rm -rf $(ODP_PATH_BUILD_OUTPUT)/mod/pm_config
+	cp -rf $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/pm_config/ $(ODP_PATH_BUILD_OUTPUT)/mod/pm_config/
+	$(MAKE) -C $(ODP_PATH_BUILD_OUTPUT)/mod/pm_config
 
 	mkdir -p $(ODP_PATH_BINS_OUTPUT)
-	mv $(ODP_PATH_BUILD_OUTPUT)/bin-mem_config/memory_config.bin $(ODP_PATH_BINS_OUTPUT)/
+	mv $(ODP_PATH_BUILD_OUTPUT)/mod/pm_config/csu_pm_config.bin $(ODP_PATH_BINS_OUTPUT)/
 
