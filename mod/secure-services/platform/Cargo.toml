@@ -1,0 +1,37 @@
+[package]
+name = "qemu-ec-sp"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "QEMU Embedded Controller Secure Partition Service"
+authors = ["Phil Weber <philweber@microsoft.com>"]
+repository = "https://github.com/"
+keywords = ["arm", "aarch64", "cortex-a", "osdev"]
+categories = ["embedded", "no-std"]
+
+[features]
+default = []
+test-bypass-locality-check = ["ec-service-lib/test-bypass-locality-check"]
+
+[dependencies]
+aarch64-cpu = "10.0.0"
+aarch64-paging = { version = "0.10.0", default-features = false }
+aarch64-rt = { version = "0.2.2", default-features = false, features = [
+    "el1",
+    "exceptions",
+] }
+aarch64-haf = { path = "../odp-secure-services/aarch64-haf" }
+ec-service-lib = { path = "../odp-secure-services/ec-service-lib" }
+hafnium = { path = "../odp-secure-services/hafnium" }
+odp-ffa = { path = "../odp-secure-services/odp-ffa" }
+log = { version = "0.4", default-features = false }
+uuid = { version = "1.0", default-features = false, features = ["v1"] }
+
+[build-dependencies]
+chrono = "0.4"
+
+[profile.release]
+
+[profile.coverage]
+inherits = "release"
+debug = true
