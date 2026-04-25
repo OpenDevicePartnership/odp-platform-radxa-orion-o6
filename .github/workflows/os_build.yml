@@ -1,0 +1,54 @@
+# This workflow builds the ODP Validation OS WIM image on a Windows runner.
+# It downloads the Validation OS ISO, mounts it, and runs build_wim.cmd to
+# produce ODP_ValidationOS.wim as a build artifact.
+
+name: os-build
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      validation_os_url:
+        description: "Download URL for the Validation OS Arm64 ISO"
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build-wim:
+    runs-on: windows-latest
+    name: Build Validation OS WIM
+    defaults:
+      run:
+        working-directory: postbuild/os
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Validation OS ISO
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "${{ inputs.validation_os_url }}" -OutFile ValidationOS.iso
+
+      - name: Mount ISO and run build
+        shell: pwsh
+        run: |
+          $mount = Mount-DiskImage -ImagePath (Resolve-Path ValidationOS.iso).Path -PassThru
+          $drive = ($mount | Get-Volume).DriveLetter
+          try {
+            cmd /c "${drive}:\GenImage\GenImage.cmd -PackagesList:O6_config.pkg -PackagePath:${drive}:\cabs -ImagePath:${iso}\ -RegistryImport:O6_policy.reg -OutPath:build -wim -NoWait"
+            if ($LASTEXITCODE -ne 0) { throw "GenImage.cmd failed with exit code $LASTEXITCODE" }
+          } finally {
+            Dismount-DiskImage -ImagePath $mount.ImagePath
+          }
+
+      - name: Upload WIM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ODP_ValidationOS
+          path: postbuild/os/build/ValidationOS-1.wim
