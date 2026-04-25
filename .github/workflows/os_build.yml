@@ -41,7 +41,7 @@ jobs:
           $mount = Mount-DiskImage -ImagePath (Resolve-Path ValidationOS.iso).Path -PassThru
           $drive = ($mount | Get-Volume).DriveLetter
           try {
-            cmd /c "${drive}:\GenImage\GenImage.cmd -PackagesList:O6_config.pkg -PackagePath:${drive}:\cabs -ImagePath:${iso}\ -RegistryImport:O6_policy.reg -OutPath:build -wim -NoWait"
+            cmd /c "${drive}:\GenImage\GenImage.cmd -PackagesList:O6_config.pkg -PackagePath:${drive}:\cabs -ImagePath:${drive}:\ -RegistryImport:O6_policy.reg -OutPath:build -wim -NoWait"
             if ($LASTEXITCODE -ne 0) { throw "GenImage.cmd failed with exit code $LASTEXITCODE" }
           } finally {
             Dismount-DiskImage -ImagePath $mount.ImagePath
