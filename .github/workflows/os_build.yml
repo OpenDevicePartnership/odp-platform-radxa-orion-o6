@@ -1,6 +1,6 @@
 # This workflow builds the ODP Validation OS WIM image on a Windows runner.
 # It downloads the Validation OS ISO, mounts it, and runs build_wim.cmd to
-# produce ODP_ValidationOS.wim as a build artifact.
+# produce ODP-O6-ValidationOS-<yyyyMMdd>.wim as a build artifact.
 
 name: os-build
 
@@ -47,8 +47,14 @@ jobs:
             Dismount-DiskImage -ImagePath $mount.ImagePath
           }
 
+      - name: Rename WIM with build date
+        shell: pwsh
+        run: |
+          $date = Get-Date -Format "yyyyMMdd"
+          Rename-Item -Path build/ValidationOS-1.wim -NewName "ODP-O6-ValidationOS-$date.wim"
+
       - name: Upload WIM artifact
         uses: actions/upload-artifact@v4
         with:
           name: ODP_ValidationOS
-          path: postbuild/os/build/ValidationOS-1.wim
+          path: postbuild/os/build/ODP-O6-ValidationOS-*.wim
