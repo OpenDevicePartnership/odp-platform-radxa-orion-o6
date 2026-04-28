@@ -1,10 +1,10 @@
-# This workflow verifies that the full build compiles successfully.
+# This workflow verifies that the bootchain compiles successfully.
 # It runs on every push to main and on pull requests.
 #
 # The build uses the dev container Dockerfile which includes the ARM GNU toolchain,
 # Rust toolchain, required patches and all build dependencies.
 
-name: build
+name: bootchain_build
 
 permissions:
   contents: read
