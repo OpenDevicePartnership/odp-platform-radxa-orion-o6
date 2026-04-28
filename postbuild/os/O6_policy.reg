@@ -1,5 +1,9 @@
 Windows Registry Editor Version 5.00
 
+; MMC policy BlockRemoteSnapins controls whether remote snap-ins can be loaded.
+; Setting it to 0 allows MMC snap-ins to launch in WinVOS, which is required
+; when using management tools such as DeviceManager (devmgmt.msc).
+
 [HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\MMC]
 "BlockRemoteSnapins"=dword:00000000
 
