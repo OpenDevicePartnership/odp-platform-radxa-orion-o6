@@ -1,0 +1,14 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\MMC]
+"BlockRemoteSnapins"=dword:00000000
+
+; Internet Settings zone policy 1806 controls launching applications and unsafe files.
+; Setting it to 0 allows this behavior for the Local Machine zone (Zones\0), which
+; WinVOS requires when trying to launch tools such as DeviceManager (devmgmt.msc).
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\0]
+"1806"=dword:00000000
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\0]
+"1806"=dword:00000000

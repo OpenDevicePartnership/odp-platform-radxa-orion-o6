@@ -1,0 +1,87 @@
+# This workflow builds the ODP Validation OS WIM image on a Windows runner using the steps provided by the 
+# learn.microsoft.com documentation.
+# https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/validation-os-overview?view=windows-11
+#
+# It downloads the Validation OS ISO, mounts it, and runs GenImage.cmd to produce the build artifact.
+#
+# =====================================================================================================================
+# To run these steps locally on a Windows PC:
+#
+#   1. Download the Validation OS Arm64 ISO from Microsoft
+#      https://learn.microsoft.com/en-us/legal/windows/hardware/validation-os-license
+#
+#   2. Mount the ISO (double-click or right-click > Mount) and note the drive letter assigned
+#
+#   3. Open an Administrator terminal and run GenImage.cmd from the mounted ISO replacing the <iso drive> tag with
+#      the drive letter, the <repo path> tag with the path to this repository, and the <output path> with the desired
+#      output directory for the WIM file
+#
+#        <iso drive>:\GenImage\GenImage.cmd  ^
+#            -PackagesList:<repo path>\postbuild\os\O6_config.pkg  ^
+#            -RegistryImport:<repo path>\postbuild\os\O6_policy.reg  ^
+#            -PackagePath:<iso drive>:\cabs  ^
+#            -ImagePath:<iso drive>:\  ^
+#            -OutPath:<output path>  ^
+#            -wim -NoWait
+#
+#   4. The output will be ValidationOS-1.wim in the provided output directory
+#
+# =====================================================================================================================
+
+name: os-build
+
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+    inputs:
+      validation_os_url:
+        description: "Download URL for the Validation OS Arm64 ISO"
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build-wim:
+    runs-on: windows-latest
+    name: Build Validation OS WIM
+    defaults:
+      run:
+        working-directory: postbuild/os
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Validation OS ISO
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "${{ inputs.validation_os_url }}" -OutFile ValidationOS.iso
+
+      - name: Mount ISO and run build
+        shell: pwsh
+        run: |
+          $mount = Mount-DiskImage -ImagePath (Resolve-Path ValidationOS.iso).Path -PassThru
+          $drive = ($mount | Get-Volume).DriveLetter
+          try {
+            cmd /c "${drive}:\GenImage\GenImage.cmd -PackagesList:O6_config.pkg -PackagePath:${drive}:\cabs -ImagePath:${drive}:\ -RegistryImport:O6_policy.reg -OutPath:build -wim -NoWait"
+            if ($LASTEXITCODE -ne 0) { throw "GenImage.cmd failed with exit code $LASTEXITCODE" }
+          } finally {
+            Dismount-DiskImage -ImagePath $mount.ImagePath
+          }
+
+      - name: Rename WIM with build date
+        shell: pwsh
+        run: |
+          # GenImage produces ValidationOS-1.wim; rename to include the build date
+          $date = Get-Date -Format "yyyyMMdd"
+          Rename-Item -Path build/ValidationOS-1.wim -NewName "ODP-O6-ValidationOS-$date.wim"
+
+      - name: Upload WIM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ODP_ValidationOS
+          path: postbuild/os/build/ODP-O6-ValidationOS-*.wim
