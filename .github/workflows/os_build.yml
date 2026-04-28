@@ -35,11 +35,6 @@ permissions:
 
 on:
   workflow_dispatch:
-    inputs:
-      validation_os_url:
-        description: "Download URL for the Validation OS Arm64 ISO"
-        required: true
-        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -54,12 +49,12 @@ jobs:
         working-directory: postbuild/os
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download Validation OS ISO
         shell: pwsh
         run: |
-          Invoke-WebRequest -Uri "${{ inputs.validation_os_url }}" -OutFile ValidationOS.iso
+          Invoke-WebRequest -Uri "https://aka.ms/DownloadValidationOS_arm64" -OutFile ValidationOS.iso
 
       - name: Mount ISO and run build
         shell: pwsh
@@ -81,7 +76,7 @@ jobs:
           Rename-Item -Path build/ValidationOS-1.wim -NewName "ODP-O6-ValidationOS-$date.wim"
 
       - name: Upload WIM artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ODP_ValidationOS
           path: postbuild/os/build/ODP-O6-ValidationOS-*.wim
