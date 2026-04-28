@@ -4,7 +4,7 @@
 # The build uses the dev container Dockerfile which includes the ARM GNU toolchain,
 # Rust toolchain, required patches and all build dependencies.
 
-name: build
+name: bootchain-build
 
 permissions:
   contents: read
