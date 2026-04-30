@@ -5,6 +5,7 @@
  *  Copyright (c) 2017-2018, Andrey Warkentin <andrey.warkentin@gmail.com>
  *  Copyright (c) 2014, Linaro Limited. All rights reserved.
  *  Copyright (c) 2013-2018, ARM Limited. All rights reserved.
+ *  Copyright (c) Microsoft Corporation.
  *
  *  SPDX-License-Identifier: BSD-2-Clause-Patent
  *

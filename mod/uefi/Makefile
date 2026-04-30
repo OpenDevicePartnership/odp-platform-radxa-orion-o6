@@ -1,9 +1,8 @@
-# ODP Platform firmware build system
+# @file Makefile
 #
-# ## License
+# UEFI firmware build targets for the ODP Platform firmware
 #
 # Copyright (c) Microsoft Corporation.
-#
 # SPDX-License-Identifier: Apache-2.0
 
 # Guard: this makefile must be invoked from the root makefile

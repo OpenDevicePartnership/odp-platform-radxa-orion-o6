@@ -1,8 +1,9 @@
-# NOTE: This file is automatically synchronized from Patina DevOps. Update the original file there
-#       instead of the file in this repo.
+# @file rust-toolchain.toml
 #
-# - Patina DevOps Repo: https://github.com/OpenDevicePartnership/patina-devops
-# - File Sync Settings: https://github.com/OpenDevicePartnership/patina-devops/blob/main/.sync/Files.yml
+# Rust toolchain configuration for the Patina DXE Core driver (Radxa O6)
+#
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: Apache-2.0
 
 [toolchain]
 channel = "nightly-2025-09-19" # One day post 1.90.0

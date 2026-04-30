@@ -1,9 +1,8 @@
+//! @file main.rs
+//!
 //! Patina DXE Core driver for Radxa O6
 //!
-//! ## License
-//!
 //! Copyright (c) Microsoft Corporation.
-//!
 //! SPDX-License-Identifier: Apache-2.0
 //!
 #![cfg(target_os = "uefi")]

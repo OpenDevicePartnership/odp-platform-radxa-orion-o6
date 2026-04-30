@@ -1,9 +1,8 @@
-# ODP Platform firmware build system
+# @file Makefile
 #
-# ## License
+# Bootchain stitch and packaging targets for the ODP Platform firmware build system
 #
 # Copyright (c) Microsoft Corporation.
-#
 # SPDX-License-Identifier: Apache-2.0
 
 # Guard: this makefile must be invoked from the root makefile

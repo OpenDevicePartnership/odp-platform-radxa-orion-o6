@@ -1,3 +1,10 @@
+# @file Cargo.toml
+#
+# Cargo package manifest for the ACPI ASL source-level validation tests
+#
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: Apache-2.0
+
 [package]
 name = "acpi-tests"
 version = "0.1.0"

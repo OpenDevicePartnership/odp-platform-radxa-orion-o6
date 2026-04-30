@@ -1,0 +1,3 @@
+# Windows registry files must remain UTF-16 LE with CRLF line endings to be properly processed by the Windows registry
+# editor. Marking them as binary to prevent Git from altering the file at commit or checkout.
+*.reg binary

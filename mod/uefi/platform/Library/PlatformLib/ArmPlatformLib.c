@@ -4,6 +4,7 @@
  *  Copyright (c) 2014-2016, Linaro Limited. All rights reserved.
  *  Copyright (c) 2014, Red Hat, Inc.
  *  Copyright (c) 2011-2013, ARM Limited. All rights reserved.
+ *  Copyright (c) Microsoft Corporation.
  *
  *
  *  SPDX-License-Identifier: BSD-2-Clause-Patent

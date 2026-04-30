@@ -1,3 +1,10 @@
+# @file O6_config.pkg
+#
+# Validation OS package list for the Radxa Orion O6 platform
+#
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: Apache-2.0
+
 #
 # Feature: ODP Radxa WinVOS Boot Image
 # Description: Adds baseline packages to boot and test the Orion O6

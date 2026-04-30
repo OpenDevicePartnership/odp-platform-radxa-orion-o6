@@ -1,3 +1,10 @@
+# @file config.toml
+#
+# Cargo build configuration for the Patina DXE Core driver
+#
+# Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: Apache-2.0
+
 [env]
 PATINA_CONFIG_VERSION = "1"
 

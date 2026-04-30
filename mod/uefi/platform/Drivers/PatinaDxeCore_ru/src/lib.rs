@@ -1,12 +1,11 @@
+//! @file lib.rs
+//!
 //! Platform configuration constants for Radxa O6
 //!
 //! Defines hardware addresses used by the DXE Core driver. Extracted to a library
 //! for testability on the host via `cargo test`.
 //!
-//! ## License
-//!
 //! Copyright (c) Microsoft Corporation.
-//!
 //! SPDX-License-Identifier: Apache-2.0
 
 #![cfg_attr(not(test), no_std)]

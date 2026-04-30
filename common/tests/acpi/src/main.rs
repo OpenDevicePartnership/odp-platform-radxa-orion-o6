@@ -1,12 +1,14 @@
-// Copyright (c) Microsoft Corporation.
-// SPDX-License-Identifier: Apache-2.0
-
 //! ACPI ASL source-level validation tests.
 //!
 //! These tests parse the raw `.asl` source files and verify that expected
 //! device nodes, hardware IDs, and methods are present. This catches
 //! accidental deletions or regressions without requiring the full UEFI
 //! build toolchain (iasl).
+//!
+//! ## License
+//! Copyright (c) Microsoft Corporation.
+//! SPDX-License-Identifier: Apache-2.0
+//!
 
 fn main() {
     println!("Run with `cargo test` to execute ACPI validation tests.");

@@ -1,9 +1,8 @@
-# Patina DXE Core driver for Radxa O6
+# @file Cargo.toml
 #
-# ## License
+# Cargo package manifest for the Patina DXE Core driver (Radxa O6)
 #
 # Copyright (c) Microsoft Corporation.
-#
 # SPDX-License-Identifier: Apache-2.0
 
 [package]
@@ -16,6 +15,7 @@
   log = "^0.4"
   heapless = "0.9.1"
 
+# Point to temporary fork until commit 0c74baedeb5092a275f0dc012cc1cfd4ba0a9aba in the Patina repository is published
 [target.'cfg(target_os = "uefi")'.dependencies]
   patina = { git = "https://github.com/rogurr/patina.git", rev = "8a5877d650d6acdadfb0f2b6d1070496de6b7f2c" }
   patina_dxe_core = { git = "https://github.com/rogurr/patina.git", rev = "8a5877d650d6acdadfb0f2b6d1070496de6b7f2c" }
