@@ -1,0 +1,9 @@
+#
+# Feature: ODP Radxa WinVOS Boot Image
+# Description: Adds baseline packages to boot and test the Orion O6
+#
++include apps.pkg
++include graphics.pkg
++include InboxDrivers.pkg
++include usb.pkg
+Microsoft-WinVOS-DeveloperTools-Package [Extra]

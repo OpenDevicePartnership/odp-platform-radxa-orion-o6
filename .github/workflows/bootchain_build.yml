@@ -1,18 +1,17 @@
-# This workflow verifies that the full build compiles successfully.
+# This workflow verifies that the bootchain compiles successfully.
 # It runs on every push to main and on pull requests.
 #
 # The build uses the dev container Dockerfile which includes the ARM GNU toolchain,
 # Rust toolchain, required patches and all build dependencies.
 
-name: build
+name: bootchain-build
 
 permissions:
   contents: read
 
 on:
-  push:
-    branches: [main]
   pull_request:
+    branches: [main]
   workflow_dispatch:
 
 # Cancel in-progress runs for the same PR/branch
@@ -26,7 +25,7 @@ jobs:
     name: Compile repository (Docker)
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -55,7 +54,7 @@ jobs:
     name: Compile repository (Podman)
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
