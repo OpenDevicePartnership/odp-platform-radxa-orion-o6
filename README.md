@@ -61,3 +61,11 @@ This repository uses a single build configuration for simplicity but supports bo
    Because the container's `/workspace` directory is mapped to the host repository directory, the `build/` directory can be accessed either inside or outside the container.
 
 6) **TBD Task #36:**  [Radxa OS Creation and Booting Documentation](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/issues/36)
+
+## Trademarks
+
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
+trademarks or logos is subject to and must follow Microsoft's Trademark & Brand Guidelines
+(https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general). Use of Microsoft
+trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft
+sponsorship. Any use of third-party trademarks or logos are subject to those third-party's policies.
