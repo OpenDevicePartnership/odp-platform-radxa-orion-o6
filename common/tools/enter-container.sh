@@ -7,7 +7,7 @@
 # also detect existing images and containers, so it is safe to run repeatedly.
 #
 # Copyright (c) Microsoft Corporation.
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
 
 set -euo pipefail
 

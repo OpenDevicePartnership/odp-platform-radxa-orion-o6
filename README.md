@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/build.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/build.yml)
 [![Test](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/test.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/test.yml)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![LICENSE](https://img.shields.io/badge/License-MIT-blue)](./LICENSE.txt)
 
 This repository contains the bare minimum firmware and OS image resources needed to boot a Radxa Orion O6 platform, serving as a demonstration of ODP features.  It is based on the [Orion O6 Documentation](https://radxa.com/products/orion/o6/#documentation) and the [CIX P1 BIOS](https://github.com/cixtech/bios) with ODP-specific changes documented in the README.md file at the root of each top-level directory.
 
@@ -65,7 +65,6 @@ This repository uses a single build configuration for simplicity but supports bo
 ## Trademarks
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
-trademarks or logos is subject to and must follow Microsoft's Trademark & Brand Guidelines
-(https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general). Use of Microsoft
-trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft
-sponsorship. Any use of third-party trademarks or logos are subject to those third-party's policies.
+trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply
+Microsoft sponsorship. Any use of third-party trademarks or logos are subject to those third-party's policies.

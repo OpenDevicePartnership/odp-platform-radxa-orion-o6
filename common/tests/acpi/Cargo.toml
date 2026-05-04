@@ -3,7 +3,7 @@
 # Cargo package manifest for the ACPI ASL source-level validation tests
 #
 # Copyright (c) Microsoft Corporation.
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
 
 [package]
 name = "acpi-tests"

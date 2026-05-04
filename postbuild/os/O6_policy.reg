@@ -3,7 +3,7 @@
 ; Registry policy overrides for the Radxa Orion O6 Validation OS image
 ;
 ; Copyright (c) Microsoft Corporation.
-; SPDX-License-Identifier: Apache-2.0
+; SPDX-License-Identifier: MIT
 
 Windows Registry Editor Version 5.00
 

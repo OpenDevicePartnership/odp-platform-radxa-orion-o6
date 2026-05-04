@@ -6,7 +6,7 @@
 # executable name.
 #
 # Copyright (c) Microsoft Corporation.
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
 
 # =====================================================================================================================
 # GCC toolchain version information

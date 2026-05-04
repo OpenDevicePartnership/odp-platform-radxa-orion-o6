@@ -1,10 +1,8 @@
 # Radxa Secure Services Build file
 #
-# ## License
-#
 # Copyright (c) Microsoft Corporation.
+# SPDX-License-Identifier: MIT
 #
-# SPDX-License-Identifier: Apache-2.0
 
 # Guard: this makefile must be invoked from the root makefile
 ifndef ODP_PATH_BUILD_OUTPUT

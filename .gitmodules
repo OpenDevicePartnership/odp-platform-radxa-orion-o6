@@ -27,6 +27,8 @@
 [submodule "cix_package-tool"]
 	path = postbuild/bootchain/cix_package-tool
 	url = https://github.com/cixtech/cix_package-tool.git
+
+# ODP Secure Services
 [submodule "odp-secure-services"]
 	path = mod/secure-services/odp-secure-services
 	url = https://github.com/OpenDevicePartnership/odp-secure-services.git

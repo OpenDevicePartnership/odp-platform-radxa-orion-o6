@@ -3,7 +3,7 @@
 # Primary Makefile for the ODP Platform firmware build system that defines common variables and targets
 #
 # Copyright (c) Microsoft Corporation.
-# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: MIT
 
 SHELL := /bin/bash
 
