@@ -35,7 +35,7 @@ MSFT_THERMAL_ASL := $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Ori
 
 # Targets for 'all' are order specific.  Toolchain first, copy the pre-built binaries, build the platform binaries,
 # then final image stitch.
-all: pre-built uefi tee tf-a mem_config pm_config bootchain
+all: pre-built uefi tee tf-a mem_config pm_config bootchain secure-services
 
 # Patch MSFTThermal.asl feature flags before UEFI build.
 # The sed expressions replace the default #define values with the Make variable values.
@@ -67,6 +67,9 @@ mem_config:
 
 pm_config:
 	$(MAKE) -C mod/pm_config all
+
+secure-services:
+	$(MAKE) -C mod/secure-services all
 
 bootchain:
 	$(MAKE) -C postbuild/bootchain stitch-all

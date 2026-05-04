@@ -1,0 +1,5 @@
+MEMORY
+{
+	image : ORIGIN = 0x81812000, LENGTH = 2M
+	rxtx_buf : ORIGIN = 0xA1000000, LENGTH = 8K
+}
