@@ -1,11 +1,11 @@
+Windows Registry Editor Version 5.00
+
 ; @file O6_policy.reg
 ;
 ; Registry policy overrides for the Radxa Orion O6 Validation OS image
 ;
 ; Copyright (c) Microsoft Corporation.
 ; SPDX-License-Identifier: MIT
-
-Windows Registry Editor Version 5.00
 
 ; MMC policy BlockRemoteSnapins controls whether remote snap-ins can be loaded.
 ; Setting it to 0 allows MMC snap-ins to launch in WinVOS, which is required
