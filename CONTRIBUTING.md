@@ -32,4 +32,4 @@ draft PR before sending it out to code reviewers.
 ## Regressions
 
 When reporting a regression, please ensure that you use `git bisect` to find the first offending commit, as that will
-help us finding the culprit a lot faster.
+help us find the culprit a lot faster.
