@@ -1,1 +1,7 @@
+# @file .gitignore
+#
+# Ignore rules for the UEFI firmware module build outputs
+#
+# SPDX-License-Identifier: MIT
+
 /Conf/
