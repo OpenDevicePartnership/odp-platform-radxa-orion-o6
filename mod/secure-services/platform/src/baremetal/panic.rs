@@ -1,3 +1,5 @@
+//! @file panic.rs
+//!
 //! A panic handler that infinitely waits.
 //!
 //! SPDX-License-Identifier: MIT

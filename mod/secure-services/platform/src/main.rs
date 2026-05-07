@@ -1,3 +1,7 @@
+//! @file main.rs
+//!
+//! Entry point for the EC secure-services Secure Partition. Provides a
+//! bare-metal `no_std` build for the SP and a host-side stub for testing.
 //!
 //! SPDX-License-Identifier: MIT
 

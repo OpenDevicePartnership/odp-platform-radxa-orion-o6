@@ -1,3 +1,7 @@
+//! @file passthrough_service.rs
+//!
+//! Generic FF-A direct-message passthrough service that forwards command
+//! payloads to the EC over UART using SMBUS/MCTP framing.
 //!
 //! SPDX-License-Identifier: MIT
 

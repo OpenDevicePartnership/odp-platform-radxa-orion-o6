@@ -1,3 +1,7 @@
+//! @file battery.rs
+//!
+//! Battery passthrough service: forwards ACPI battery method calls from the
+//! OS to the EC over the UART passthrough transport.
 //!
 //! SPDX-License-Identifier: MIT
 

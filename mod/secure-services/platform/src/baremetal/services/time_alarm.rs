@@ -1,3 +1,7 @@
+//! @file time_alarm.rs
+//!
+//! Time/Alarm passthrough service: forwards ACPI time and wake-alarm method
+//! calls from the OS to the EC over the UART passthrough transport.
 //!
 //! SPDX-License-Identifier: MIT
 

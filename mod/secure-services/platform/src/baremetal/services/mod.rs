@@ -1,3 +1,5 @@
+//! @file mod.rs
+//!
 //! This module contains hacked versions of the passthrough services (excluding debug and notification) from:
 //! https://github.com/philgweber/n1x-ec-secure-partition/blob/philgweber/notification_hack/secure-partition/src/baremetal/services/
 //!

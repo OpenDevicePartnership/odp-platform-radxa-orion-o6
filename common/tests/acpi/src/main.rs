@@ -1,3 +1,5 @@
+//! @file main.rs
+//!
 //! ACPI ASL source-level validation tests.
 //!
 //! These tests parse the raw `.asl` source files and verify that expected

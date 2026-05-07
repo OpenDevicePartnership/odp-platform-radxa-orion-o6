@@ -1,3 +1,6 @@
+//! @file interrupt.rs
+//!
+//! Hafnium interrupt handler implementation for the QEMU Secure Partition.
 //!
 //! SPDX-License-Identifier: MIT
 

@@ -1,3 +1,7 @@
+# @file Cargo.toml
+#
+# Cargo package manifest for the QEMU Embedded Controller Secure Partition
+#
 # SPDX-License-Identifier: MIT
 
 [package]

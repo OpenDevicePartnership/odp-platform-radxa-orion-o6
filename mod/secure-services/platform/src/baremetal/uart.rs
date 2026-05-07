@@ -1,3 +1,7 @@
+//! @file uart.rs
+//!
+//! Dedicated UART driver for QEMU<->EC communication used by the Secure
+//! Partition's passthrough services.
 //!
 //! SPDX-License-Identifier: MIT
 

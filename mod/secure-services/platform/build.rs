@@ -1,3 +1,7 @@
+//! @file build.rs
+//!
+//! Cargo build script for the secure-services platform. Emits build-time
+//! environment variables and linker arguments when targeting bare metal.
 //!
 //! SPDX-License-Identifier: MIT
 
