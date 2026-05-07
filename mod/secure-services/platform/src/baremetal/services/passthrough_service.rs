@@ -1,3 +1,6 @@
+//!
+//! SPDX-License-Identifier: MIT
+
 use crate::baremetal::uart::EcUart;
 use ec_service_lib::Result;
 use log::{error, info};

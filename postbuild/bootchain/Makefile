@@ -2,7 +2,6 @@
 #
 # Bootchain stitch and packaging targets for the ODP Platform firmware build system
 #
-# Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: MIT
 
 # Guard: this makefile must be invoked from the root makefile

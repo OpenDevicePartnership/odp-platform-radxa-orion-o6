@@ -6,7 +6,6 @@
 # user, so file permissions, tools, and scripts should behave as expected to compile this repository's code.  It will
 # also detect existing images and containers, so it is safe to run repeatedly.
 #
-# Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: MIT
 
 set -euo pipefail

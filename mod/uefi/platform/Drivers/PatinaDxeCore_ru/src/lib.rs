@@ -5,7 +5,6 @@
 //! Defines hardware addresses used by the DXE Core driver. Extracted to a library
 //! for testability on the host via `cargo test`.
 //!
-//! Copyright (c) Microsoft Corporation.
 //! SPDX-License-Identifier: MIT
 
 #![cfg_attr(not(test), no_std)]

@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation.
-// SPDX-License-Identifier: MIT
+//!
+//! SPDX-License-Identifier: MIT
 
 fn main() {
     if std::env::var("CARGO_CFG_TARGET_OS").unwrap() == "none" {

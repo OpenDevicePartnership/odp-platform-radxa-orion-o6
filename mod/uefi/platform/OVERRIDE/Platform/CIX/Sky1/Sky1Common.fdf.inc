@@ -1,7 +1,6 @@
 ## @file
 #
 #  Copyright 2024 Cix Technology Group Co., Ltd. All Rights Reserved.
-#  Copyright (c) Microsoft Corporation.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #

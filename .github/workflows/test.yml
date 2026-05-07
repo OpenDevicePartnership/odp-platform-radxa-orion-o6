@@ -2,10 +2,7 @@
 #
 # This workflow runs unit tests for Rust components in the repository
 #
-##
-# Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: MIT
-##
 
 name: test
 
@@ -28,8 +25,8 @@ jobs:
 
   # Run Rust unit tests
   test:
-    runs-on: ubuntu-latest
     name: Unit Tests
+    runs-on: ubuntu-latest
     steps:
       - name: Clone Repository
         uses: actions/checkout@v6

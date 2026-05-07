@@ -2,7 +2,6 @@
 #
 #  Copyright 2024 Radxa Computer (Shenzhen) Co., Ltd. All Rights Reserved.
 #  Copyright (c) 2018, Linaro Ltd. All rights reserved.
-#  Copyright (c) Microsoft Corporation.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #

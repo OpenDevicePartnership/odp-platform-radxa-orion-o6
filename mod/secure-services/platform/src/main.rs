@@ -1,5 +1,5 @@
-// Copyright (c) Microsoft Corporation.
-// SPDX-License-Identifier: MIT
+//!
+//! SPDX-License-Identifier: MIT
 
 #![cfg_attr(target_os = "none", no_std)]
 #![cfg_attr(target_os = "none", no_main)]

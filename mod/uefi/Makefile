@@ -2,7 +2,6 @@
 #
 # UEFI firmware build targets for the ODP Platform firmware
 #
-# Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: MIT
 # Guard: this makefile must be invoked from the root makefile
 ifndef ODP_PATH_BUILD_OUTPUT

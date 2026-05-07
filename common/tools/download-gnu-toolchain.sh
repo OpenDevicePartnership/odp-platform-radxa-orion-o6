@@ -5,7 +5,6 @@
 # ODP_PATH_GCC5_PREFIX environment variable to determine where the toolchain should be installed and the gcc
 # executable name.
 #
-# Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: MIT
 
 # =====================================================================================================================

@@ -1,8 +1,7 @@
 # ODP Dockerfile for Radxa Orion O6 firmware build environment
 #
-# Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: MIT
-#
+
 FROM ubuntu:24.04
 
 # Set non-interactive to avoid prompts during build

@@ -2,7 +2,6 @@
 #
 # Rust toolchain configuration for the Patina DXE Core driver (Radxa O6)
 #
-# Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: MIT
 
 [toolchain]

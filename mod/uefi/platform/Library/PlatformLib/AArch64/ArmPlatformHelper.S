@@ -5,7 +5,6 @@
  *  Copyright (c) 2019-2020, Pete Batard <pete@akeo.ie>
  *  Copyright (c) 2016, Linaro Limited. All rights reserved.
  *  Copyright (c) 2011-2020, ARM Limited. All rights reserved.
- *  Copyright (c) Microsoft Corporation.
  *
  *  SPDX-License-Identifier: BSD-2-Clause-Patent
  *

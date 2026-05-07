@@ -1,3 +1,6 @@
+//!
+//! SPDX-License-Identifier: MIT
+
 use super::passthrough_service::{CommandInfo, PassthroughService};
 use crate::baremetal::uart::EcUart;
 use ec_service_lib::{Result, Service};

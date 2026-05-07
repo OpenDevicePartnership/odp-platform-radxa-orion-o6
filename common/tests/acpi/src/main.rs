@@ -5,10 +5,7 @@
 //! accidental deletions or regressions without requiring the full UEFI
 //! build toolchain (iasl).
 //!
-//! ## License
-//! Copyright (c) Microsoft Corporation.
 //! SPDX-License-Identifier: MIT
-//!
 
 fn main() {
     println!("Run with `cargo test` to execute ACPI validation tests.");

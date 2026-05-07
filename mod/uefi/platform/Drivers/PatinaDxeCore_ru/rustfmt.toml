@@ -4,7 +4,6 @@
 # default values to explicitly show settings for more common options. Keep these options sorted in ascending order
 # to ease lookup with rustfmt documentation.
 #
-# Copyright (c) Microsoft Corporation.
 # SPDX-License-Identifier: MIT
 force_explicit_abi = true     # Always print the ABI for extern items (e.g. extern {... will become extern "C" {...)
 hard_tabs = false             # Always uses spaces for indentation and alignment

@@ -1,3 +1,6 @@
+//!
+//! SPDX-License-Identifier: MIT
+
 use aarch64_haf::{haf_interrupt_handler_impl, HafInterruptHandler};
 
 pub struct QemuInterriptHandler;

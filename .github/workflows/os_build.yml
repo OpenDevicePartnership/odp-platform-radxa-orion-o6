@@ -5,6 +5,8 @@
 #
 # https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/validation-os-overview?view=windows-11
 #
+# SPDX-License-Identifier: MIT
+
 # =====================================================================================================================
 # To run these steps locally on a Windows PC:
 #
@@ -28,11 +30,6 @@
 #   4. The output will be ValidationOS-1.wim in the provided output directory
 #
 # =====================================================================================================================
-#
-##
-# Copyright (c) Microsoft Corporation.
-# SPDX-License-Identifier: MIT
-##
 
 name: os-build
 
@@ -44,6 +41,10 @@ permissions:
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
 
   # Build the WIM image using the Validation OS ISO and GenImage.cmd per the documentation
@@ -52,17 +53,18 @@ jobs:
     name: Build Validation OS WIM
     defaults:
       run:
-        shell: pwsh
         working-directory: postbuild/os
     steps:
       - name: Clone Repository
         uses: actions/checkout@v6
 
       - name: Download Validation OS ISO
+        shell: pwsh
         run: |
           Invoke-WebRequest -Uri "https://aka.ms/DownloadValidationOS_arm64" -OutFile ValidationOS.iso
 
       - name: Build WIM
+        shell: pwsh
         run: |
           $mount = Mount-DiskImage -ImagePath (Resolve-Path ValidationOS.iso).Path -PassThru
           $drive = ($mount | Get-Volume).DriveLetter
@@ -74,12 +76,14 @@ jobs:
           }
 
       - name: Rename WIM with Build Date
+        shell: pwsh
         run: |
+          # GenImage produces ValidationOS-1.wim; rename to include the build date
           $date = Get-Date -Format "yyyyMMdd"
           Rename-Item -Path build/ValidationOS-1.wim -NewName "ODP-O6-ValidationOS-$date.wim"
 
-      - name: Upload Artifacts
+      - name: Upload WIM Artifact
         uses: actions/upload-artifact@v7
         with:
           name: ODP_ValidationOS
-          path: postbuild/os/build/
+          path: postbuild/os/build/ODP-O6-ValidationOS-*.wim
