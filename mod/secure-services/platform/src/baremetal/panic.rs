@@ -1,4 +1,8 @@
 //! A panic handler that infinitely waits.
+//!
+//! SPDX-License-Identifier: MIT
+//!
+
 use core::panic::PanicInfo;
 
 use aarch64_cpu::asm;

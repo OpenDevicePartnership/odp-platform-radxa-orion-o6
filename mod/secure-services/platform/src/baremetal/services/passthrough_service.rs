@@ -1,3 +1,9 @@
+//! Generic FF-A direct-message passthrough service that forwards command
+//! payloads to the EC over UART using SMBUS/MCTP framing.
+//!
+//! SPDX-License-Identifier: MIT
+//!
+
 use crate::baremetal::uart::EcUart;
 use ec_service_lib::Result;
 use log::{error, info};

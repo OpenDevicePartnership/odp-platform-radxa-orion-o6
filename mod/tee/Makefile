@@ -1,12 +1,9 @@
-# ODP Platform firmware build system
+# Trusted Execution Environment (OP-TEE) build targets for the ODP Platform firmware
 #
-# ## License
+# SPDX-License-Identifier: MIT
 #
-# Copyright (c) Microsoft Corporation.
-#
-# SPDX-License-Identifier: Apache-2.0
 
-# Guard: this makefile must be invoked from the root makefile
+# Guard: This makefile must be invoked from the root makefile
 ifndef ODP_PATH_BUILD_OUTPUT
 $(error This makefile must be invoked from the root makefile)
 endif

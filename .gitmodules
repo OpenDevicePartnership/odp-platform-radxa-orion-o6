@@ -1,21 +1,39 @@
+# Git submodule definitions for the ODP Platform firmware repository
+#
+# SPDX-License-Identifier: MIT
+#
+
+# CIX provided version of the Tianocore EDK II repository
 [submodule "Tianocore_EDKII"]
 	path = mod/uefi/edk2
 	url = https://github.com/cixtech/edk2.git
+
+# Fork in rogurr to fix compile warnings when switching to GCC 15.2.rel1
 [submodule "Trusted_Execution_Environment"]
 	path = mod/tee/op-tee-cix-odp
 	url = https://github.com/rogurr/cix_opensource__tee__op-tee.git
+
+# CIX provided version of the Arm Trusted Firmware-A (TF-A) repository
 [submodule "Trusted_Firmware-A"]
 	path = mod/tf-a/arm-trusted-firmware-cix-odp
 	url = https://github.com/cixtech/cix_opensource__arm-trusted-firmware.git
+
+# Fork in rogurr to fix compile warnings when switching to GCC 15.2.rel1
 [submodule "CIX_Silicon_Package1"]
 	path = common/edk2-platforms-cix-odp
 	url = https://github.com/rogurr/edk2-platforms.git
+
+# CIX provided version of the Tianocore EDK II NonOSI repository
 [submodule "CIX_Silicon_Package2"]
 	path = common/edk2-non-osi-cix-odp
 	url = https://github.com/cixtech/edk2-non-osi.git
+
+# CIX provided version of their packaging tool
 [submodule "cix_package-tool"]
 	path = postbuild/bootchain/cix_package-tool
 	url = https://github.com/cixtech/cix_package-tool.git
+
+# ODP Secure Services
 [submodule "odp-secure-services"]
 	path = mod/secure-services/odp-secure-services
 	url = https://github.com/OpenDevicePartnership/odp-secure-services.git

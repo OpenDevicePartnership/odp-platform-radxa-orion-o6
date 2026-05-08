@@ -1,1 +1,6 @@
+# Ignore rules for the ACPI ASL validation test crate
+#
+# SPDX-License-Identifier: MIT
+#
+
 /target

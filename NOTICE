@@ -1,0 +1,111 @@
+ODP Platform - Radxa Orion O6
+Copyright (c) Open Device Partnership and Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+Third-Party Components
+================================================================================
+
+This repository incorporates material from the projects listed below (each, a
+"Third-Party Component"). Each Third-Party Component is provided under its own
+license terms. The original license text and copyright notices are retained
+within each component's source tree (typically in a LICENSE, LICENSE.txt,
+License.txt, license.rst, or per-file SPDX-License-Identifier header). The
+summary below is informational; the in-tree license files are authoritative.
+
+Most Third-Party Components are incorporated as Git submodules; refer to the
+.gitmodules file at the root of this repository for upstream URLs and pinned
+revisions.
+
+--------------------------------------------------------------------------------
+1. TianoCore EDK II
+   Path:    mod/uefi/edk2
+   Upstream: https://github.com/tianocore/edk2 (vendor fork: cixtech/edk2)
+   License: BSD-2-Clause-Patent (predominant), with additional permissive
+            licenses applying to specific subdirectories (see
+            mod/uefi/edk2/License.txt, License-History.txt, and per-package
+            License.txt files; e.g., OvmfPkg/License.txt).
+   Includes bundled third-party code such as OpenSSL, BoringSSL, Brotli,
+   cmocka, and others, each under its respective license; see
+   mod/uefi/edk2/CryptoPkg/Library/OpensslLib/openssl/LICENSE and adjacent
+   files for details.
+
+--------------------------------------------------------------------------------
+2. TianoCore EDK II Platforms
+   Path:    common/edk2-platforms-cix-odp
+   Upstream: https://github.com/tianocore/edk2-platforms
+   License: BSD-2-Clause-Patent (see common/edk2-platforms-cix-odp/License.txt
+            and License-History.txt). Some third-party components included
+            therein are under their own terms; see per-package license files.
+
+--------------------------------------------------------------------------------
+3. TianoCore EDK II Non-OSI
+   Path:    common/edk2-non-osi-cix-odp
+   Upstream: https://github.com/tianocore/edk2-non-osi
+   License: Mixed. Predominantly BSD-2-Clause-Patent for source code, with
+            silicon- and platform-vendor binary components distributed under
+            their own proprietary or restricted licenses. See the License.txt
+            files within each Silicon/<vendor>/, Drivers/<vendor>/, and
+            Platform/<vendor>/ subdirectory.
+
+--------------------------------------------------------------------------------
+4. Arm Trusted Firmware-A (TF-A)
+   Path:    mod/tf-a/arm-trusted-firmware-cix-odp
+   Upstream: https://www.trustedfirmware.org/projects/tf-a/
+            (vendor fork: cixtech/cix_opensource__arm-trusted-firmware)
+   License: BSD-3-Clause (see mod/tf-a/arm-trusted-firmware-cix-odp/license.rst
+            and docs/license.rst). The project additionally incorporates:
+              - libc code derived from FreeBSD and SCC      (BSD-2/3-Clause)
+              - libfdt                                       (BSD-2-Clause,
+                                                              dual GPL-2.0+)
+              - LLVM compiler-rt                             (NCSA, dual MIT)
+              - zlib                                         (Zlib)
+              - STMicroelectronics platform code             (BSD-3-Clause,
+                                                              dual GPL-2.0+)
+              - Linux-derived source files                   (MIT, dual GPL-2.0)
+            Original license text is preserved in the affected source files
+            and in mod/tf-a/arm-trusted-firmware-cix-odp/licenses/.
+
+--------------------------------------------------------------------------------
+5. OP-TEE OS
+   Path:    mod/tee/op-tee-cix-odp
+   Upstream: https://github.com/OP-TEE/optee_os
+   License: BSD-2-Clause (see mod/tee/op-tee-cix-odp/LICENSE). Individual
+            files may carry their own copyright/license terms as indicated in
+            their headers.
+
+--------------------------------------------------------------------------------
+6. Mbed TLS
+   Path:    mod/tee/op-tee-cix-odp/lib/libmbedtls/mbedtls
+   Upstream: https://github.com/Mbed-TLS/mbedtls
+   License: Apache-2.0 (see
+            mod/tee/op-tee-cix-odp/lib/libmbedtls/mbedtls/LICENSE).
+
+--------------------------------------------------------------------------------
+7. CIX Package Tool
+   Path:    postbuild/bootchain/cix_package-tool
+   Upstream: https://github.com/cixtech/cix_package-tool
+   License: See the upstream repository for license terms.
+
+================================================================================
+
+For attribution of additional third-party material that may be present within
+the components above, refer to the LICENSE, NOTICE, and per-file
+SPDX-License-Identifier headers contained in each component's source tree.

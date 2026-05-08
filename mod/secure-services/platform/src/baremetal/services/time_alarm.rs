@@ -1,3 +1,9 @@
+//! Time/Alarm passthrough service: forwards ACPI time and wake-alarm method
+//! calls from the OS to the EC over the UART passthrough transport.
+//!
+//! SPDX-License-Identifier: MIT
+//!
+
 use super::passthrough_service::{CommandInfo, PassthroughService};
 use crate::baremetal::uart::EcUart;
 use ec_service_lib::{Result, Service};

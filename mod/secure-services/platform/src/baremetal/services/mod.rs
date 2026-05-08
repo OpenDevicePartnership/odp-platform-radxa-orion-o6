@@ -6,6 +6,10 @@
 //!
 //! The motivation is this is hacked together for a WinHEC demo, though a cleaner implementation
 //! will be pursued long-term.
+//!
+//! SPDX-License-Identifier: MIT
+//!
+
 mod passthrough_service;
 
 pub(crate) mod battery;

@@ -1,10 +1,7 @@
-# ODP Platform firmware build
+# Primary Makefile for the ODP Platform build
 #
-# ## License
+# SPDX-License-Identifier: MIT
 #
-# Copyright (c) Microsoft Corporation.
-#
-# SPDX-License-Identifier: Apache-2.0
 
 SHELL := /bin/bash
 
@@ -13,9 +10,13 @@ export ODP_PATH_BUILD_OUTPUT       ?= $(CURDIR)/build
 export ODP_PATH_BINS_OUTPUT        := $(ODP_PATH_BUILD_OUTPUT)/postbuild/bootchain
 export ODP_PATH_COMMON             := $(CURDIR)/common
 export ODP_PATH_PACKAGE_TOOL       := $(CURDIR)/postbuild/bootchain/cix_package-tool
-export ODP_PATH_OEM_PRIVATE_KEY    := $(ODP_PATH_PACKAGE_TOOL)/Keys/oem_privatekey.pem
 export ODP_PATH_DOWNLOADS          := $(CURDIR)/downloads
 export ODP_PATH_GCC5_PREFIX        := $(ODP_PATH_DOWNLOADS)/gnu-toolchain/bin/aarch64-none-elf-
+
+# NOTE:  This key is being provided for signing demonstration only test binaries and should not be used for
+# production signing.  Any production signing should use a secure key management process and private keys
+# should not be stored in the repository.
+export ODP_PATH_OEM_PRIVATE_KEY    := $(ODP_PATH_PACKAGE_TOOL)/Keys/oem_privatekey.pem
 
 # MSFTThermal.asl feature flags – set to 1 to enable the corresponding device nodes.
 # These override the defaults (0) in the submodule file via build-time patching.

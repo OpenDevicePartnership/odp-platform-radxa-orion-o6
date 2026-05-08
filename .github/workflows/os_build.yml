@@ -1,8 +1,9 @@
-# This workflow builds the ODP Validation OS WIM image on a Windows runner using the steps provided by the 
-# learn.microsoft.com documentation.
+# This workflow builds the ODP Validation OS WIM image on a Windows runner using the steps provided by the
+# learn.microsoft.com documentation to download the Validation OS ISO, mount it, and run GenImage.cmd.
+#
 # https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/validation-os-overview?view=windows-11
 #
-# It downloads the Validation OS ISO, mounts it, and runs GenImage.cmd to produce the build artifact.
+# SPDX-License-Identifier: MIT
 #
 # =====================================================================================================================
 # To run these steps locally on a Windows PC:
@@ -30,9 +31,11 @@
 
 name: os-build
 
+# Restrict GitHub permissions to only what is necessary for the workflow
 permissions:
   contents: read
 
+# Manual trigger of the workflow only
 on:
   workflow_dispatch:
 
@@ -41,6 +44,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+
+  # Build the WIM image using the Validation OS ISO and GenImage.cmd per the documentation
   build-wim:
     runs-on: windows-latest
     name: Build Validation OS WIM
@@ -48,7 +53,7 @@ jobs:
       run:
         working-directory: postbuild/os
     steps:
-      - name: Checkout repository
+      - name: Clone Repository
         uses: actions/checkout@v6
 
       - name: Download Validation OS ISO
@@ -56,7 +61,7 @@ jobs:
         run: |
           Invoke-WebRequest -Uri "https://aka.ms/DownloadValidationOS_arm64" -OutFile ValidationOS.iso
 
-      - name: Mount ISO and run build
+      - name: Build WIM
         shell: pwsh
         run: |
           $mount = Mount-DiskImage -ImagePath (Resolve-Path ValidationOS.iso).Path -PassThru
@@ -68,14 +73,14 @@ jobs:
             Dismount-DiskImage -ImagePath $mount.ImagePath
           }
 
-      - name: Rename WIM with build date
+      - name: Rename WIM with Build Date
         shell: pwsh
         run: |
           # GenImage produces ValidationOS-1.wim; rename to include the build date
           $date = Get-Date -Format "yyyyMMdd"
           Rename-Item -Path build/ValidationOS-1.wim -NewName "ODP-O6-ValidationOS-$date.wim"
 
-      - name: Upload WIM artifact
+      - name: Upload WIM Artifact
         uses: actions/upload-artifact@v7
         with:
           name: ODP_ValidationOS

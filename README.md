@@ -1,8 +1,8 @@
 # ODP Platform — Radxa Orion O6
 
-[![Build](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/build.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/build.yml)
+[![Build](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/bootchain_build.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/bootchain_build.yml)
 [![Test](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/test.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/test.yml)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![LICENSE](https://img.shields.io/badge/License-MIT-blue)](./LICENSE)
 
 This repository contains the bare minimum firmware and OS image resources needed to boot a Radxa Orion O6 platform, serving as a demonstration of ODP features.  It is based on the [Orion O6 Documentation](https://radxa.com/products/orion/o6/#documentation) and the [CIX P1 BIOS](https://github.com/cixtech/bios) with ODP-specific changes documented in the README.md file at the root of each top-level directory.
 
@@ -61,3 +61,10 @@ This repository uses a single build configuration for simplicity but supports bo
    Because the container's `/workspace` directory is mapped to the host repository directory, the `build/` directory can be accessed either inside or outside the container.
 
 6) **TBD Task #36:**  [Radxa OS Creation and Booting Documentation](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/issues/36)
+
+## Trademarks
+
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
+trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply
+Microsoft sponsorship. Any use of third-party trademarks or logos are subject to those third-party's policies.

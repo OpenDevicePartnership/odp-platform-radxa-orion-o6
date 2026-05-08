@@ -1,3 +1,9 @@
+//! Dedicated UART driver for QEMU<->EC communication used by the Secure
+//! Partition's passthrough services.
+//!
+//! SPDX-License-Identifier: MIT
+//!
+
 const UART_BASE: usize = 0x040E_0000;
 const UART_DR: usize = UART_BASE;
 const UART_FR: usize = UART_BASE + 0x18;
