@@ -1,12 +1,11 @@
 #!/bin/bash
-# @file enter-container.sh
-#
 # The following script builds an ODP development container image, starts it running, and enters it at an interactive
 # bash prompt with the project root mapped to /workspace.  The container is configured to run with the user as host
 # user, so file permissions, tools, and scripts should behave as expected to compile this repository's code.  It will
 # also detect existing images and containers, so it is safe to run repeatedly.
 #
 # SPDX-License-Identifier: MIT
+#
 
 set -euo pipefail
 

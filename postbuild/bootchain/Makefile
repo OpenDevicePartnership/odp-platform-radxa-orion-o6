@@ -1,10 +1,9 @@
-# @file Makefile
-#
 # Bootchain stitch and packaging targets for the ODP Platform firmware build system
 #
 # SPDX-License-Identifier: MIT
+#
 
-# Guard: this makefile must be invoked from the root makefile
+# Guard: This makefile must be invoked from the root makefile
 ifndef ODP_PATH_BUILD_OUTPUT
 $(error This makefile must be invoked from the root makefile)
 endif

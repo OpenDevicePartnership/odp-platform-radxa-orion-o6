@@ -1,8 +1,7 @@
-# @file rust-toolchain.toml
-#
 # Rust toolchain configuration for the Patina DXE Core driver (Radxa O6)
 #
 # SPDX-License-Identifier: MIT
+#
 
 [toolchain]
 channel = "nightly-2025-09-19" # One day post 1.90.0

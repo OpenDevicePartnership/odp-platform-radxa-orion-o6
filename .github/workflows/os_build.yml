@@ -1,12 +1,10 @@
-# @file os_build.yml
-#
 # This workflow builds the ODP Validation OS WIM image on a Windows runner using the steps provided by the
 # learn.microsoft.com documentation to download the Validation OS ISO, mount it, and run GenImage.cmd.
 #
 # https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/validation-os-overview?view=windows-11
 #
 # SPDX-License-Identifier: MIT
-
+#
 # =====================================================================================================================
 # To run these steps locally on a Windows PC:
 #

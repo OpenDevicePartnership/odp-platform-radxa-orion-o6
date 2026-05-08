@@ -1,8 +1,7 @@
-//! @file main.rs
-//!
 //! Patina DXE Core driver for Radxa O6
 //!
 //! SPDX-License-Identifier: MIT
+//!
 
 #![cfg(target_os = "uefi")]
 #![no_std]

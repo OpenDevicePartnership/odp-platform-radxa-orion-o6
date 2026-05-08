@@ -1,10 +1,8 @@
-# @file rustfmt.toml
-#
-# Rust formatting configuration for the Patina DXE Core driver (Radxa O6).  Some items included are set to their
-# default values to explicitly show settings for more common options. Keep these options sorted in ascending order
-# to ease lookup with rustfmt documentation.
+# Rust formatting configuration for the Patina DXE Core driver (Radxa O6)
 #
 # SPDX-License-Identifier: MIT
+#
+
 force_explicit_abi = true     # Always print the ABI for extern items (e.g. extern {... will become extern "C" {...)
 hard_tabs = false             # Always uses spaces for indentation and alignment
 max_width = 120               # The maximum width of each line

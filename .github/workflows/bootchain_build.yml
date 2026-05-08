@@ -1,9 +1,8 @@
-# @file bootchain_build.yml
-#
 # This workflow is responsible for building and verifying the ODP version of the bootchain firmware for a Radxa Orion
 # O6 platform
 #
 # SPDX-License-Identifier: MIT
+#
 
 name: bootchain-build
 

@@ -1,8 +1,7 @@
-# @file test.yml
-#
 # This workflow runs unit tests for Rust components in the repository
 #
 # SPDX-License-Identifier: MIT
+#
 
 name: test
 

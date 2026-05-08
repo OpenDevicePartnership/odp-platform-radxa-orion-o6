@@ -1,9 +1,8 @@
-//! @file thermal.rs
-//!
 //! Thermal passthrough service: forwards ACPI thermal method calls from the
 //! OS to the EC over the UART passthrough transport.
 //!
 //! SPDX-License-Identifier: MIT
+//!
 
 use super::passthrough_service::{CommandInfo, PassthroughService};
 use crate::baremetal::uart::EcUart;

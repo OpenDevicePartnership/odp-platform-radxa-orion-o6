@@ -1,8 +1,7 @@
-# @file .gitignore
-#
 # Top-level ignore rules for the ODP Platform firmware repository
 #
 # SPDX-License-Identifier: MIT
+#
 
 /build/
 **/target

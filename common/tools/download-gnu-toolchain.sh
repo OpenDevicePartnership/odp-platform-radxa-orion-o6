@@ -1,11 +1,10 @@
 #!/bin/bash
-# @file download-gnu-toolchain.sh
-#
 # Script to download (if not present) and verify the proper version of the GNU toolchain is available.  It uses the
 # ODP_PATH_GCC5_PREFIX environment variable to determine where the toolchain should be installed and the gcc
 # executable name.
 #
 # SPDX-License-Identifier: MIT
+#
 
 # =====================================================================================================================
 # GCC toolchain version information

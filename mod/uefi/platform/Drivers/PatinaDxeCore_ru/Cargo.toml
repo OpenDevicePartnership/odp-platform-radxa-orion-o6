@@ -1,8 +1,7 @@
-# @file Cargo.toml
-#
 # Cargo package manifest for the Patina DXE Core driver (Radxa O6)
 #
 # SPDX-License-Identifier: MIT
+#
 
 [package]
   name = "dxe_core"

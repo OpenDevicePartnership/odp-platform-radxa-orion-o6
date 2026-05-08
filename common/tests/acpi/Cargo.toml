@@ -1,8 +1,7 @@
-# @file Cargo.toml
-#
 # Cargo package manifest for the ACPI ASL source-level validation tests
 #
 # SPDX-License-Identifier: MIT
+#
 
 [package]
 name = "acpi-tests"

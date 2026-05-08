@@ -1,8 +1,7 @@
-# ODP Platform firmware build
-#
-# Primary Makefile for the ODP Platform firmware build system that defines common variables and targets
+# Primary Makefile for the ODP Platform build
 #
 # SPDX-License-Identifier: MIT
+#
 
 SHELL := /bin/bash
 

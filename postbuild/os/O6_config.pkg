@@ -1,13 +1,8 @@
-# @file O6_config.pkg
-#
-# Validation OS package list for the Radxa Orion O6 platform
+# OS package list for the Radxa Orion O6 platform WinVOS Boot Image
 #
 # SPDX-License-Identifier: MIT
+#
 
-#
-# Feature: ODP Radxa WinVOS Boot Image
-# Description: Adds baseline packages to boot and test the Orion O6
-#
 +include apps.pkg
 +include graphics.pkg
 +include InboxDrivers.pkg

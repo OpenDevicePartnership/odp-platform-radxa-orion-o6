@@ -1,5 +1,3 @@
-//! @file main.rs
-//!
 //! ACPI ASL source-level validation tests.
 //!
 //! These tests parse the raw `.asl` source files and verify that expected
@@ -8,6 +6,7 @@
 //! build toolchain (iasl).
 //!
 //! SPDX-License-Identifier: MIT
+//!
 
 fn main() {
     println!("Run with `cargo test` to execute ACPI validation tests.");

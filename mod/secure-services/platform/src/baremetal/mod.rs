@@ -1,9 +1,8 @@
-//! @file mod.rs
-//!
 //! Bare-metal module: AArch64 runtime entry point and submodule wiring for
 //! the Secure Partition.
 //!
 //! SPDX-License-Identifier: MIT
+//!
 
 mod interrupt;
 mod panic;

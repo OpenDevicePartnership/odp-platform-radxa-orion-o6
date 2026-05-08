@@ -1,8 +1,7 @@
-# @file .gitmodules
-#
 # Git submodule definitions for the ODP Platform firmware repository
 #
 # SPDX-License-Identifier: MIT
+#
 
 # CIX provided version of the Tianocore EDK II repository
 [submodule "Tianocore_EDKII"]

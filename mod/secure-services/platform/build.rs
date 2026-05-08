@@ -1,9 +1,8 @@
-//! @file build.rs
-//!
 //! Cargo build script for the secure-services platform. Emits build-time
 //! environment variables and linker arguments when targeting bare metal.
 //!
 //! SPDX-License-Identifier: MIT
+//!
 
 fn main() {
     if std::env::var("CARGO_CFG_TARGET_OS").unwrap() == "none" {
