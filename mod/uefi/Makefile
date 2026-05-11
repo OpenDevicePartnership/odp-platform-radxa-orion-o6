@@ -22,6 +22,16 @@ all: PatinaDxeCore_ru
 
 	$(MAKE) -C edk2/BaseTools
 
+	# TODO: Set MSFTThermal.asl feature flags enabled.
+	#       This needs to be merged into the platform build process instead of a patch.
+	@sed -i \
+		-e 's/^\(#define MPTF_THERMAL_ENABLE\) .*/\1 1/' \
+		-e 's/^\(#define MPTF_BATTERY_AND_PSU_ENABLE\) .*/\1 1/' \
+		-e 's/^\(#define MPTF_POWERLIMIT_ENABLE\) .*/\1 1/' \
+		-e 's/^\(#define MPTF_CUSTOMIZE_IO_SIGNALSS_ENABLE\) .*/\1 1/' \
+		-e 's/^\(#define MPTF_POWER_TRACKER\) .*/\1 1/' \
+		$(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/MSFTThermal.asl
+
 	. edk2/edksetup.sh --reconfig && \
 	build \
 		-a AARCH64 \
@@ -51,6 +61,7 @@ PatinaDxeCore_ru:
 # Specific clean to remove remnants from tools that don't have a way to put remnants in the Build directory
 distclean:
 	$(MAKE) -C edk2/BaseTools clean
+	git -C $(ODP_PATH_COMMON)/edk2-platforms-cix-odp checkout -- Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/MSFTThermal.asl 2>/dev/null || true
 
 # Run unit tests on the host
 test:
