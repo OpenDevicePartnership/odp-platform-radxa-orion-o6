@@ -1,24 +1,34 @@
-# Workflow to build the ODP version of the bootchain for a Radxa Orion O6 platform
+# Builds the ODP debug bootchain for the Radxa Orion O6 platform inside the published devcontainer image.
+#
+# Triggered on pull requests that touch firmware/build sources (i.e. anything outside the devcontainer
+# definition and the OS image area), and on manual dispatch.
 #
 # SPDX-License-Identifier: MIT
 #
 
-name: bootchain-build
+name: bootchain-debug-build
 
 permissions:
   contents: read
 
 env:
-  # The container image is built in a separate workflow and published to GHCR.
+  # Container image is produced and published by .github/workflows/container_build.yml.
   DEVCONTAINER_IMAGE: "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6/devcontainer:latest"
 
-# Trigger on pull requests and manual triggering
 on:
   pull_request:
     branches: [main]
+    # Run when the PR changes anything OTHER than the devcontainer or the OS image area.
+    # GitHub skips the workflow only when ALL changed files match this list.
+    paths-ignore:
+      - '.devcontainer/**'
+      - 'postbuild/os/**'
+      - '.github/workflows/container_build.yml'
+      - '.github/workflows/os_build.yml'
+      - '.github/workflows/release_publish.yml'
+      - '**/*.md'
   workflow_dispatch:
 
-# Cancel in-progress runs for the same PR/branch
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -26,7 +36,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build Orion O6 bootchain
+    name: Build Orion O6 debug bootchain
     steps:
       - name: Clone Repository
         uses: actions/checkout@v6
@@ -34,20 +44,20 @@ jobs:
           submodules: recursive
 
       - name: Pull Container
-        run: podman pull "${{ env.DEVCONTAINER_IMAGE }}"
+        run: docker pull "${{ env.DEVCONTAINER_IMAGE }}"
 
       - name: Update Workspace Ownership
         # The runner checks out files as a different UID than the container user (UID 1000).
         run: |
-          podman run --rm \
+          docker run --rm \
             --user root \
             -v "${{ github.workspace }}:/workspace" \
             "${{ env.DEVCONTAINER_IMAGE }}" \
             chown -R 1000:1000 /workspace
 
-      - name: Build Firmware
+      - name: Build Debug Firmware
         run: |
-          podman run --rm \
+          docker run --rm \
             -w /workspace \
             -v "${{ github.workspace }}:/workspace" \
             "${{ env.DEVCONTAINER_IMAGE }}" \

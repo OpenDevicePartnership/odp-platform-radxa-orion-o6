@@ -1,0 +1,68 @@
+# Builds the ODP release bootchain for the Radxa Orion O6 platform inside the published devcontainer image.
+#
+# Triggered on pull requests that touch firmware/build sources (i.e. anything outside the devcontainer
+# definition and the OS image area), and on manual dispatch.
+#
+# NOTE: A distinct release build target is not yet wired into the root Makefile. For this iteration this
+# workflow runs the same `make all` target as the debug build. When a release flag is added (e.g.
+# `make all RELEASE=1` or a `make release` target), update the Build step below.
+#
+# SPDX-License-Identifier: MIT
+#
+
+name: bootchain-release-build
+
+permissions:
+  contents: read
+
+env:
+  # Container image is produced and published by .github/workflows/container_build.yml.
+  DEVCONTAINER_IMAGE: "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6/devcontainer:latest"
+
+on:
+  pull_request:
+    branches: [main]
+    # Run when the PR changes anything OTHER than the devcontainer or the OS image area.
+    paths-ignore:
+      - '.devcontainer/**'
+      - 'postbuild/os/**'
+      - '.github/workflows/container_build.yml'
+      - '.github/workflows/os_build.yml'
+      - '.github/workflows/release_publish.yml'
+      - '**/*.md'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Orion O6 release bootchain
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Pull Container
+        run: docker pull "${{ env.DEVCONTAINER_IMAGE }}"
+
+      - name: Update Workspace Ownership
+        # The runner checks out files as a different UID than the container user (UID 1000).
+        run: |
+          docker run --rm \
+            --user root \
+            -v "${{ github.workspace }}:/workspace" \
+            "${{ env.DEVCONTAINER_IMAGE }}" \
+            chown -R 1000:1000 /workspace
+
+      - name: Build Release Firmware
+        # TODO: switch to a real release target when the Makefile supports it.
+        run: |
+          docker run --rm \
+            -w /workspace \
+            -v "${{ github.workspace }}:/workspace" \
+            "${{ env.DEVCONTAINER_IMAGE }}" \
+            make all

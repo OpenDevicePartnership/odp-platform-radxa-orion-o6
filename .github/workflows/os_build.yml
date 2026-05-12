@@ -35,8 +35,13 @@ name: os-build
 permissions:
   contents: read
 
-# Manual trigger of the workflow only
+# Manual trigger or PR changes that touch the OS image inputs.
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'postbuild/os/**'
+      - '.github/workflows/os_build.yml'
   workflow_dispatch:
 
 concurrency:

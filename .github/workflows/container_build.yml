@@ -43,11 +43,19 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" \
             | docker login "ghcr.io" -u "${{ github.actor }}" --password-stdin
 
+      - name: Compute build date tag
+        # YYYY.MM.DD in UTC. Sorts chronologically, unambiguous internationally.
+        # Same-day rebuilds overwrite this tag; the per-commit SHA tag remains
+        # the immutable per-build pin.
+        id: date
+        run: echo "tag=$(date -u +%Y.%m.%d)" >> "$GITHUB_OUTPUT"
+
       - name: Build container image
         run: |
           docker build \
             -f .devcontainer/Dockerfile \
             -t "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6/devcontainer:latest" \
+            -t "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6/devcontainer:${{ steps.date.outputs.tag }}" \
             -t "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6/devcontainer:${{ github.sha }}" \
             .
 
@@ -57,4 +65,5 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           docker push "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6/devcontainer:latest"
+          docker push "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6/devcontainer:${{ steps.date.outputs.tag }}"
           docker push "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6/devcontainer:${{ github.sha }}"
