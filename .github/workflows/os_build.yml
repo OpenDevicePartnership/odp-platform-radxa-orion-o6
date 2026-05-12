@@ -1,7 +1,14 @@
-# This workflow builds the ODP Validation OS WIM image on a Windows runner using the steps provided by the
+# Builds the ODP Validation OS WIM image on a Windows runner using the steps provided by the
 # learn.microsoft.com documentation to download the Validation OS ISO, mount it, and run GenImage.cmd.
 #
 # https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/validation-os-overview?view=windows-11
+#
+# Behavior:
+#   - pull_request:               build only, output discarded.
+#   - workflow_dispatch on the upstream repo's `main` branch:
+#                                 build, then publish a NuGet package to GitHub Packages.
+#   - workflow_dispatch elsewhere (any branch, or any fork):
+#                                 build, then upload the WIM as a workflow artifact (7-day retention).
 #
 # SPDX-License-Identifier: MIT
 #
@@ -31,12 +38,22 @@
 
 name: os-build
 
-# Restrict GitHub permissions to only what is necessary for the workflow
 permissions:
   contents: read
+  packages: write
 
-# Manual trigger of the workflow only
+env:
+  # FORK TESTING: all coordinates point at rogurr's personal namespace.
+  # Revert to OpenDevicePartnership equivalents before merging to upstream.
+  PACKAGE_ID:    "Rogurr.OrionO6.OsImage"
+  UPSTREAM_REPO: "rogurr/rg_orion-o6"
+
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'postbuild/os/**'
+      - '.github/workflows/os_build.yml'
   workflow_dispatch:
 
 concurrency:
@@ -44,8 +61,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
-  # Build the WIM image using the Validation OS ISO and GenImage.cmd per the documentation
   build-wim:
     runs-on: windows-latest
     name: Build Validation OS WIM
@@ -73,15 +88,96 @@ jobs:
             Dismount-DiskImage -ImagePath $mount.ImagePath
           }
 
-      - name: Rename WIM with Build Date
+      # ----- workflow_dispatch only: stage + publish -----
+      - name: Stage WIM with build date
+        if: github.event_name == 'workflow_dispatch'
         shell: pwsh
         run: |
-          # GenImage produces ValidationOS-1.wim; rename to include the build date
-          $date = Get-Date -Format "yyyyMMdd"
-          Rename-Item -Path build/ValidationOS-1.wim -NewName "ODP-O6-ValidationOS-$date.wim"
+          $date = (Get-Date).ToUniversalTime().ToString("yyyyMMdd")
+          New-Item -ItemType Directory -Force -Path staging | Out-Null
+          Move-Item -Path build/ValidationOS-1.wim -Destination "staging/ODP-O6-ValidationOS-$date.wim"
+          Get-ChildItem staging
 
-      - name: Upload WIM Artifact
+      - name: Upload ephemeral artifact
+        if: >
+          github.event_name == 'workflow_dispatch' &&
+          !(github.repository == env.UPSTREAM_REPO && github.ref == 'refs/heads/main')
         uses: actions/upload-artifact@v7
         with:
-          name: ODP_ValidationOS
-          path: postbuild/os/build/ODP-O6-ValidationOS-*.wim
+          name: os-image-${{ github.run_id }}
+          path: postbuild/os/staging/*.wim
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Compute NuGet version
+        if: >
+          github.event_name == 'workflow_dispatch' &&
+          github.repository == env.UPSTREAM_REPO &&
+          github.ref == 'refs/heads/main'
+        id: version
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $now  = (Get-Date).ToUniversalTime()
+          $base = "{0}.{1}.{2}" -f $now.Year, $now.Month, $now.Day
+          # 404 (first publish ever) is a non-error here.
+          $existing = @()
+          # NOTE: user-owned packages use /users/<user>/... not /orgs/<org>/...
+          try {
+            $existing = gh api -H "Accept: application/vnd.github+json" `
+                          "/users/rogurr/packages/nuget/${env:PACKAGE_ID}/versions" `
+                          --jq '.[].name' 2>$null
+          } catch {}
+          $count = ($existing | Where-Object { $_ -match "^$([regex]::Escape($base))(\.\d+)?$" } | Measure-Object).Count
+          if ($count -eq 0) {
+            $version = $base
+          } else {
+            $version = "$base.$count"
+          }
+          "version=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Computed NuGet version: $version"
+
+      - name: Generate .csproj for packaging
+        if: steps.version.outputs.version
+        shell: pwsh
+        env:
+          PKG_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          New-Item -ItemType Directory -Force -Path nupkg-src | Out-Null
+          $csproj = @"
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <TargetFramework>netstandard2.0</TargetFramework>
+              <PackageId>${env:PACKAGE_ID}</PackageId>
+              <Version>${env:PKG_VERSION}</Version>
+              <Authors>rogurr</Authors>
+              <Description>Radxa Orion O6 Validation OS WIM image.</Description>
+              <RepositoryUrl>https://github.com/${env:UPSTREAM_REPO}</RepositoryUrl>
+              <PackageLicenseExpression>MIT</PackageLicenseExpression>
+              <IncludeBuildOutput>false</IncludeBuildOutput>
+              <NoBuild>true</NoBuild>
+              <NoWarn>NU5128;NU5100;NU5110;NU5111</NoWarn>
+            </PropertyGroup>
+            <ItemGroup>
+              <None Include="..\staging\*.wim" Pack="true" PackagePath="content\" />
+            </ItemGroup>
+          </Project>
+          "@
+          Set-Content -Path "nupkg-src/$($env:PACKAGE_ID).csproj" -Value $csproj
+
+      - name: Pack NuGet package
+        if: steps.version.outputs.version
+        shell: pwsh
+        run: dotnet pack "nupkg-src/$($env:PACKAGE_ID).csproj" -o nupkg-out
+
+      - name: Push NuGet package to GitHub Packages
+        if: steps.version.outputs.version
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet nuget push "nupkg-out/*.nupkg" `
+            --source "https://nuget.pkg.github.com/rogurr/index.json" `
+            --api-key "${env:GH_TOKEN}" `
+            --skip-duplicate

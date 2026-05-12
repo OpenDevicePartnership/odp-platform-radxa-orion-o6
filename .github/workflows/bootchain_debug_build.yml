@@ -1,0 +1,160 @@
+# Builds the ODP debug bootchain for the Radxa Orion O6 platform inside the published devcontainer image.
+#
+# Behavior:
+#   - pull_request:               build only, output discarded.
+#   - workflow_dispatch on the upstream repo's `main` branch:
+#                                 build, then publish a NuGet package to GitHub Packages.
+#   - workflow_dispatch elsewhere (any branch, or any fork):
+#                                 build, then upload the binary as a workflow artifact (7-day retention).
+#
+# SPDX-License-Identifier: MIT
+#
+
+name: bootchain-debug-build
+
+permissions:
+  contents: read
+  packages: write   # required only for the NuGet publish path; ignored otherwise.
+
+env:
+  # FORK TESTING: all coordinates point at rogurr's personal namespace.
+  # Revert to OpenDevicePartnership equivalents before merging to upstream.
+  DEVCONTAINER_IMAGE: "ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:latest"
+  PACKAGE_ID:         "Rogurr.OrionO6.SpiNorDebug"
+  UPSTREAM_REPO:      "rogurr/rg_orion-o6"
+
+on:
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '.devcontainer/**'
+      - 'postbuild/os/**'
+      - '.github/workflows/container_build.yml'
+      - '.github/workflows/os_build.yml'
+      - '.github/workflows/release_publish.yml'
+      - '**/*.md'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Orion O6 debug bootchain
+    outputs:
+      stage_dir: ${{ steps.stage.outputs.dir }}
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Pull Container
+        run: docker pull "${{ env.DEVCONTAINER_IMAGE }}"
+
+      - name: Update Workspace Ownership
+        run: |
+          docker run --rm --user root \
+            -v "${{ github.workspace }}:/workspace" \
+            "${{ env.DEVCONTAINER_IMAGE }}" \
+            chown -R 1000:1000 /workspace
+
+      - name: Build Debug Firmware
+        run: |
+          docker run --rm \
+            -w /workspace \
+            -v "${{ github.workspace }}:/workspace" \
+            "${{ env.DEVCONTAINER_IMAGE }}" \
+            make all
+
+      # The remaining steps only run for workflow_dispatch.
+      - name: Stage binary output
+        if: github.event_name == 'workflow_dispatch'
+        id: stage
+        run: |
+          mkdir -p staging
+          cp -r build/postbuild/bootchain/. staging/
+          echo "dir=staging" >> "$GITHUB_OUTPUT"
+          ls -la staging
+
+      # ----- Path A: ephemeral artifact for forks / non-main branches -----
+      - name: Upload ephemeral artifact
+        if: >
+          github.event_name == 'workflow_dispatch' &&
+          !(github.repository == env.UPSTREAM_REPO && github.ref == 'refs/heads/main')
+        uses: actions/upload-artifact@v7
+        with:
+          name: bootchain-debug-${{ github.run_id }}
+          path: staging/**
+          retention-days: 7
+          if-no-files-found: error
+
+      # ----- Path B: NuGet publish from upstream main -----
+      - name: Compute NuGet version
+        if: >
+          github.event_name == 'workflow_dispatch' &&
+          github.repository == env.UPSTREAM_REPO &&
+          github.ref == 'refs/heads/main'
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          # NuGet rejects leading zeros in numeric segments, so use Y.M.D (no zero-pad on M/D).
+          base="$(date -u +%Y.%-m.%-d)"
+          # Fetch existing versions for this package; 404 (first publish ever) is fine.
+          # NOTE: user-owned packages use /users/<user>/... not /orgs/<org>/...
+          existing=$(gh api -H "Accept: application/vnd.github+json" \
+                       "/users/rogurr/packages/nuget/${PACKAGE_ID}/versions" \
+                       --jq '.[].name' 2>/dev/null || true)
+          count=$(printf '%s\n' "$existing" | grep -cE "^${base}(\.[0-9]+)?$" || true)
+          if [ "$count" -eq 0 ]; then
+            version="${base}"
+          else
+            version="${base}.${count}"
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "Computed NuGet version: ${version}"
+
+      - name: Generate .csproj for packaging
+        if: steps.version.outputs.version
+        env:
+          PKG_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p nupkg-src
+          cat > nupkg-src/${PACKAGE_ID}.csproj <<EOF
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <TargetFramework>netstandard2.0</TargetFramework>
+              <PackageId>${PACKAGE_ID}</PackageId>
+              <Version>${PKG_VERSION}</Version>
+              <Authors>rogurr</Authors>
+              <Description>Radxa Orion O6 debug bootchain SPI-NOR binaries.</Description>
+              <RepositoryUrl>https://github.com/${UPSTREAM_REPO}</RepositoryUrl>
+              <PackageLicenseExpression>MIT</PackageLicenseExpression>
+              <IncludeBuildOutput>false</IncludeBuildOutput>
+              <NoBuild>true</NoBuild>
+              <NoWarn>NU5128;NU5100;NU5110;NU5111</NoWarn>
+            </PropertyGroup>
+            <ItemGroup>
+              <None Include="..\\staging\\**\\*" Pack="true" PackagePath="content\\" />
+            </ItemGroup>
+          </Project>
+          EOF
+
+      - name: Pack NuGet package
+        if: steps.version.outputs.version
+        run: dotnet pack nupkg-src/${PACKAGE_ID}.csproj -o nupkg-out
+
+      - name: Push NuGet package to GitHub Packages
+        if: steps.version.outputs.version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet nuget push "nupkg-out/*.nupkg" \
+            --source "https://nuget.pkg.github.com/rogurr/index.json" \
+            --api-key "${GH_TOKEN}" \
+            --skip-duplicate
