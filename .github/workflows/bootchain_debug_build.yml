@@ -54,6 +54,11 @@ jobs:
       # (UID 1000), actions/checkout fails with EACCES on /__w/_temp/_runner_file_commands/...
       # Outputs end up root-owned inside the ephemeral runner workspace, which is harmless.
       options: --user root
+    # Force bash as the default shell for `run:` steps. Without this, GitHub Actions falls
+    # back to `sh -e` inside the container, which is dash and rejects `set -o pipefail`.
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Clone Repository
         uses: actions/checkout@v6

@@ -51,6 +51,10 @@ jobs:
       # Run as root; see bootchain_debug_build.yml for the rationale (actions/checkout needs
       # write access to /__w/_temp, which is mounted root-owned by the runner).
       options: --user root
+    # Force bash; see bootchain_debug_build.yml for the rationale.
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Clone Repository
         uses: actions/checkout@v6
