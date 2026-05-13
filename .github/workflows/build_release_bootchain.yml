@@ -1,14 +1,4 @@
-# Builds the ODP release bootchain for the Radxa Orion O6 platform inside the published devcontainer image.
-#
-# Every step in this job runs INSIDE the devcontainer image via `jobs.<id>.container:`. The image is the
-# single source of truth for build, package, and publish tooling; CI uses exactly the same environment a
-# local user would.
-#
-# Behavior mirrors bootchain_debug_build.yml; see that file for the full description.
-#
-# NOTE: A distinct release build target is not yet wired into the root Makefile. For this iteration this
-# workflow runs the same `make all` target as the debug build. When a release flag is added, update the
-# Build step.
+# Builds the ODP release bootchain for the Radxa Orion O6 platform inside this repository's devcontainer image
 #
 # SPDX-License-Identifier: MIT
 #
@@ -18,12 +8,6 @@ name: bootchain-release-build
 permissions:
   contents: read
   packages: write
-
-env:
-  # FORK TESTING: all coordinates point at rogurr's personal namespace.
-  # Revert to OpenDevicePartnership equivalents before merging to upstream.
-  PACKAGE_ID:    "Rogurr.OrionO6.SpiNorRelease"
-  UPSTREAM_REPO: "rogurr/rg_orion-o6"
 
 on:
   pull_request:
@@ -46,12 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Orion O6 release bootchain
     container:
-      # FORK TESTING: rogurr namespace. Revert to opendevicepartnership before merging to upstream.
+      # TODO: rogurr namespace. Revert to opendevicepartnership before merging to upstream.
       image: ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:latest
-      # Run as root; see bootchain_debug_build.yml for the rationale (actions/checkout needs
-      # write access to /__w/_temp, which is mounted root-owned by the runner).
       options: --user root
-    # Force bash; see bootchain_debug_build.yml for the rationale.
     defaults:
       run:
         shell: bash
@@ -62,13 +43,12 @@ jobs:
           submodules: recursive
 
       - name: Build Release Firmware
-        # TODO: switch to a real release target when the Makefile supports it.
-        run: make all
+        run: make all TARGET=release
 
+      # Upload ephemeral artifact for any dispatch except manually on main
       - name: Upload ephemeral artifact
         if: >
-          github.event_name == 'workflow_dispatch' &&
-          !(github.repository == env.UPSTREAM_REPO && github.ref == 'refs/heads/main')
+          !(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         uses: actions/upload-artifact@v7
         with:
           name: bootchain-release-${{ github.run_id }}
@@ -76,23 +56,15 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
-      # ----- NuGet publish from upstream main -----
-      # The script computes the next calver version, packs the .nupkg using the shared
-      # postbuild/bootchain/bootchain.csproj, and pushes it to GitHub Packages. See
-      # postbuild/bootchain/upload_nuget_artifact.sh for the full annotated walkthrough.
+      # Publish NuGet package when dispatched manually on main
       - name: Upload nuget artifact
         if: >
-          github.event_name == 'workflow_dispatch' &&
-          github.repository == env.UPSTREAM_REPO &&
-          github.ref == 'refs/heads/main'
+          (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # FORK TESTING: owner=rogurr, owner_kind=users. Revert to opendevicepartnership/orgs upstream.
-          postbuild/bootchain/upload_nuget_artifact.sh \
-            --owner       rogurr \
-            --owner-kind  users \
-            --package-id  "${PACKAGE_ID}" \
-            --description "Radxa Orion O6 release bootchain SPI-NOR binaries." \
-            --repo-url    "https://github.com/${UPSTREAM_REPO}" \
-            --payload     "${GITHUB_WORKSPACE}/build/postbuild/bootchain"
+          common/tools/upload_nuget_artifact.sh \
+            --package-id  "ODP.OrionO6.BootchainRelease" \
+            --description "Radxa Orion O6 release bootchain" \
+            --input_dir  "${GITHUB_WORKSPACE}/build/postbuild/bootchain" \
+            --output_dir "${GITHUB_WORKSPACE}/build/nuget"

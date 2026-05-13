@@ -1,15 +1,4 @@
-# Builds the ODP debug bootchain for the Radxa Orion O6 platform inside the published devcontainer image.
-#
-# Every step in this job runs INSIDE the devcontainer image via `jobs.<id>.container:`. The image is the
-# single source of truth for build, package, and publish tooling; CI uses exactly the same environment a
-# local user would.
-#
-# Behavior:
-#   - pull_request:               build only, output discarded.
-#   - workflow_dispatch on the upstream repo's `main` branch:
-#                                 build, then publish a NuGet package to GitHub Packages.
-#   - workflow_dispatch elsewhere (any branch, or any fork):
-#                                 build, then upload the binary as a workflow artifact (7-day retention).
+# Builds the ODP debug bootchain for the Radxa Orion O6 platform inside this repository's devcontainer image.
 #
 # SPDX-License-Identifier: MIT
 #
@@ -18,13 +7,7 @@ name: bootchain-debug-build
 
 permissions:
   contents: read
-  packages: write   # required only for the NuGet publish path; ignored otherwise.
-
-env:
-  # FORK TESTING: all coordinates point at rogurr's personal namespace.
-  # Revert to OpenDevicePartnership equivalents before merging to upstream.
-  PACKAGE_ID:    "Rogurr.OrionO6.SpiNorDebug"
-  UPSTREAM_REPO: "rogurr/rg_orion-o6"
+  packages: write
 
 on:
   pull_request:
@@ -47,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Orion O6 debug bootchain
     container:
-      # FORK TESTING: rogurr namespace. Revert to opendevicepartnership before merging to upstream.
+      # TODO: rogurr namespace. Revert to opendevicepartnership before merging to upstream.
       image: ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:latest
       options: --user root
     defaults:
@@ -60,13 +43,12 @@ jobs:
           submodules: recursive
 
       - name: Build Debug Firmware
-        run: make all
+        run: make all TARGET=debug
 
-      # ----- Path A: ephemeral artifact for forks / non-main branches -----
+      # Upload ephemeral artifact for any dispatch except manually on main
       - name: Upload ephemeral artifact
         if: >
-          github.event_name == 'workflow_dispatch' &&
-          !(github.repository == env.UPSTREAM_REPO && github.ref == 'refs/heads/main')
+          !(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         uses: actions/upload-artifact@v7
         with:
           name: bootchain-debug-${{ github.run_id }}
@@ -74,23 +56,15 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
-      # ----- Path B: NuGet publish from upstream main -----
-      # The script computes the next calver version, packs the .nupkg using the shared
-      # postbuild/bootchain/bootchain.csproj, and pushes it to GitHub Packages. See
-      # postbuild/bootchain/upload_nuget_artifact.sh for the full annotated walkthrough.
+      # Publish NuGet package when dispatched manually on main
       - name: Upload nuget artifact
         if: >
-          github.event_name == 'workflow_dispatch' &&
-          github.repository == env.UPSTREAM_REPO &&
-          github.ref == 'refs/heads/main'
+          (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # FORK TESTING: owner=rogurr, owner_kind=users. Revert to opendevicepartnership/orgs upstream.
-          postbuild/bootchain/upload_nuget_artifact.sh \
-            --owner       rogurr \
-            --owner-kind  users \
-            --package-id  "${PACKAGE_ID}" \
-            --description "Radxa Orion O6 debug bootchain SPI-NOR binaries." \
-            --repo-url    "https://github.com/${UPSTREAM_REPO}" \
-            --payload     "${GITHUB_WORKSPACE}/build/postbuild/bootchain"
+          common/tools/upload_nuget_artifact.sh \
+            --package-id  "ODP.OrionO6.BootchainDebug" \
+            --description "Radxa Orion O6 debug bootchain" \
+            --input_dir  "${GITHUB_WORKSPACE}/build/postbuild/bootchain" \
+            --output_dir "${GITHUB_WORKSPACE}/build/nuget"

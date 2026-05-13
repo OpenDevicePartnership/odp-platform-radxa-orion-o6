@@ -1,0 +1,22 @@
+<!--
+  Shared NuGet packaging project for the ODP Radxa Orion O6 platform repository.
+
+  Suppressed warnings:
+    NU5128 — no lib/ or ref/ folder (a content-only package)
+    NU5100 — assemblies not in lib/
+    NU5110 — extension is not .dll
+    NU5111 — extension not commonly used in NuGet packages
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoBuild>true</NoBuild>
+    <RepositoryUrl>https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <NoWarn>NU5128;NU5100;NU5110;NU5111</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(PayloadPath)/**/*" Pack="true" PackagePath="content/" />
+  </ItemGroup>
+</Project>
