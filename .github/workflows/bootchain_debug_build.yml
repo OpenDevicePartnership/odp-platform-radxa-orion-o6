@@ -75,41 +75,22 @@ jobs:
           if-no-files-found: error
 
       # ----- Path B: NuGet publish from upstream main -----
-      - name: Compute NuGet version
+      # The script computes the next calver version, packs the .nupkg using the shared
+      # postbuild/bootchain/bootchain.csproj, and pushes it to GitHub Packages. See
+      # postbuild/bootchain/upload_nuget_artifact.sh for the full annotated walkthrough.
+      - name: Upload nuget artifact
         if: >
           github.event_name == 'workflow_dispatch' &&
           github.repository == env.UPSTREAM_REPO &&
           github.ref == 'refs/heads/main'
-        id: version
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # FORK TESTING: owner=rogurr, owner_kind=users. Revert to opendevicepartnership/orgs upstream.
-          version="$(common/tools/nuget_version.sh rogurr users "${PACKAGE_ID}")"
-          echo "version=${version}" >> "$GITHUB_OUTPUT"
-          echo "Computed NuGet version: ${version}"
-
-      - name: Pack NuGet package
-        if: steps.version.outputs.version
-        env:
-          PKG_VERSION: ${{ steps.version.outputs.version }}
-        run: |
-          dotnet pack postbuild/bootchain/bootchain.csproj \
-            -p:PackageId="${PACKAGE_ID}" \
-            -p:Version="${PKG_VERSION}" \
-            -p:Authors="rogurr" \
-            -p:Description="Radxa Orion O6 debug bootchain SPI-NOR binaries." \
-            -p:RepositoryUrl="https://github.com/${UPSTREAM_REPO}" \
-            -p:PackageLicenseExpression="MIT" \
-            -p:PayloadPath="${GITHUB_WORKSPACE}/build/postbuild/bootchain" \
-            -o nupkg-out
-
-      - name: Push NuGet package to GitHub Packages
-        if: steps.version.outputs.version
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          dotnet nuget push "nupkg-out/*.nupkg" \
-            --source "https://nuget.pkg.github.com/rogurr/index.json" \
-            --api-key "${GH_TOKEN}" \
-            --skip-duplicate
+          postbuild/bootchain/upload_nuget_artifact.sh \
+            --owner       rogurr \
+            --owner-kind  users \
+            --package-id  "${PACKAGE_ID}" \
+            --description "Radxa Orion O6 debug bootchain SPI-NOR binaries." \
+            --repo-url    "https://github.com/${UPSTREAM_REPO}" \
+            --payload     "${GITHUB_WORKSPACE}/build/postbuild/bootchain"
