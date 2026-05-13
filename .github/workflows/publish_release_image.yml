@@ -25,9 +25,8 @@ on:
         required: true
         type: string
       container_tag:
-        description: 'GHCR devcontainer image tag to record in release notes'
-        required: false
-        default: 'latest'
+        description: 'GHCR devcontainer image tag, format: YYYY.MM.DD (must match a published image)'
+        required: true
         type: string
 
 concurrency:
@@ -47,20 +46,21 @@ jobs:
   authorize:
     runs-on: ubuntu-latest
     environment: release
-    outputs:
-      version: ${{ steps.validate.outputs.version }}
     steps:
-      - name: Validate git_ref format
-        id: validate
+      - name: Validate inputs
         env:
           GIT_REF: ${{ inputs.git_ref }}
+          CONTAINER_TAG: ${{ inputs.container_tag }}
         run: |
           if [[ ! "$GIT_REF" =~ ^Release_[0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}$ ]]; then
             echo "::error::git_ref must match Release_YYYY.MM.DD (got: $GIT_REF)"
             exit 1
           fi
-          echo "version=${GIT_REF#Release_}" >> "$GITHUB_OUTPUT"
-          echo "Release approved for $GIT_REF (version: ${GIT_REF#Release_})"
+          if [[ ! "$CONTAINER_TAG" =~ ^[0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}$ ]]; then
+            echo "::error::container_tag must match YYYY.MM.DD (got: $CONTAINER_TAG)"
+            exit 1
+          fi
+          echo "Release approved for $GIT_REF with container tag $CONTAINER_TAG"
 
   # ---------- Parallel builds at the target ref ----------
   build-debug:
