@@ -56,12 +56,14 @@ jobs:
     uses: ./.github/workflows/build_debug_bootchain.yml
     with:
       git_ref: ${{ inputs.git_ref }}
+      container_tag: ${{ inputs.container_tag }}
 
   build-release:
     needs: authorize
     uses: ./.github/workflows/build_release_bootchain.yml
     with:
       git_ref: ${{ inputs.git_ref }}
+      container_tag: ${{ inputs.container_tag }}
 
   build-os:
     needs: authorize
@@ -89,17 +91,24 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          publish () {
-            local pkg_id="$1" desc="$2" input_dir="$3"
-            python3 common/tools/upload_nuget_artifact.py \
-              --package-id  "$pkg_id" \
-              --description "$desc" \
-              --input_dir   "$input_dir" \
-              --output_dir  "nuget-out"
-          }
-          publish "$PKG_DEBUG"   "Radxa Orion O6 debug bootchain"       "artifacts/bootchain-debug"
-          publish "$PKG_RELEASE" "Radxa Orion O6 release bootchain"     "artifacts/bootchain-release"
-          publish "$PKG_OS"      "Radxa Orion O6 Validation OS WIM image" "artifacts/os-image"
+
+          python3 common/tools/upload_nuget_artifact.py \
+            --package-id  "$PKG_DEBUG" \
+            --description "Radxa Orion O6 debug bootchain" \
+            --input_dir   "artifacts/bootchain-debug" \
+            --output_dir  "nuget-out"
+
+          python3 common/tools/upload_nuget_artifact.py \
+            --package-id  "$PKG_RELEASE" \
+            --description "Radxa Orion O6 release bootchain" \
+            --input_dir   "artifacts/bootchain-release" \
+            --output_dir  "nuget-out"
+
+          python3 common/tools/upload_nuget_artifact.py \
+            --package-id  "$PKG_OS" \
+            --description "Radxa Orion O6 Validation OS WIM image" \
+            --input_dir   "artifacts/os-image" \
+            --output_dir  "nuget-out"
 
       - name: Generate release notes
         id: notes

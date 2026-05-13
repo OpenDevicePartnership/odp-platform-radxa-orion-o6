@@ -24,10 +24,20 @@ on:
       - '.github/workflows/publish_release_image.yml'
       - '**/*.md'
   workflow_dispatch:
+    inputs:
+      container_tag:
+        description: 'Devcontainer image tag, format: yyyy.mm.dd'
+        required: false
+        default: 'latest'
+        type: string
   workflow_call:
     inputs:
       git_ref:
         description: 'Git tag or SHA to check out'
+        required: true
+        type: string
+      container_tag:
+        description: 'Devcontainer image tag, format: yyyy.mm.dd'
         required: true
         type: string
 
@@ -41,12 +51,18 @@ jobs:
     name: Build Orion O6 debug bootchain
     container:
       # TODO: rogurr namespace. Revert to opendevicepartnership before merging to upstream.
-      image: ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:latest
+      image: ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:${{ inputs.container_tag || 'latest' }}
       options: --user root
     defaults:
       run:
         shell: bash
     steps:
+      - name: Validate container tag
+        if: inputs.git_ref && inputs.container_tag == 'latest'
+        run: |
+          echo "::error::workflow_call requires a specific container_tag, not 'latest'"
+          exit 1
+
       - name: Clone Repository
         uses: actions/checkout@v6
         with:

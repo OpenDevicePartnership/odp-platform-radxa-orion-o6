@@ -1,71 +1,61 @@
-# Builds the DevContainer image for this repository and publishes it to the GitHub Container Registry (GHCR)
+# Builds the DevContainer image for this repository and publishes it to the GitHub Container Registry (GHCR).
+#
+# This workflow is manual-only. The user must create the git tag before triggering.
+# Access is gated by the "release" GitHub Environment — only repo managers can approve execution.
+# The git tag is used as the version tag on the container image.
 #
 # SPDX-License-Identifier: MIT
 #
 
-name: container-build
+name: container-publish
 
-# Trigger on changes to container information and manual triggering
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.devcontainer/**'
-      - '.github/workflows/container_build.yml'
-  pull_request:
-    branches: [main]
-    paths:
-      - '.devcontainer/**'
-      - '.github/workflows/container_build.yml'
   workflow_dispatch:
+    inputs:
+      git_ref:
+        description: 'Git tag to build from (must already exist, used as the image version tag)'
+        required: true
+        type: string
 
-# Cancel in-progress runs for the same PR/branch
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 
-# GHCR publishing requires write access to packages. Contents is read-only.
 permissions:
   contents: read
   packages: write
 
+env:
+  # TODO: rogurr namespace. Revert to opendevicepartnership before merging to upstream.
+  CONTAINER_IMAGE: "ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer"
+
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
+    environment: release
     name: Build and publish devcontainer image
     steps:
       - name: Clone Repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.git_ref }}
 
       - name: Log in to GitHub Container Registry
-        # GITHUB_TOKEN is provisioned automatically and can push images to this repo's GHCR namespace.
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" \
             | docker login "ghcr.io" -u "${{ github.actor }}" --password-stdin
 
-      - name: Compute build date tag
-        # YYYY.MM.DD in UTC. Sorts chronologically, unambiguous internationally.
-        # Same-day rebuilds overwrite this tag; the per-commit SHA tag remains
-        # the immutable per-build pin.
-        id: date
-        run: echo "tag=$(date -u +%Y.%m.%d)" >> "$GITHUB_OUTPUT"
-
       - name: Build container image
-        # FORK TESTING: image namespace points at rogurr's personal GHCR namespace.
-        # Revert to ghcr.io/opendevicepartnership/... before merging to upstream.
         run: |
           docker build \
             -f .devcontainer/Dockerfile \
-            -t "ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:latest" \
-            -t "ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:${{ steps.date.outputs.tag }}" \
-            -t "ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:${{ github.sha }}" \
+            -t "${CONTAINER_IMAGE}:latest" \
+            -t "${CONTAINER_IMAGE}:${{ inputs.git_ref }}" \
+            -t "${CONTAINER_IMAGE}:${{ github.sha }}" \
             .
 
       - name: Push container image
-        # Only publish from pushes to main or manual runs; PRs from forks cannot
-        # write to GHCR and PRs in general should not mutate the published tag.
-        if: github.event_name != 'pull_request'
         run: |
-          docker push "ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:latest"
-          docker push "ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:${{ steps.date.outputs.tag }}"
-          docker push "ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer:${{ github.sha }}"
+          docker push "${CONTAINER_IMAGE}:latest"
+          docker push "${CONTAINER_IMAGE}:${{ inputs.git_ref }}"
+          docker push "${CONTAINER_IMAGE}:${{ github.sha }}"
