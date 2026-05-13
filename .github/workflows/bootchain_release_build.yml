@@ -65,13 +65,6 @@ jobs:
         # TODO: switch to a real release target when the Makefile supports it.
         run: make all
 
-      - name: Stage binary output
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          mkdir -p staging
-          cp -r build/postbuild/bootchain/. staging/
-          ls -la staging
-
       - name: Upload ephemeral artifact
         if: >
           github.event_name == 'workflow_dispatch' &&
@@ -79,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: bootchain-release-${{ github.run_id }}
-          path: staging/**
+          path: build/postbuild/bootchain/**
           retention-days: 7
           if-no-files-found: error
 
@@ -92,51 +85,25 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -euo pipefail
-          base="$(date -u +%Y.%-m.%-d)"
-          # NOTE: user-owned packages use /users/<user>/... not /orgs/<org>/...
-          existing=$(gh api -H "Accept: application/vnd.github+json" \
-                       "/users/rogurr/packages/nuget/${PACKAGE_ID}/versions" \
-                       --jq '.[].name' 2>/dev/null || true)
-          count=$(printf '%s\n' "$existing" | grep -cE "^${base}(\.[0-9]+)?$" || true)
-          if [ "$count" -eq 0 ]; then
-            version="${base}"
-          else
-            version="${base}.${count}"
-          fi
+          # FORK TESTING: owner=rogurr, owner_kind=users. Revert to opendevicepartnership/orgs upstream.
+          version="$(common/tools/nuget_version.sh rogurr users "${PACKAGE_ID}")"
           echo "version=${version}" >> "$GITHUB_OUTPUT"
           echo "Computed NuGet version: ${version}"
 
-      - name: Generate .csproj for packaging
+      - name: Pack NuGet package
         if: steps.version.outputs.version
         env:
           PKG_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          set -euo pipefail
-          mkdir -p nupkg-src
-          cat > nupkg-src/${PACKAGE_ID}.csproj <<EOF
-          <Project Sdk="Microsoft.NET.Sdk">
-            <PropertyGroup>
-              <TargetFramework>netstandard2.0</TargetFramework>
-              <PackageId>${PACKAGE_ID}</PackageId>
-              <Version>${PKG_VERSION}</Version>
-              <Authors>rogurr</Authors>
-              <Description>Radxa Orion O6 release bootchain SPI-NOR binaries.</Description>
-              <RepositoryUrl>https://github.com/${UPSTREAM_REPO}</RepositoryUrl>
-              <PackageLicenseExpression>MIT</PackageLicenseExpression>
-              <IncludeBuildOutput>false</IncludeBuildOutput>
-              <NoBuild>true</NoBuild>
-              <NoWarn>NU5128;NU5100;NU5110;NU5111</NoWarn>
-            </PropertyGroup>
-            <ItemGroup>
-              <None Include="..\\staging\\**\\*" Pack="true" PackagePath="content\\" />
-            </ItemGroup>
-          </Project>
-          EOF
-
-      - name: Pack NuGet package
-        if: steps.version.outputs.version
-        run: dotnet pack nupkg-src/${PACKAGE_ID}.csproj -o nupkg-out
+          dotnet pack postbuild/bootchain/bootchain.csproj \
+            -p:PackageId="${PACKAGE_ID}" \
+            -p:Version="${PKG_VERSION}" \
+            -p:Authors="rogurr" \
+            -p:Description="Radxa Orion O6 release bootchain SPI-NOR binaries." \
+            -p:RepositoryUrl="https://github.com/${UPSTREAM_REPO}" \
+            -p:PackageLicenseExpression="MIT" \
+            -p:PayloadPath="${GITHUB_WORKSPACE}/build/postbuild/bootchain" \
+            -o nupkg-out
 
       - name: Push NuGet package to GitHub Packages
         if: steps.version.outputs.version
