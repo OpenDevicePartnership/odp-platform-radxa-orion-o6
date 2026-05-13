@@ -1,11 +1,11 @@
 # Builds the ODP Validation OS WIM image on a Windows runner.
 #
+# SPDX-License-Identifier: MIT
+#
 # Triggers:
 #   - pull_request:    CI validation (artifact uploaded, 1-day retention).
 #   - workflow_dispatch: manual build from any branch (artifact uploaded, 1-day retention).
 #   - workflow_call:   invoked by the release workflow with a specific git ref.
-#
-# SPDX-License-Identifier: MIT
 #
 
 name: os-build
@@ -22,7 +22,7 @@ on:
   workflow_call:
     inputs:
       git_ref:
-        description: 'Git tag or SHA to check out'
+        description: 'Git tag in Release_YYYY.MM.DD format'
         required: true
         type: string
 
@@ -58,8 +58,14 @@ jobs:
           }
 
       - name: Stage WIM
+        env:
+          GIT_REF: ${{ inputs.git_ref || '' }}
         run: |
-          $date = (Get-Date).ToUniversalTime().ToString("yyyyMMdd")
+          if ($env:GIT_REF -match '^Release_(\d{4})\.(\d{1,2})\.(\d{1,2})$') {
+            $date = $Matches[1] + $Matches[2].PadLeft(2,'0') + $Matches[3].PadLeft(2,'0')
+          } else {
+            $date = (Get-Date).ToUniversalTime().ToString("yyyyMMdd")
+          }
           Rename-Item -Path build\postbuild\os\ValidationOS-1.wim -NewName "ODP-O6-ValidationOS-$date.wim"
 
       - name: Upload artifact

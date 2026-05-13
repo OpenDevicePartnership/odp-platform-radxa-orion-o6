@@ -1,11 +1,11 @@
 # Builds the ODP release bootchain for the Radxa Orion O6 platform inside this repository's devcontainer image.
 #
+# SPDX-License-Identifier: MIT
+#
 # Triggers:
 #   - pull_request:    CI validation (artifact uploaded, 1-day retention).
 #   - workflow_dispatch: manual build from any branch (artifact uploaded, 1-day retention).
 #   - workflow_call:   invoked by the release workflow with a specific git ref.
-#
-# SPDX-License-Identifier: MIT
 #
 
 name: bootchain-release-build
@@ -33,7 +33,7 @@ on:
   workflow_call:
     inputs:
       git_ref:
-        description: 'Git tag or SHA to check out'
+        description: 'Git tag in Release_YYYY.MM.DD format'
         required: true
         type: string
       container_tag:

@@ -1,10 +1,10 @@
 # Builds the DevContainer image for this repository and publishes it to the GitHub Container Registry (GHCR).
 #
+# SPDX-License-Identifier: MIT
+#
 # This workflow is manual-only. The user must create the git tag before triggering.
 # Access is gated by the "release" GitHub Environment — only repo managers can approve execution.
 # The git tag is used as the version tag on the container image.
-#
-# SPDX-License-Identifier: MIT
 #
 
 name: container-publish
@@ -13,7 +13,7 @@ on:
   workflow_dispatch:
     inputs:
       git_ref:
-        description: 'Git tag to build from (must already exist, used as the image version tag)'
+        description: 'Git tag in Release_YYYY.MM.DD format (must already exist)'
         required: true
         type: string
 
@@ -35,6 +35,16 @@ jobs:
     environment: release
     name: Build and publish devcontainer image
     steps:
+      - name: Validate git_ref format
+        env:
+          GIT_REF: ${{ inputs.git_ref }}
+        run: |
+          if [[ ! "$GIT_REF" =~ ^Release_[0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}$ ]]; then
+            echo "::error::git_ref must match Release_YYYY.MM.DD (got: $GIT_REF)"
+            exit 1
+          fi
+          echo "version=${GIT_REF#Release_}" >> "$GITHUB_ENV"
+
       - name: Clone Repository
         uses: actions/checkout@v6
         with:
@@ -50,12 +60,12 @@ jobs:
           docker build \
             -f .devcontainer/Dockerfile \
             -t "${CONTAINER_IMAGE}:latest" \
-            -t "${CONTAINER_IMAGE}:${{ inputs.git_ref }}" \
+            -t "${CONTAINER_IMAGE}:${version}" \
             -t "${CONTAINER_IMAGE}:${{ github.sha }}" \
             .
 
       - name: Push container image
         run: |
           docker push "${CONTAINER_IMAGE}:latest"
-          docker push "${CONTAINER_IMAGE}:${{ inputs.git_ref }}"
+          docker push "${CONTAINER_IMAGE}:${version}"
           docker push "${CONTAINER_IMAGE}:${{ github.sha }}"

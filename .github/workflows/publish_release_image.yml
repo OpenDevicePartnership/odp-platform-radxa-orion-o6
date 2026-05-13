@@ -1,5 +1,7 @@
 # Builds all platform deliverables at a specific git tag and publishes them as a GitHub Release with NuGet packages.
 #
+# SPDX-License-Identifier: MIT
+#
 # This workflow is manual-only. The user must create the git tag before triggering.
 # Access is gated by the "release" GitHub Environment — only repo managers can approve execution.
 #
@@ -7,8 +9,6 @@
 #   1. authorize   — waits for environment approval (no builds wasted if unauthorized)
 #   2. build-*     — three parallel builds at the specified git ref (reusable workflow calls)
 #   3. publish     — downloads artifacts, packs NuGet packages, creates the GitHub Release
-#
-# SPDX-License-Identifier: MIT
 #
 
 name: release-publish
@@ -21,7 +21,7 @@ on:
   workflow_dispatch:
     inputs:
       git_ref:
-        description: 'Git tag to build and release (must already exist)'
+        description: 'Git tag in Release_YYYY.MM.DD format (must already exist)'
         required: true
         type: string
       container_tag:
@@ -47,8 +47,20 @@ jobs:
   authorize:
     runs-on: ubuntu-latest
     environment: release
+    outputs:
+      version: ${{ steps.validate.outputs.version }}
     steps:
-      - run: echo "Release approved for ref '${{ inputs.git_ref }}'"
+      - name: Validate git_ref format
+        id: validate
+        env:
+          GIT_REF: ${{ inputs.git_ref }}
+        run: |
+          if [[ ! "$GIT_REF" =~ ^Release_[0-9]{4}\.[0-9]{1,2}\.[0-9]{1,2}$ ]]; then
+            echo "::error::git_ref must match Release_YYYY.MM.DD (got: $GIT_REF)"
+            exit 1
+          fi
+          echo "version=${GIT_REF#Release_}" >> "$GITHUB_OUTPUT"
+          echo "Release approved for $GIT_REF (version: ${GIT_REF#Release_})"
 
   # ---------- Parallel builds at the target ref ----------
   build-debug:
@@ -114,9 +126,10 @@ jobs:
         id: notes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_REF: ${{ inputs.git_ref }}
         run: |
           python3 common/tools/prepare_release.py \
-            --git-ref       "${{ inputs.git_ref }}" \
+            --git-ref       "$GIT_REF" \
             --container     "${CONTAINER_IMAGE}:${{ inputs.container_tag }}" \
             --nuget-dir     "nuget-out" \
             --output        "release-notes.md"
@@ -126,12 +139,13 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO:  ${{ github.repository }}
+          GIT_REF: ${{ inputs.git_ref }}
         run: |
           set -euo pipefail
           mapfile -t assets < <(find artifacts -type f)
           mapfile -t nupkgs < <(find nuget-out -name '*.nupkg' -type f)
           printf 'Attaching: %s\n' "${assets[@]}" "${nupkgs[@]}"
-          gh release create "${{ inputs.git_ref }}" \
-            --title "${{ inputs.git_ref }}" \
+          gh release create "$GIT_REF" \
+            --title "$GIT_REF" \
             --notes-file "${{ steps.notes.outputs.notes_file }}" \
             "${assets[@]}" "${nupkgs[@]}"
