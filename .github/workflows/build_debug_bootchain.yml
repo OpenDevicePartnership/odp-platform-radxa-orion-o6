@@ -1,5 +1,10 @@
 # Builds the ODP debug bootchain for the Radxa Orion O6 platform inside this repository's devcontainer image.
 #
+# Triggers:
+#   - pull_request:    CI validation (artifact uploaded, 1-day retention).
+#   - workflow_dispatch: manual build from any branch (artifact uploaded, 1-day retention).
+#   - workflow_call:   invoked by the release workflow with a specific git ref.
+#
 # SPDX-License-Identifier: MIT
 #
 
@@ -7,7 +12,6 @@ name: bootchain-debug-build
 
 permissions:
   contents: read
-  packages: write
 
 on:
   pull_request:
@@ -17,9 +21,15 @@ on:
       - 'postbuild/os/**'
       - '.github/workflows/container_build.yml'
       - '.github/workflows/os_build.yml'
-      - '.github/workflows/release_publish.yml'
+      - '.github/workflows/publish_release_image.yml'
       - '**/*.md'
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      git_ref:
+        description: 'Git tag or SHA to check out'
+        required: true
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -40,31 +50,16 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v6
         with:
+          ref: ${{ inputs.git_ref || '' }}
           submodules: recursive
 
       - name: Build Debug Firmware
         run: make all TARGET=debug
 
-      # Upload ephemeral artifact for any dispatch except manually on main
-      - name: Upload ephemeral artifact
-        if: >
-          !(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+      - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: bootchain-debug-${{ github.run_id }}
+          name: bootchain-debug
           path: build/postbuild/bootchain/**
-          retention-days: 7
+          retention-days: 1
           if-no-files-found: error
-
-      # Publish NuGet package when dispatched manually on main
-      - name: Upload nuget artifact
-        if: >
-          (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python3 common/tools/upload_nuget_artifact.py \
-            --package-id  "ODP.OrionO6.BootchainDebug" \
-            --description "Radxa Orion O6 debug bootchain" \
-            --input_dir  "${GITHUB_WORKSPACE}/build/postbuild/bootchain" \
-            --output_dir "${GITHUB_WORKSPACE}/build/nuget"

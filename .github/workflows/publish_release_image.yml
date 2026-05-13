@@ -1,236 +1,128 @@
-# Bundles previously-published artifacts into a single dated GitHub Release for the Radxa Orion O6 platform.
+# Builds all platform deliverables at a specific git tag and publishes them as a GitHub Release with NuGet packages.
 #
-# This workflow does NOT build anything. It consumes:
-#   - The devcontainer image from GHCR (just records the pinned tag in the release notes).
-#   - The three NuGet packages previously published by their per-artifact workflows from upstream `main`.
+# This workflow is manual-only. The user must create the git tag before triggering.
+# Access is gated by the "release" GitHub Environment — only repo managers can approve execution.
 #
-# Each version input may be set to "latest" to resolve the most recent published version, or pinned to a
-# specific version (e.g. "2026.5.12.1") for reproducibility. Whatever version is actually used is recorded
-# in the release notes so the manifest is auditable after the fact.
-#
-# Output: one GitHub Release named "ODP-Orion-O6-YYYY.MM.DD[a-z]?" with the three binaries attached as
-# release assets and the container coordinates documented in the notes.
+# Flow:
+#   1. authorize   — waits for environment approval (no builds wasted if unauthorized)
+#   2. build-*     — three parallel builds at the specified git ref (reusable workflow calls)
+#   3. publish     — downloads artifacts, packs NuGet packages, creates the GitHub Release
 #
 # SPDX-License-Identifier: MIT
 #
 
 name: release-publish
 
-# contents:write -> create the git tag and the GitHub Release
-# packages:read  -> read NuGet/GHCR package versions and download nupkg files
 permissions:
   contents: write
-  packages: read
+  packages: write
 
 on:
   workflow_dispatch:
     inputs:
-      container_version:
-        description: 'GHCR tag for the devcontainer image, or "latest"'
+      git_ref:
+        description: 'Git tag to build and release (must already exist)'
         required: true
-        default: 'latest'
         type: string
-      bootchain_debug_version:
-        description: 'NuGet version for Rogurr.OrionO6.SpiNorDebug, or "latest"'
-        required: true
-        default: 'latest'
-        type: string
-      bootchain_release_version:
-        description: 'NuGet version for Rogurr.OrionO6.SpiNorRelease, or "latest"'
-        required: true
-        default: 'latest'
-        type: string
-      os_image_version:
-        description: 'NuGet version for Rogurr.OrionO6.OsImage, or "latest"'
-        required: true
+      container_tag:
+        description: 'GHCR devcontainer image tag to record in release notes'
+        required: false
         default: 'latest'
         type: string
 
 concurrency:
-  # Serialize releases so two concurrent dispatches can't race on the day-suffix calculation.
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
 env:
-  # FORK TESTING: all coordinates point at rogurr's personal namespace.
-  # Revert to opendevicepartnership equivalents before merging to upstream.
-  OWNER:               "rogurr"
-  OWNER_KIND:          "users"   # "users" for personal accounts, "orgs" for org accounts
-  CONTAINER_IMAGE:     "ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer"
-  PKG_DEBUG:           "Rogurr.OrionO6.SpiNorDebug"
-  PKG_RELEASE:         "Rogurr.OrionO6.SpiNorRelease"
-  PKG_OS:              "Rogurr.OrionO6.OsImage"
-  NUGET_FEED:          "https://nuget.pkg.github.com/rogurr/index.json"
+  # TODO: rogurr namespace. Revert to opendevicepartnership before merging to upstream.
+  OWNER:           "rogurr"
+  CONTAINER_IMAGE: "ghcr.io/rogurr/odp-platform-radxa-orion-o6/devcontainer"
+  PKG_DEBUG:       "Rogurr.OrionO6.SpiNorDebug"
+  PKG_RELEASE:     "Rogurr.OrionO6.SpiNorRelease"
+  PKG_OS:          "Rogurr.OrionO6.OsImage"
 
 jobs:
+  # ---------- Gate: only repo managers can approve ----------
+  authorize:
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - run: echo "Release approved for ref '${{ inputs.git_ref }}'"
+
+  # ---------- Parallel builds at the target ref ----------
+  build-debug:
+    needs: authorize
+    uses: ./.github/workflows/build_debug_bootchain.yml
+    with:
+      git_ref: ${{ inputs.git_ref }}
+
+  build-release:
+    needs: authorize
+    uses: ./.github/workflows/build_release_bootchain.yml
+    with:
+      git_ref: ${{ inputs.git_ref }}
+
+  build-os:
+    needs: authorize
+    uses: ./.github/workflows/build_os_image.yml
+    with:
+      git_ref: ${{ inputs.git_ref }}
+
+  # ---------- Collect artifacts, pack NuGet, create release ----------
   publish:
     runs-on: ubuntu-latest
-    name: Bundle dated release
+    needs: [build-debug, build-release, build-os]
     steps:
       - name: Clone repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.git_ref }}
 
-      # ----------------------------------------------------------------------------------------
-      # Resolve "latest" inputs to concrete versions and compute the dated release tag.
-      # ----------------------------------------------------------------------------------------
-      - name: Resolve manifest
-        id: manifest
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v7
+        with:
+          path: artifacts
+
+      - name: Pack and push NuGet packages
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          IN_CONTAINER: ${{ inputs.container_version }}
-          IN_DEBUG:     ${{ inputs.bootchain_debug_version }}
-          IN_RELEASE:   ${{ inputs.bootchain_release_version }}
-          IN_OS:        ${{ inputs.os_image_version }}
         run: |
           set -euo pipefail
-
-          # ---- Resolve a NuGet package "latest" to its newest version, or echo back the pin.
-          resolve_nuget () {
-            local pkg="$1"
-            local req="$2"
-            if [ "$req" != "latest" ]; then
-              echo "$req"
-              return
-            fi
-            gh api -H "Accept: application/vnd.github+json" \
-                   "/${OWNER_KIND}/${OWNER}/packages/nuget/${pkg}/versions" \
-                   --jq '.[0].name'
+          publish () {
+            local pkg_id="$1" desc="$2" input_dir="$3"
+            python3 common/tools/upload_nuget_artifact.py \
+              --package-id  "$pkg_id" \
+              --description "$desc" \
+              --input_dir   "$input_dir" \
+              --output_dir  "nuget-out"
           }
+          publish "$PKG_DEBUG"   "Radxa Orion O6 debug bootchain"       "artifacts/bootchain-debug"
+          publish "$PKG_RELEASE" "Radxa Orion O6 release bootchain"     "artifacts/bootchain-release"
+          publish "$PKG_OS"      "Radxa Orion O6 Validation OS WIM image" "artifacts/os-image"
 
-          # ---- Resolve a GHCR tag "latest" to a more specific tag (we just keep the literal "latest"
-          # ---- for the container; pinning to a digest is overkill for the release notes use case).
-          resolve_container () {
-            local req="$1"
-            if [ "$req" = "latest" ]; then
-              echo "latest"
-            else
-              echo "$req"
-            fi
-          }
-
-          container_ver=$(resolve_container "${IN_CONTAINER}")
-          debug_ver=$(resolve_nuget   "${PKG_DEBUG}"   "${IN_DEBUG}")
-          release_ver=$(resolve_nuget "${PKG_RELEASE}" "${IN_RELEASE}")
-          os_ver=$(resolve_nuget      "${PKG_OS}"      "${IN_OS}")
-
-          # ---- Compute the dated release tag, with a/b/c suffix for same-UTC-day re-cuts.
-          base="ODP-Orion-O6-$(date -u +%Y.%m.%d)"
-          existing=$(gh release list --limit 200 --json tagName --jq '.[].tagName' \
-                       | grep -cE "^${base}[a-z]?$" || true)
-          letters=(a b c d e f g h i j k l m n o p q r s t u v w x y z)
-          if [ "$existing" -eq 0 ]; then
-            release_tag="${base}"
-          else
-            idx=$((existing - 1))
-            if [ "$idx" -ge "${#letters[@]}" ]; then
-              echo "More than 26 releases on the same UTC day; refuse to assign a suffix beyond 'z'." >&2
-              exit 1
-            fi
-            release_tag="${base}${letters[$idx]}"
-          fi
-
-          {
-            echo "release_tag=${release_tag}"
-            echo "container_version=${container_ver}"
-            echo "debug_version=${debug_ver}"
-            echo "release_version=${release_ver}"
-            echo "os_version=${os_ver}"
-          } >> "$GITHUB_OUTPUT"
-
-          echo "Resolved manifest:"
-          echo "  release_tag       = ${release_tag}"
-          echo "  container         = ${CONTAINER_IMAGE}:${container_ver}"
-          echo "  bootchain-debug   = ${PKG_DEBUG}@${debug_ver}"
-          echo "  bootchain-release = ${PKG_RELEASE}@${release_ver}"
-          echo "  os-image          = ${PKG_OS}@${os_ver}"
-
-      # ----------------------------------------------------------------------------------------
-      # Download each NuGet package's contained payload files. NuGet packages are zips; the
-      # binary lives under content/ inside the .nupkg.
-      # ----------------------------------------------------------------------------------------
-      - name: Download NuGet payloads
+      - name: Generate release notes
+        id: notes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEBUG_VER:   ${{ steps.manifest.outputs.debug_version }}
-          RELEASE_VER: ${{ steps.manifest.outputs.release_version }}
-          OS_VER:      ${{ steps.manifest.outputs.os_version }}
         run: |
-          set -euo pipefail
-          mkdir -p assets
-          # NuGet v3 flat container URL serves the raw .nupkg by lower-cased package id + version.
-          fetch_nupkg () {
-            local pkg="$1"  # original-case package id
-            local ver="$2"
-            local lower
-            lower=$(echo "$pkg" | tr '[:upper:]' '[:lower:]')
-            local url="https://nuget.pkg.github.com/${OWNER}/download/${lower}/${ver}/${lower}.${ver}.nupkg"
-            local out="downloads/${pkg}.${ver}.nupkg"
-            mkdir -p downloads "extracted/${pkg}"
-            echo "Fetching ${pkg}@${ver}"
-            curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -o "${out}" "${url}"
-            unzip -q -o "${out}" -d "extracted/${pkg}"
-            # Copy every payload file in content/ into the flat assets directory, prefixing with the
-            # package id + version so the source of each asset is unambiguous on the release page.
-            if [ -d "extracted/${pkg}/content" ]; then
-              find "extracted/${pkg}/content" -type f -print0 \
-                | while IFS= read -r -d '' f; do
-                    base="${pkg}-${ver}-$(basename "$f")"
-                    cp "$f" "assets/${base}"
-                  done
-            fi
-          }
-          fetch_nupkg "${PKG_DEBUG}"   "${DEBUG_VER}"
-          fetch_nupkg "${PKG_RELEASE}" "${RELEASE_VER}"
-          fetch_nupkg "${PKG_OS}"      "${OS_VER}"
-          ls -la assets
+          python3 common/tools/prepare_release.py \
+            --git-ref       "${{ inputs.git_ref }}" \
+            --container     "${CONTAINER_IMAGE}:${{ inputs.container_tag }}" \
+            --nuget-dir     "nuget-out" \
+            --output        "release-notes.md"
+          echo "notes_file=release-notes.md" >> "$GITHUB_OUTPUT"
 
-      # ----------------------------------------------------------------------------------------
-      # Create the dated GitHub Release with the binaries attached and the container pinned in notes.
-      # ----------------------------------------------------------------------------------------
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO:  ${{ github.repository }}
-          RELEASE_TAG:       ${{ steps.manifest.outputs.release_tag }}
-          CONTAINER_VERSION: ${{ steps.manifest.outputs.container_version }}
-          DEBUG_VER:         ${{ steps.manifest.outputs.debug_version }}
-          RELEASE_VER:       ${{ steps.manifest.outputs.release_version }}
-          OS_VER:            ${{ steps.manifest.outputs.os_version }}
         run: |
           set -euo pipefail
-
-          notes=$(cat <<EOF
-          # ${RELEASE_TAG}
-
-          Dated release of the Radxa Orion O6 platform deliverables, assembled from previously-published
-          artifacts.
-
-          ## Manifest
-
-          | Component | Source | Version |
-          |---|---|---|
-          | DevContainer image | \`${CONTAINER_IMAGE}\` (GHCR) | \`${CONTAINER_VERSION}\` |
-          | Debug bootchain    | \`${PKG_DEBUG}\` (NuGet)      | \`${DEBUG_VER}\`        |
-          | Release bootchain  | \`${PKG_RELEASE}\` (NuGet)    | \`${RELEASE_VER}\`      |
-          | Validation OS WIM  | \`${PKG_OS}\` (NuGet)         | \`${OS_VER}\`           |
-
-          ## Pulling the container
-
-          \`\`\`
-          docker pull ${CONTAINER_IMAGE}:${CONTAINER_VERSION}
-          \`\`\`
-
-          ## Downloading the binaries
-
-          The three binary artifacts are attached as release assets below, and are also available
-          as independently versioned NuGet packages on the repository's Packages tab.
-          EOF
-          )
-
-          mapfile -t files < <(find assets -type f)
-          printf 'Attaching asset: %s\n' "${files[@]}"
-
-          gh release create "${RELEASE_TAG}" \
-            --title "${RELEASE_TAG}" \
-            --notes "${notes}" \
-            "${files[@]}"
+          mapfile -t assets < <(find artifacts -type f)
+          mapfile -t nupkgs < <(find nuget-out -name '*.nupkg' -type f)
+          printf 'Attaching: %s\n' "${assets[@]}" "${nupkgs[@]}"
+          gh release create "${{ inputs.git_ref }}" \
+            --title "${{ inputs.git_ref }}" \
+            --notes-file "${{ steps.notes.outputs.notes_file }}" \
+            "${assets[@]}" "${nupkgs[@]}"

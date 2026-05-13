@@ -1,5 +1,10 @@
 # Builds the ODP Validation OS WIM image on a Windows runner.
 #
+# Triggers:
+#   - pull_request:    CI validation (artifact uploaded, 1-day retention).
+#   - workflow_dispatch: manual build from any branch (artifact uploaded, 1-day retention).
+#   - workflow_call:   invoked by the release workflow with a specific git ref.
+#
 # SPDX-License-Identifier: MIT
 #
 
@@ -7,7 +12,6 @@ name: os-build
 
 permissions:
   contents: read
-  packages: write
 
 on:
   pull_request:
@@ -15,6 +19,12 @@ on:
     paths:
       - 'postbuild/os/**'
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      git_ref:
+        description: 'Git tag or SHA to check out'
+        required: true
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -30,6 +40,8 @@ jobs:
     steps:
       - name: Clone Repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.git_ref || '' }}
 
       - name: Download Validation OS ISO
         run: Invoke-WebRequest -Uri "https://aka.ms/DownloadValidationOS_arm64" -OutFile ValidationOS.iso
@@ -50,28 +62,10 @@ jobs:
           $date = (Get-Date).ToUniversalTime().ToString("yyyyMMdd")
           Rename-Item -Path build\postbuild\os\ValidationOS-1.wim -NewName "ODP-O6-ValidationOS-$date.wim"
 
-      # Upload ephemeral artifact for any dispatch except manually on main
-      - name: Upload ephemeral artifact
-        if: >
-          !(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
+      - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: os-image-${{ github.run_id }}
+          name: os-image
           path: build/postbuild/os/**
-          retention-days: 7
+          retention-days: 1
           if-no-files-found: error
-
-      # Publish NuGet package when dispatched manually on main
-      - name: Upload nuget artifact
-        if: >
-          (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          # TODO: rogurr namespace. Revert to opendevicepartnership before merging to upstream.
-          python3 common/tools/upload_nuget_artifact.py \
-            --package-id  "Rogurr.OrionO6.OsImage" \
-            --description "Radxa Orion O6 Validation OS WIM image" \
-            --input_dir  "${GITHUB_WORKSPACE}/build/postbuild/os" \
-            --output_dir "${GITHUB_WORKSPACE}/build/nuget"
