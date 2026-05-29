@@ -13,28 +13,14 @@ The **Boot Stack** is assembled from one or more top-level **component** directo
 ```mermaid
 flowchart TD
     root["Repository Root<br/>(boot stack)"]
-
     root --> inf["Infrastructure"]
     root --> cmn["Common"]
     root --> bc["Bootchain Component"]
     root --> os["OS Image Component"]
     root --> cmpn["Component (n)"]
-
     bc --> uefi["UEFI Module"]
     bc --> tfa["TF-A Module"]
     bc --> modn["Module (n)"]
-
-    classDef rt fill:#1f2937,stroke:#111,color:#fff;
-    class root rt;
-
-    classDef stk fill:#dbeafe,stroke:#1e3a8a,color:#0b1d3b;
-    class bc,os,cmpn stk;
-
-    classDef mod fill:#dcfce7,stroke:#166534,color:#052e16;
-    class uefi,tfa,modn mod;
-
-    classDef supt fill:#fef3c7,stroke:#92400e,color:#3f2d04;
-    class inf,cmn supt;
 ```
 
 | Directory | Purpose |
