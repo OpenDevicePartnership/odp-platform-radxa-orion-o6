@@ -1,0 +1,91 @@
+# Builds the DevContainer image for this repository and publishes it to the GitHub Container Registry (GHCR).
+#
+# SPDX-License-Identifier: MIT
+#
+# Manually triggered only and gated by the "release" GitHub Environment to restrict access to repo managers.
+# The workflow must be dispatched from a Git tag in the form vYYYY.MM.DD selected via the "Use workflow from"
+# dropdown in the Actions UI.
+#
+# Third-party actions are pinned by commit SHA which is monitored by the dependabot.yml file.
+#
+
+#
+# TODO: Revert 'rogurr' to 'opendevicepartnership' namespace
+#
+
+name: publish_container
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  CONTAINER_IMAGE: "ghcr.io/rogurr/odp-platform-radxa-orion-o6_devcontainer"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+    name: Build and publish devcontainer image
+    timeout-minutes: 15
+    steps:
+      - name: Log in to GitHub Container Registry
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+        run: |
+          echo "$GHCR_TOKEN" \
+            | docker login "ghcr.io" -u "$GHCR_USER" --password-stdin
+
+      - name: Validate dispatch ref
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          if [[ "$REF_TYPE" != "tag" ]]; then
+            echo "::error::This workflow must be dispatched from a Git tag (got ref_type='$REF_TYPE', ref_name='$REF_NAME').  Use the 'Use workflow from' dropdown in the Actions UI to select a vYYYY.MM.DD tag." >&2
+            exit 1
+          fi
+          if [[ ! "$REF_NAME" =~ ^v[0-9]{4}\.[0-9]{2}\.[0-9]{2}$ ]]; then
+            echo "::error::Dispatch tag '$REF_NAME' must match vYYYY.MM.DD (e.g. v2026.05.27)." >&2
+            exit 1
+          fi
+          if docker manifest inspect "${CONTAINER_IMAGE}:${REF_NAME}" >/dev/null 2>&1; then
+            echo "::error::A container image tagged '${REF_NAME}' already exists at ${CONTAINER_IMAGE}.  Container tags are immutable; delete the existing package version manually if you intend to republish." >&2
+            exit 1
+          fi
+
+      - name: Clone Repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          ref: ${{ github.ref_name }}
+          submodules: false
+
+      - name: Build container image
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          GIT_SHA: ${{ github.sha }}
+        run: |
+          docker build \
+            -f .devcontainer/Dockerfile \
+            -t "${CONTAINER_IMAGE}:latest" \
+            -t "${CONTAINER_IMAGE}:${RELEASE_TAG}" \
+            -t "${CONTAINER_IMAGE}:${GIT_SHA}" \
+            .
+
+      - name: Push container image
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          GIT_SHA: ${{ github.sha }}
+        run: |
+          docker push "${CONTAINER_IMAGE}:latest"
+          docker push "${CONTAINER_IMAGE}:${RELEASE_TAG}"
+          docker push "${CONTAINER_IMAGE}:${GIT_SHA}"

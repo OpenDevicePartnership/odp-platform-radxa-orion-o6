@@ -1,0 +1,75 @@
+# Builds the ODP Validation OS WIM image on a Windows runner.
+#
+# SPDX-License-Identifier: MIT
+#
+# Triggered automatically on pull requests touching os_image/** for CI validation, manually via
+# workflow_dispatch from any branch, or invoked via workflow_call by the release workflow with a specific
+# git ref.  In all cases the resulting artifact is uploaded with 1-day retention.
+#
+# Third-party actions are pinned by commit SHA which is monitored by the dependabot.yml file.
+#
+
+name: build_os_image
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'os_image/**'
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      git_ref:
+        description: 'Git tag in vYYYY.MM.DD format'
+        required: true
+        type: string
+
+concurrency:
+  group: build_os_image-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    name: Build Orion O6 OS image
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          ref: ${{ inputs.git_ref || '' }}
+
+      - name: Download Validation OS ISO
+        run: Invoke-WebRequest -Uri "https://aka.ms/DownloadValidationOS_arm64" -OutFile ValidationOS.iso
+
+      - name: Build WIM
+        run: |
+          $mount = Mount-DiskImage -ImagePath (Resolve-Path ValidationOS.iso).Path -PassThru
+          $drive = ($mount | Get-Volume).DriveLetter
+          try {
+            cmd /c "${drive}:\GenImage\GenImage.cmd -PackagesList:os_image\O6_config.pkg -PackagePath:${drive}:\cabs -ImagePath:${drive}:\ -RegistryImport:os_image\O6_policy.reg -OutPath:os_image\build -wim -NoWait"
+            if ($LASTEXITCODE -ne 0) { throw "GenImage.cmd failed with exit code $LASTEXITCODE" }
+          } finally {
+            Dismount-DiskImage -ImagePath $mount.ImagePath
+          }
+
+      - name: Stage artifact
+        env:
+          GIT_REF: ${{ inputs.git_ref || github.sha }}
+        run: |
+          New-Item -ItemType Directory -Force -Path staging | Out-Null
+          Copy-Item os_image\build\ValidationOS-1.wim "staging\os-image-$env:GIT_REF.wim"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: os-image
+          path: staging/
+          retention-days: 1
+          if-no-files-found: error
