@@ -21,6 +21,16 @@ flowchart TD
     bc --> uefi["UEFI Module"]
     bc --> tfa["TF-A Module"]
     bc --> modn["Module (n)"]
+
+    classDef rt   fill:#1f2937,stroke:#111111,color:#ffffff
+    classDef stk  fill:#dbeafe,stroke:#1e3a8a,color:#0b1d3b
+    classDef mod  fill:#dcfce7,stroke:#166534,color:#052e16
+    classDef supt fill:#fef3c7,stroke:#92400e,color:#3f2d04
+
+    class root rt
+    class bc,os,cmpn stk
+    class uefi,tfa,modn mod
+    class inf,cmn supt
 ```
 
 | Directory | Purpose |
