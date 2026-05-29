@@ -13,7 +13,7 @@ endif
 
 all:
 	rm -rf $(ODP_PATH_BUILD_OUTPUT)/mod/mem_config
-	cp -rf $(ODP_PATH_COMMON)/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/mem_config/ $(ODP_PATH_BUILD_OUTPUT)/mod/mem_config/
+	cp -rf $(ODP_PATH_COMMON)/cix-edk2-platforms/Platform/Radxa/Orion/O6/mem_config/ $(ODP_PATH_BUILD_OUTPUT)/mod/mem_config/
 	$(MAKE) -C $(ODP_PATH_BUILD_OUTPUT)/mod/mem_config
 
 	mkdir -p $(ODP_PATH_BINS_OUTPUT)

@@ -12,7 +12,7 @@ endif
 RUST_OUT_DIR               := $(ODP_PATH_BUILD_OUTPUT)/mod/uefi/Rust
 SHELL                      := /bin/bash
 export WORKSPACE           := $(CURDIR)
-export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMON)/edk2-platforms-cix-odp:$(ODP_PATH_COMMON)/edk2-non-osi-cix-odp:$(RUST_OUT_DIR)
+export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMON)/cix-edk2-platforms:$(ODP_PATH_COMMON)/cix-edk2-non-osi:$(RUST_OUT_DIR)
 export GCC5_AARCH64_PREFIX := $(ODP_PATH_GCC5_PREFIX)
 
 # Build Targets
@@ -21,6 +21,16 @@ export GCC5_AARCH64_PREFIX := $(ODP_PATH_GCC5_PREFIX)
 all: PatinaDxeCore_ru
 
 	$(MAKE) -C edk2/BaseTools
+
+	# TODO: Set MSFTThermal.asl feature flags enabled.
+	#       This needs to be merged into the platform build process instead of a patch.
+	@sed -i \
+		-e 's/^\(#define MPTF_THERMAL_ENABLE\) .*/\1 1/' \
+		-e 's/^\(#define MPTF_BATTERY_AND_PSU_ENABLE\) .*/\1 1/' \
+		-e 's/^\(#define MPTF_POWERLIMIT_ENABLE\) .*/\1 1/' \
+		-e 's/^\(#define MPTF_CUSTOMIZE_IO_SIGNALSS_ENABLE\) .*/\1 1/' \
+		-e 's/^\(#define MPTF_POWER_TRACKER\) .*/\1 1/' \
+		$(ODP_PATH_COMMON)/cix-edk2-platforms/Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/MSFTThermal.asl
 
 	. edk2/edksetup.sh --reconfig && \
 	build \
@@ -51,6 +61,7 @@ PatinaDxeCore_ru:
 # Specific clean to remove remnants from tools that don't have a way to put remnants in the Build directory
 distclean:
 	$(MAKE) -C edk2/BaseTools clean
+	git -C $(ODP_PATH_COMMON)/cix-edk2-platforms checkout -- Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/MSFTThermal.asl 2>/dev/null || true
 
 # Run unit tests on the host
 test:

@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: MIT
 #
 
-/build/
+/bootchain/build/
+/bootchain/downloads/
+/os_image/build/
 **/target
 **/Cargo.lock
-/downloads/

@@ -14,11 +14,11 @@ directory.
 
 ## Build
 
-This module is invoked from the root Makefile and requires the GNU cross-compiler
-toolchain:
+This module is built as part of the bootchain `make all` target. It can also be
+built directly from the `bootchain/` directory:
 
 ```bash
-make tee
+make -C modules/tee
 ```
 
 ### Key Build Parameters

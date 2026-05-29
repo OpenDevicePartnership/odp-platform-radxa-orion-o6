@@ -289,7 +289,7 @@
 !if $(LINUX_ACPI_CONFIG_OVERRIDE) == TRUE
   GCC:*_*_*_ASLPP_FLAGS           = -DLINUX_ACPI_CONFIG_OVERRIDE
   # ODP: This should be in the .inf to pull in the proper .dec
-  GCC:*_*_*_ASLPP_FLAGS           = -I$(WORKSPACE)/../../common/edk2-platforms-cix-odp/$(ODP_O6_PLATFORM_PATH)/Drivers
+  GCC:*_*_*_ASLPP_FLAGS           = -I$(WORKSPACE)/../../common/cix-edk2-platforms/$(ODP_O6_PLATFORM_PATH)/Drivers
 !endif
 
 !if $(STMM_SUPPORT) == TRUE
