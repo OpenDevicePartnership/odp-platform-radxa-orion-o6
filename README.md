@@ -46,7 +46,21 @@ Most documentation in this repository will be provided within the code files the
 
 ## Quick Start
 
-TBD - Will be part of next PR for the GitHub workflows
+The build output for each tagged version is published as a [GitHub Release](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/releases) that can be used to boot and evaluate the platform without building locally. Each release bundles build artifacts into a single zip archive named `odp-orion-o6-vYYYY.MM.DD.zip` (where `vYYYY.MM.DD` is the release tag) that includes both debug and release variants when applicable.
+
+The zip archive will contain an OS `.wim` file which is the Windows image to be used on the NVMe drive.  Please refer to the OS image [README](./os_image/README.md) document for how to format and write the image to the NVMe drive.  When using the archived file, the *Creating an Installation WIM Image* step in that README can be skipped.
+
+The zip archive also contains `.bin` bootchain files (debug and release variants) that contain all firmware necessary to boot the system.  Pick either the release variant (silent boot) or the debug variant (boot messages on the serial console), then follow the [SPI-NOR Flashing](./bootchain/README.md#spi-nor-flashing) notes, which point to Radxa's offline-programmer workflow for the actual remove/program/reinstall steps.  If you flashed the debug variant, see [Serial Debug Logs](./bootchain/README.md#serial-debug-logs) for how to view the boot output.
+
+Once both images are written, the system can be powered on and should result in booting into the Windows desktop.
+
+Note that the OS image produced by this repository is Windows-only.  The bootchain itself is OS-agnostic, so if you want to run a different OS on the Orion O6 with this firmware, write the bootchain to SPI-NOR as described above and then follow Radxa's [Install System](https://docs.radxa.com/en/orion/o6/getting-started/install-system/udisk-system) documentation for the Linux install flow.
+
+## Building
+
+Each **component** in this repository must be built individually using the steps in its own README.  There is no top-level build because the components target different toolchains, operating systems, and build hosts.  For the exact build steps, refer to the README in the corresponding component directory: [bootchain/README.md](./bootchain/README.md) and [os_image/README.md](./os_image/README.md).
+
+Components are intentionally loosely coupled, but a given component may depend on specific support, fixes, or interface revisions provided by another.  To avoid hard-to-diagnose mismatches, it is safest to build **all** components from the same Git commit and update the target system with that matching set rather than mixing artifacts produced from different revisions.
 
 ## Trademarks
 
