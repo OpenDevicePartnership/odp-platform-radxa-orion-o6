@@ -2,7 +2,7 @@
 
 [![Build Bootchain](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/build_bootchain.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/build_bootchain.yml)
 [![Build OS Image](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/build_os_image.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/build_os_image.yml)
-[![Unit Tests](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/unit_tests.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/unit_tests.yml)
+[![Unit Tests](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/unit_tests_all.yml/badge.svg)](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/actions/workflows/unit_tests_all.yml)
 [![LICENSE](https://img.shields.io/badge/License-MIT-blue)](./LICENSE)
 
 This repository contains all of the firmware and software resources including the operating system needed to boot a Radxa Orion O6 platform.  It serves as a demonstration of ODP features and is based on the [Orion O6 Documentation](https://radxa.com/products/orion/o6/#documentation) and [CIX P1 BIOS](https://github.com/cixtech/bios) with ODP-specific changes.

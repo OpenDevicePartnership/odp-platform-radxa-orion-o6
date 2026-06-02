@@ -57,13 +57,12 @@ jobs:
 
     # Container tagged to the Orion dev container
     container:
-      image: ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer:v2026.05.28
+      image: ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer:v2026.06.03
       options: --user root
 
     defaults:
       run:
         shell: bash
-
 
     # The job strategy implements both a debug and release flow when called from a PR, and a single target (debug or
     # release) for other triggers
@@ -79,7 +78,7 @@ jobs:
 
     steps:
       - name: Clone Repository
-        # TODO: Remove 'if'' when the release build is implemented
+        # TODO: Remove 'if' when the release build is implemented
         if: matrix.build_target != 'release'
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
@@ -87,12 +86,12 @@ jobs:
           submodules: recursive
 
       - name: Build Firmware
-        # TODO: Remove 'if'' when the release build is implemented
+        # TODO: Remove 'if' when the release build is implemented
         if: matrix.build_target != 'release'
         run: make -C bootchain all target=${BUILD_TARGET}
 
       - name: Stage artifact
-        # TODO: Remove 'if'' when the release build is implemented
+        # TODO: Remove 'if' when the release build is implemented
         if: matrix.build_target != 'release'
         env:
           GIT_REF: ${{ inputs.git_ref || github.sha }}
@@ -104,7 +103,7 @@ jobs:
           cp -r bootchain/build/bootchain "staging/bootchain-modules-${BUILD_TARGET}"
 
       - name: Upload artifact
-        # TODO: Remove 'if'' when the release build is implemented
+        # TODO: Remove 'if' when the release build is implemented
         if: matrix.build_target != 'release'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:

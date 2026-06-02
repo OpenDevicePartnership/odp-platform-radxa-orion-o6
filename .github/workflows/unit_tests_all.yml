@@ -8,7 +8,7 @@
 # Third-party actions are pinned by commit SHA which is monitored by the dependabot.yml file.
 #
 
-name: unit_tests
+name: unit_tests_all
 
 on:
   pull_request:
@@ -29,7 +29,7 @@ jobs:
     timeout-minutes: 20
     container:
       # Pinned devcontainer image. Update tag here when bumping the container version.
-      image: ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer:v2026.05.28
+      image: ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer:v2026.06.03
       options: --user root
     defaults:
       run:
