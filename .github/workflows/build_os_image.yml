@@ -43,7 +43,7 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
-          ref: ${{ inputs.git_ref || '' }}
+          ref: ${{ inputs.git_ref || github.ref }}
 
       - name: Download Validation OS ISO
         run: Invoke-WebRequest -Uri "https://aka.ms/DownloadValidationOS_arm64" -OutFile ValidationOS.iso
