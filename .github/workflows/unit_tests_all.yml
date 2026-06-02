@@ -29,8 +29,7 @@ jobs:
     timeout-minutes: 20
     container:
       # Pinned devcontainer image. Update tag here when bumping the container version.
-      # TODO: rogurr namespace. Revert to opendevicepartnership before merging to upstream.
-      image: ghcr.io/rogurr/odp-platform-radxa-orion-o6_devcontainer:v2026.05.28
+      image: ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer:v2026.05.28
       options: --user root
     defaults:
       run:

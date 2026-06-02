@@ -9,10 +9,6 @@
 # Third-party actions are pinned by commit SHA which is monitored by the dependabot.yml file.
 #
 
-#
-# TODO: Revert 'rogurr' to 'opendevicepartnership' namespace
-#
-
 name: publish_container
 
 on:
@@ -27,7 +23,7 @@ permissions:
   packages: write
 
 env:
-  CONTAINER_IMAGE: "ghcr.io/rogurr/odp-platform-radxa-orion-o6_devcontainer"
+  CONTAINER_IMAGE: "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer"
 
 jobs:
   publish:

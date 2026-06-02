@@ -8,12 +8,6 @@
 # Third-party actions are pinned by commit SHA which is monitored by the dependabot.yml file.
 #
 
-
-#
-# TODO: Revert rogurr to opendevicepartnership namespace
-#
-
-
 name: build_bootchain
 
 on:
@@ -63,7 +57,7 @@ jobs:
 
     # Container tagged to the Orion dev container
     container:
-      image: ghcr.io/rogurr/odp-platform-radxa-orion-o6_devcontainer:v2026.05.28
+      image: ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer:v2026.05.28
       options: --user root
 
     defaults:
