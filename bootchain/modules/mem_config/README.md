@@ -11,15 +11,16 @@ parameters consumed during early boot initialization.
 The configuration source files are located in the shared common tree at:
 
 ```text
-common/edk2-platforms-cix-odp/Platform/Radxa/Orion/O6/mem_config/
+common/cix-edk2-platforms/Platform/Radxa/Orion/O6/mem_config/
 ```
 
 ## Build
 
-This module is invoked from the root Makefile:
+This module is built as part of the bootchain `make all` target. It can also be
+built directly from the `bootchain/` directory:
 
 ```bash
-make mem_config
+make -C modules/mem_config
 ```
 
 ## Output

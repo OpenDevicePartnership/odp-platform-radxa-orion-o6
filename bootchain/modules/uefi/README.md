@@ -15,15 +15,15 @@ CIX Sky1 SoC.
 | `platform/` | Platform-specific DSC, FDF, drivers, and Rust modules |
 
 Additional platform packages are referenced from the shared common tree
-(`common/edk2-platforms-cix-odp` and `common/edk2-non-osi-cix-odp`).
+(`common/cix-edk2-platforms` and `common/cix-edk2-non-osi`).
 
 ## Build
 
-This module is invoked from the root Makefile and requires the GNU cross-compiler
-toolchain:
+This module is built as part of the bootchain `make all` target. It can
+also be built directly from the `bootchain/` directory:
 
 ```bash
-make uefi
+make -C modules/uefi
 ```
 
 ### Key Build Parameters
