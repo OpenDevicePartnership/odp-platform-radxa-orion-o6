@@ -23,7 +23,7 @@ permissions:
   packages: write
 
 env:
-  CONTAINER_IMAGE: "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer"
+  CONTAINER_IMAGE: "ghcr.io/OpenDevicePartnership/odp-platform-radxa-orion-o6/image"
 
 jobs:
   publish:
@@ -33,12 +33,11 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Log in to GitHub Container Registry
-        env:
-          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GHCR_USER: ${{ github.actor }}
-        run: |
-          echo "$GHCR_TOKEN" \
-            | docker login "ghcr.io" -u "$GHCR_USER" --password-stdin
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee  # v4.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate dispatch ref
         env:

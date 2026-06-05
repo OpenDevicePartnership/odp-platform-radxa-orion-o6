@@ -25,4 +25,4 @@ updates:
     groups:
       devcontainer:
         patterns:
-          - "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer"
+          - "ghcr.io/OpenDevicePartnership/odp-platform-radxa-orion-o6/image"

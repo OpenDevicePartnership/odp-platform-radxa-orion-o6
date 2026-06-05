@@ -92,16 +92,12 @@ jobs:
           set -euo pipefail
           ls -la "odp-orion-o6-${RELEASE_TAG}"
           zip -r "odp-orion-o6-${RELEASE_TAG}.zip" "odp-orion-o6-${RELEASE_TAG}" >/dev/null
-          ls -la "odp-orion-o6-${RELEASE_TAG}.zip"
 
       - name: Create GitHub Release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO:  ${{ github.repository }}
-          RELEASE_TAG: ${{ github.ref_name }}
-        run: |
-          set -euo pipefail
-          gh release create "$RELEASE_TAG" \
-            --title "$RELEASE_TAG" \
-            --generate-notes \
-            "odp-orion-o6-${RELEASE_TAG}.zip"
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda  # v3.0.0
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: odp-orion-o6-${{ github.ref_name }}.zip

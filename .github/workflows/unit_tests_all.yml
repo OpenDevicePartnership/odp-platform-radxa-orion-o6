@@ -29,7 +29,7 @@ jobs:
     timeout-minutes: 20
     container:
       # Pinned devcontainer image. Update tag here when bumping the container version.
-      image: ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer:v2026.06.03
+      image: ghcr.io/OpenDevicePartnership/odp-platform-radxa-orion-o6/image:v2026.06.05
       options: --user root
     defaults:
       run:
