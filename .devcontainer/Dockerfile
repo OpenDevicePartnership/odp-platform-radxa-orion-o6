@@ -19,7 +19,9 @@ ARG USERNAME=vscode
 # Container environment variables
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
-    PATH="/usr/local/cargo/bin:${PATH}"
+    PATH="/usr/local/cargo/bin:${PATH}" \
+    DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+    DOTNET_NOLOGO=1
 
 # Commands to update the apt store, install build dependencies, and clean up apt caches to reduce image size
 # [Local Build] If setting up a local build environment, these apps are needed, but the final 'rm' command is only to
@@ -43,7 +45,12 @@ RUN apt-get update && apt-get install -y \
     bc \
     python3-pyelftools \
     python-is-python3 \
+    dotnet-sdk-8.0 \
+    ca-certificates \
+    gnupg \
     sudo && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user (replace pre-existing ubuntu user in Ubuntu 24.04 which occupies UID/GID 1000).

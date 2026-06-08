@@ -1,0 +1,28 @@
+# Dependabot configuration.
+#
+# SPDX-License-Identifier: MIT
+#
+# This bot keeps the dependencies of this repository up to date.  See the GitHub documentation for more information.
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: ci
+      include: scope
+    labels:
+      - dependencies
+      - github-actions
+    groups:
+      devcontainer:
+        patterns:
+          - "ghcr.io/OpenDevicePartnership/odp-platform-radxa-orion-o6/image"

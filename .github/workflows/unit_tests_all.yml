@@ -1,0 +1,44 @@
+# Runs unit tests for the ODP Radxa Orion O6 platform inside this repository's devcontainer image.
+#
+# SPDX-License-Identifier: MIT
+#
+# This unit test workflow currently houses all unit tests for the ODP Radxa Orion O6 platform, but will eventually be
+# expanded to include more comprehensive testing.
+#
+# Third-party actions are pinned by commit SHA which is monitored by the dependabot.yml file.
+#
+
+name: unit_tests_all
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Run Orion O6 unit tests
+    timeout-minutes: 20
+    container:
+      # Pinned devcontainer image. Update tag here when bumping the container version.
+      image: ghcr.io/OpenDevicePartnership/odp-platform-radxa-orion-o6/image:v2026.06.05
+      options: --user root
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          submodules: recursive
+
+      - name: Run Bootchain Unit Tests
+        run: make -C bootchain test

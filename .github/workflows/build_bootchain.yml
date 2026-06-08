@@ -1,0 +1,113 @@
+# Builds the ODP bootchain for the Radxa Orion O6 platform inside this repository's devcontainer image.
+#
+# SPDX-License-Identifier: MIT
+#
+# Script supports compiling both debug and release when triggered from a PR, and the specific target provided
+# (defaults to debug) for a dispatch or call trigger.  All pinned resources are maintained by dependabot.yml.
+#
+# Third-party actions are pinned by commit SHA which is monitored by the dependabot.yml file.
+#
+
+name: build_bootchain
+
+on:
+  # On PR trigger, builds both debug and release
+  pull_request:
+    branches: [main]
+
+  # Manual trigger requires user to chose a build target then compiles dispatch commit target
+  workflow_dispatch:
+    inputs:
+      build_target:
+        description: 'Bootchain build target'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release
+
+  # Called by other workflows, requires a git tag to be cloned
+  workflow_call:
+    inputs:
+      git_ref:
+        description: 'Git tag to clone in vYYYY.MM.DD format'
+        required: true
+        type: string
+      build_target:
+        description: 'Bootchain build target (debug or release)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # Standard setup
+    name: Build Orion O6 ${{ matrix.build_target }} bootchain
+    concurrency:
+      group: build_bootchain-${{ matrix.build_target }}-${{ github.head_ref || github.run_id }}
+      cancel-in-progress: true
+    timeout-minutes: 20
+    env:
+      BUILD_TARGET: ${{ matrix.build_target }}
+
+    # Container tagged to the Orion dev container
+    container:
+      image: ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer:v2026.06.03
+      options: --user root
+
+    defaults:
+      run:
+        shell: bash
+
+    # The job strategy implements both a debug and release flow when called from a PR, and a single target (debug or
+    # release) for other triggers
+    strategy:
+      fail-fast: false
+      matrix:
+        build_target: >-
+          ${{
+            github.event_name == 'pull_request'
+            && fromJSON('["debug","release"]')
+            || fromJSON(format('["{0}"]', inputs.build_target))
+          }}
+
+    steps:
+      - name: Clone Repository
+        # TODO: Remove 'if' when the release build is implemented (Task #26)
+        if: matrix.build_target != 'release'
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          ref: ${{ inputs.git_ref || github.ref }}
+          submodules: recursive
+
+      - name: Build Firmware
+        # TODO: Remove 'if' when the release build is implemented (Task #26)
+        if: matrix.build_target != 'release'
+        run: make -C bootchain all target=${BUILD_TARGET}
+
+      - name: Stage artifact
+        # TODO: Remove 'if' when the release build is implemented (Task #26)
+        if: matrix.build_target != 'release'
+        env:
+          GIT_REF: ${{ inputs.git_ref || github.sha }}
+        run: |
+          set -euo pipefail
+          suffix="${BUILD_TARGET}-${GIT_REF}"
+          mkdir -p staging
+          cp bootchain/build/odp_orion_o6_bootchain.bin "staging/odp_orion_o6_bootchain-${suffix}.bin"
+          cp -r bootchain/build/bootchain "staging/bootchain-modules-${BUILD_TARGET}"
+
+      - name: Upload artifact
+        # TODO: Remove 'if' when the release build is implemented (Task #26)
+        if: matrix.build_target != 'release'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: bootchain-${{ matrix.build_target }}
+          path: staging/
+          retention-days: 1
+          if-no-files-found: error
