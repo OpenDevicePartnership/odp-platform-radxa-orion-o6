@@ -57,7 +57,7 @@ jobs:
 
     # Container tagged to the Orion dev container
     container:
-      image: ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6_devcontainer:v2026.06.03
+      image: ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6/image:v2026.06.08
       options: --user root
 
     defaults:
