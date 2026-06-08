@@ -23,7 +23,7 @@ permissions:
   packages: write
 
 env:
-  CONTAINER_IMAGE: "ghcr.io/OpenDevicePartnership/odp-platform-radxa-orion-o6/image"
+  CONTAINER_IMAGE: "ghcr.io/opendevicepartnership/odp-platform-radxa-orion-o6/image"
 
 jobs:
   publish:
