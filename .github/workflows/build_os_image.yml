@@ -46,7 +46,9 @@ jobs:
           ref: ${{ inputs.git_ref || github.ref }}
 
       - name: Download Validation OS ISO
-        run: Invoke-WebRequest -Uri "https://aka.ms/DownloadValidationOS_arm64" -OutFile ValidationOS.iso
+        run: |
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest 'https://aka.ms/DownloadValidationOS_arm64' -OutFile 'ValidationOS.iso'
 
       - name: Build WIM
         run: |
