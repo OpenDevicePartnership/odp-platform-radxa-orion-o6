@@ -18,6 +18,8 @@
 #include <Library/ShMemLib.h>
 #include <Protocol/MemOutputBuffer.h>
 
+extern UINT64  mSystemMemoryEnd;
+
 //// PATINA
 //
 // This entire file was re-written to support the ArmPlatformGetVirtualMemoryMap function
@@ -191,7 +193,7 @@ ArmPlatformGetVirtualMemoryMap (
   // Useable System RAM - write back cacheable with option to set write combineable
   VirtualMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdArmLcdDdrFrameBufferBase) + FixedPcdGet32 (PcdArmLcdDdrFrameBufferSize);
   VirtualMemoryTable[Index].VirtualBase  = VirtualMemoryTable[Index].PhysicalBase;
-  VirtualMemoryTable[Index].Length       = FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet64 (PcdSystemMemorySize) - VirtualMemoryTable[Index].PhysicalBase;
+  VirtualMemoryTable[Index].Length       = mSystemMemoryEnd + 1 - VirtualMemoryTable[Index].PhysicalBase;
   VirtualMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
 
   BuildResourceDescriptorHob_V2 (
@@ -204,7 +206,7 @@ ArmPlatformGetVirtualMemoryMap (
   Index++;
 
   // Upper MMIO Region - uncacheable device
-  VirtualMemoryTable[Index].PhysicalBase = FixedPcdGet64 (PcdSystemMemoryBase) + FixedPcdGet64 (PcdSystemMemorySize);
+  VirtualMemoryTable[Index].PhysicalBase = mSystemMemoryEnd + 1;
   VirtualMemoryTable[Index].VirtualBase  = VirtualMemoryTable[Index].PhysicalBase;
   VirtualMemoryTable[Index].Length       = FixedPcdGet64 (PcdDramHighSpaceBase) - VirtualMemoryTable[Index].PhysicalBase;
   VirtualMemoryTable[Index].Attributes   = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
