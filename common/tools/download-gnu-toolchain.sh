@@ -9,27 +9,30 @@
 # =====================================================================================================================
 # GCC toolchain version information
 # https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
-#
-# ARM publishes this same toolchain version prebuilt for multiple host architectures; select the archive (and its
-# matching checksum) based on the machine actually running this script, rather than assuming x86_64, so non-x86_64
-# hosts (e.g. Arm64) do not need emulation just to obtain the cross-compiler.
 # =====================================================================================================================
 GCC_VERSION="15.2.rel1"
+
+GCC_ARCHIVE_ARM="arm-gnu-toolchain-${GCC_VERSION}-aarch64-aarch64-none-elf.tar.xz"
+GCC_SHA256_ARM="46195685b6aec1077e3f1b7706b43a6aa1fef4d8d3bff3a411b7dad1c5b1196b"
+
+GCC_ARCHIVE_X64="arm-gnu-toolchain-${GCC_VERSION}-x86_64-aarch64-none-elf.tar.xz"
+GCC_SHA256_X64="66f7ce7c1bf662f589a4caf440812375f3cd8000a033ccf0971127a0726d6921"
+
+# Select the toolchain build matching the host running this script (target is always aarch64-none-elf)
 case "$(uname -m)" in
     x86_64)
-        GCC_HOST="x86_64"
-        GCC_SHA256="66f7ce7c1bf662f589a4caf440812375f3cd8000a033ccf0971127a0726d6921"
+        GCC_ARCHIVE="${GCC_ARCHIVE_X64}"
+        GCC_SHA256="${GCC_SHA256_X64}"
         ;;
-    aarch64|arm64)
-        GCC_HOST="aarch64"
-        GCC_SHA256="46195685b6aec1077e3f1b7706b43a6aa1fef4d8d3bff3a411b7dad1c5b1196b"
+    aarch64 | arm64)
+        GCC_ARCHIVE="${GCC_ARCHIVE_ARM}"
+        GCC_SHA256="${GCC_SHA256_ARM}"
         ;;
     *)
-        echo "ERROR: No known GNU toolchain build for host architecture '$(uname -m)'." >&2
+        echo "ERROR: Unsupported host architecture: $(uname -m)"
         exit 1
         ;;
 esac
-GCC_ARCHIVE="arm-gnu-toolchain-${GCC_VERSION}-${GCC_HOST}-aarch64-none-elf.tar.xz"
 GCC_URL="https://developer.arm.com/-/media/Files/downloads/gnu/${GCC_VERSION}/binrel/${GCC_ARCHIVE}"
 
 # Exit immediately if a command exits with a non-zero status

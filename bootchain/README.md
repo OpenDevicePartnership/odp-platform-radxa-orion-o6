@@ -23,13 +23,6 @@ The makefiles do rely on environment support, so the fastest way to get set up i
 
 4) Build and start the development container, then mount this repository as its workspace.  The enter-container.sh script uses Podman to perform the steps on the first invocation. Subsequent invocations skip the build and re-enter the existing container directly.
 
-   The container builds natively for your host architecture (e.g. Arm64 or x86_64) rather than being forced to
-   `linux/amd64`.  Three of the CIX-provided bootchain tools (`cix_package_tool`, `cix_regen_trusted_key_cert`,
-   `cert_uefi_create_rsa`) are closed-source x86_64-only binaries; on a non-x86_64 host they run automatically
-   through QEMU user-mode emulation (see `bootchain/Makefile`) instead of requiring the whole container to be
-   emulated, and the container image already includes everything that needs, so no extra setup or host kernel
-   changes are required.
-
    ``` bash
    ./common/tools/enter-container.sh
    ```

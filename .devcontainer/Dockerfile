@@ -3,19 +3,21 @@
 # SPDX-License-Identifier: MIT
 #
 
-# A separate amd64 image stage that provides just the glibc shared libraries the closed-source x86_64 CIX tools
-# need (cix_package_tool, cix_regen_trusted_key_cert, cert_uefi_create_rsa - see bootchain/Makefile), so QEMU
-# user-mode emulation (qemu-x86_64, installed below) can run them directly on a non-x86_64 host.  Only files are
-# copied out of this stage below (nothing is ever executed in it), so pulling it requires no QEMU/emulation support
-# at image build time - only 'qemu-x86_64' itself is needed later, at container runtime.
+# The container hosts Ubuntu with the amd64-libs providing support to run the pre-compiled x86_64 CIX tools on a
+# non-x86_64 host.  This is a no-op if running on an x86_64 host, but is required for aarch64 hosts.
 FROM --platform=linux/amd64 ubuntu:24.04 AS amd64-libs
-
 FROM ubuntu:24.04
+
+# The 'enter-container.sh' script searches this file for 'ARG ODP_IMAGE_VERSION=' and compares the value against any
+# existing container's odp.image-version' label.  Increment this value any time changes are made that require existing
+# images to be rebuilt.
+ARG ODP_IMAGE_VERSION=2
+LABEL odp.image-version="${ODP_IMAGE_VERSION}"
 
 # Set non-interactive to avoid prompts during build
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Standardizing on a specific Rustup version. When bumping RUSTUP_VERSION, update the checksums below to match from
+# Standardizing on a specific Rustup version. SHA values recorded from:
 # https://static.rust-lang.org/rustup/archive/<version>/<target>/rustup-init.sha256).
 ARG RUSTUP_VERSION=1.28.2
 ARG RUSTUP_URL_BASE="https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}"
@@ -32,13 +34,9 @@ ENV RUSTUP_HOME=/usr/local/rustup \
     DOTNET_CLI_TELEMETRY_OPTOUT=1 \
     DOTNET_NOLOGO=1
 
-# Commands to update the apt store, install build dependencies, and clean up apt caches to reduce image size
+# Install all build dependencies within a single 'RUN' stage to help reduce the image size.
 # [Local Build] If setting up a local build environment, these apps are needed, but the final 'rm' command is only to
 #               reduce image size and is not necessary for local development outside a container
-#
-# qemu-user is installed regardless of the container's own architecture so that, on a non-x86_64 host, QEMU
-# user-mode emulation (qemu-x86_64) can run the closed-source x86_64-only CIX tools directly; this is a no-op on an
-# x86_64 host, since amd64 is already its native architecture.
 RUN apt-get update && apt-get install -y \
     build-essential \
     git \
@@ -67,8 +65,8 @@ RUN apt-get update && apt-get install -y \
     apt-get install -y nodejs && \
     rm -rf /var/lib/apt/lists/*
 
-# Shared libraries needed by the closed-source x86_64 CIX tools (checked via 'readelf -d ...'), copied to their
-# standard multiarch paths so 'qemu-x86_64' can resolve them without a custom sysroot argument.
+# Shared libraries needed by the pre-compiled x86_64 CIX tools on an ARM host.
+# [Local Build] If setting up a local build environment on an ARM host, the qemu-user binaries are needed
 COPY --from=amd64-libs /lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
 COPY --from=amd64-libs /lib/x86_64-linux-gnu/libc.so.6 /lib/x86_64-linux-gnu/libc.so.6
 COPY --from=amd64-libs /lib/x86_64-linux-gnu/libm.so.6 /lib/x86_64-linux-gnu/libm.so.6
@@ -87,9 +85,9 @@ RUN (userdel -f ubuntu || echo "Warning: ubuntu user does not exist, skipping us
 RUN pip3 install --break-system-packages cryptography
 
 # Download, install, and verify integrity of the Rust toolchain
-# [Local Build] If setting up a local build environment, Rust is needed but the text in this section is very specific
-#               to a container environment. For local development outside a container, it is recommended to install
-#               Rust using the official rustup installer from https://rustup.rs/
+# [Local Build] If setting up a local build environment, Rust is needed but the text in this 'RUN' stage is very
+#               specific to a container environment. For local development outside a container, it is best to follow
+#               the instructions at https://www.rust-lang.org/tools/install
 RUN case "$(uname -m)" in \
         x86_64)  RUSTUP_TARGET="x86_64-unknown-linux-gnu";  RUSTUP_SHA256="${RUSTUP_SHA256_X86_64}" ;; \
         aarch64) RUSTUP_TARGET="aarch64-unknown-linux-gnu"; RUSTUP_SHA256="${RUSTUP_SHA256_AARCH64}" ;; \
