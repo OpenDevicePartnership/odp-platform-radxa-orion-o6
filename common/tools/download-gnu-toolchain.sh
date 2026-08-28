@@ -29,7 +29,7 @@ case "$(uname -m)" in
         GCC_SHA256="${GCC_SHA256_ARM}"
         ;;
     *)
-        echo "ERROR: Unsupported host architecture: $(uname -m)"
+        echo "ERROR: Unsupported host architecture: $(uname -m)" >&2
         exit 1
         ;;
 esac

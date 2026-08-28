@@ -47,7 +47,7 @@ image_version() {
     "${CONTAINER_TOOL_NAME}" inspect --format "{{ index .Config.Labels \"${IMAGE_VERSION_LABEL}\" }}" "${IMAGE_NAME}" 2>/dev/null || true
 }
 
-# Step 1: Verify a version was found in the Dockerfile
+# Step 1: Verify the version tag was found in the Dockerfile
 if [[ -z "$(expected_version)" ]]; then
     echo "Error: could not find 'ARG ODP_IMAGE_VERSION=' in ${DOCKERFILE_PATH}." >&2
     exit 1

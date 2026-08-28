@@ -40,6 +40,7 @@ clean:
 # Distclean is a more thorough clean to target modules that might have things like build tool remnants
 distclean: clean
 	$(MAKE) -C modules/uefi distclean
+	rm -drf $(ODP_PATH_DOWNLOADS)
 
 # A call into each module's test target
 test:
