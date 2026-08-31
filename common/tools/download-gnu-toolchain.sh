@@ -11,9 +11,29 @@
 # https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads
 # =====================================================================================================================
 GCC_VERSION="15.2.rel1"
-GCC_ARCHIVE="arm-gnu-toolchain-${GCC_VERSION}-x86_64-aarch64-none-elf.tar.xz"
+
+GCC_ARCHIVE_ARM="arm-gnu-toolchain-${GCC_VERSION}-aarch64-aarch64-none-elf.tar.xz"
+GCC_SHA256_ARM="46195685b6aec1077e3f1b7706b43a6aa1fef4d8d3bff3a411b7dad1c5b1196b"
+
+GCC_ARCHIVE_X64="arm-gnu-toolchain-${GCC_VERSION}-x86_64-aarch64-none-elf.tar.xz"
+GCC_SHA256_X64="66f7ce7c1bf662f589a4caf440812375f3cd8000a033ccf0971127a0726d6921"
+
+# Select the toolchain build matching the host running this script (target is always aarch64-none-elf)
+case "$(uname -m)" in
+    x86_64)
+        GCC_ARCHIVE="${GCC_ARCHIVE_X64}"
+        GCC_SHA256="${GCC_SHA256_X64}"
+        ;;
+    aarch64 | arm64)
+        GCC_ARCHIVE="${GCC_ARCHIVE_ARM}"
+        GCC_SHA256="${GCC_SHA256_ARM}"
+        ;;
+    *)
+        echo "ERROR: Unsupported host architecture: $(uname -m)" >&2
+        exit 1
+        ;;
+esac
 GCC_URL="https://developer.arm.com/-/media/Files/downloads/gnu/${GCC_VERSION}/binrel/${GCC_ARCHIVE}"
-GCC_SHA256="66f7ce7c1bf662f589a4caf440812375f3cd8000a033ccf0971127a0726d6921"
 
 # Exit immediately if a command exits with a non-zero status
 set -e
