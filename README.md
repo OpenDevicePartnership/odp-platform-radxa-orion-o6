@@ -7,6 +7,14 @@
 
 This repository contains all of the firmware and software resources including the operating system needed to boot a Radxa Orion O6 platform.  It serves as a demonstration of ODP features and is based on the [Orion O6 Documentation](https://radxa.com/products/orion/o6/#documentation) and [CIX P1 BIOS](https://github.com/cixtech/bios) with ODP-specific changes.
 
+## Scope and Intent
+
+This repository is intended to be a reference *baseline sample* only, not a replacement for the original Radxa/CIX firmware.  The long-term goal for the platform package is a minimal build, with no extra options or features, that boots into a minimal Windows installation.  That minimal target was chosen so someone investigating this repository can come up to speed as quickly as possible before adding additional features.
+
+From that baseline, the goal is to show what ODP components (Patina, secure services, recovery, etc.) look like when they are integrated into a complete boot stack on real hardware.  The CIX P1 BIOS is open source, and the Radxa Orion O6 hardware is both readily available and publicly documented (including schematics), which makes them a convenient starting point for showcasing those changes in context.
+
+To help keep that demonstration focused and reviewable, the boot stack is built and validated against a single feature set and a single Windows on Arm target.  Other operating systems, board revisions, peripherals, configurations, etc. are intentionally out of scope and are not tested.  For official Orion O6 firmware and OS releases, please refer to Radxa's latest [Orion O6 Documentation](https://radxa.com/products/orion/o6/#documentation).
+
 ## Folder Structure and Content
 
 The **Boot Stack** is assembled from one or more top-level **component** directories, each of which builds an independent deliverable.  A component may in turn be composed of **child modules**, where each module produces a discrete build artifact that the component then assembles into its final output.  Alongside the components, folders whose names begin with `.` provide **infrastructure** support (environment, workflows, editor settings, etc.), and a **common** directory holds shared tools, documentation, and source files that any component or module may reach into.
@@ -54,8 +62,6 @@ The zip archive will contain an OS `.wim` file which is the Windows image to be 
 The zip archive also contains `.bin` bootchain files (debug and release variants) that contain all firmware necessary to boot the system.  Pick either the release variant (silent boot) or the debug variant (boot messages on the serial console), then follow the [SPI-NOR Flashing](./bootchain/README.md#spi-nor-flashing) notes, which point to Radxa's offline-programmer workflow for the actual remove/program/reinstall steps.  If you flashed the debug variant, see [Serial Debug Logs](./bootchain/README.md#serial-debug-logs) for how to view the boot output.
 
 Once both images are written, the system can be powered on and should result in booting into the Windows desktop.
-
-Note that the OS image produced by this repository is Windows-only.  The bootchain itself is OS-agnostic, so if you want to run a different OS on the Orion O6 with this firmware, write the bootchain to SPI-NOR as described above and then follow Radxa's [Install System](https://docs.radxa.com/en/orion/o6/getting-started/install-system/udisk-system) documentation for the Linux install flow.
 
 ## Building
 
