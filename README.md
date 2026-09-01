@@ -13,7 +13,7 @@ This repository is intended to be a reference *baseline sample* only, not a repl
 
 From that baseline, the goal is to show what ODP components (Patina, secure services, recovery, etc.) look like when they are integrated into a complete boot stack on real hardware.  The CIX P1 BIOS is open source, and the Radxa Orion O6 hardware is both readily available and publicly documented (including schematics), which makes them a convenient starting point for showcasing those changes in context.
 
-To help keep that demonstration focused and reviewable, the boot stack is built and validated against a single feature set and a single Windows on Arm OS target.  Coverage of other operating systems, board revisions, peripherals, configurations, etc. is intentionally out of scope.  For general Orion O6 firmware, please refer to Radxa's latest [Orion O6 Documentation](https://radxa.com/products/orion/o6/#documentation).
+To help keep that demonstration focused and reviewable, the boot stack is built and validated against a single feature set and a single Windows on Arm target.  Other operating systems, board revisions, peripherals, configurations, etc. are intentionally out of scope and are not tested.  For official Orion O6 firmware and OS releases, please refer to Radxa's latest [Orion O6 Documentation](https://radxa.com/products/orion/o6/#documentation).
 
 ## Folder Structure and Content
 
