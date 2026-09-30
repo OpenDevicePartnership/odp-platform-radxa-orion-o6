@@ -8,20 +8,20 @@
 	path = bootchain/modules/uefi/edk2
 	url = https://github.com/cixtech/edk2.git
 
-# Fork in rogurr to fix compile warnings when switching to GCC 15.2.rel1
+# CIX provided version of the OP-TEE repository
 [submodule "Trusted_Execution_Environment"]
 	path = bootchain/modules/tee/op-tee-cix-odp
-	url = https://github.com/rogurr/cix_opensource__tee__op-tee.git
+	url = https://github.com/cixtech/cix_opensource__tee__op-tee.git
 
 # CIX provided version of the Arm Trusted Firmware-A (TF-A) repository
 [submodule "Trusted_Firmware-A"]
 	path = bootchain/modules/tf-a/arm-trusted-firmware-cix-odp
 	url = https://github.com/cixtech/cix_opensource__arm-trusted-firmware.git
 
-# Fork in rogurr to fix compile warnings when switching to GCC 15.2.rel1
+# CIX provided version of the EDK II Platforms repository
 [submodule "cix-edk2-platforms"]
 	path = common/cix-edk2-platforms
-	url = https://github.com/rogurr/edk2-platforms.git
+	url = https://github.com/cixtech/edk2-platforms.git
 
 # CIX provided version of the Tianocore EDK II NonOSI repository
 [submodule "cix-edk2-non-osi"]
