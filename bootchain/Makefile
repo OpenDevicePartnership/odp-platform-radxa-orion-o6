@@ -52,7 +52,8 @@ test:
 # upstream Trusted_Execution_Environment and cix-edk2-platforms submodules.
 # Verifies the submodules are at the expected commit before patching.
 patch-submodules:
-	$(CURDIR)/OVERRIDE/apply-submodule-patches.sh
+	$(CURDIR)/OVERRIDE/op-tee-cix-odp/patch-op-tee-cix-odp.sh
+	$(CURDIR)/OVERRIDE/cix-edk2-platforms/patch-cix-edk2-platforms.sh
 
 # Bootchain stitch and packaging targets
 stitch-all: bootloader2 bootloader3

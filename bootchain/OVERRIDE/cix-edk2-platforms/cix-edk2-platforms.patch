@@ -1,0 +1,51 @@
+# cix-edk2-platforms bootchain fixups
+#
+# cix-edk2-platforms base: 1a48c6523a3225f3ef01b1c91eb3e3dc0dd1857f
+
+diff --git a/common/cix-edk2-platforms/Platform/Radxa/Orion/O6/mem_config/MemConfigBinTool.c b/common/cix-edk2-platforms/Platform/Radxa/Orion/O6/mem_config/MemConfigBinTool.c
+index 2be5b515..39ce4920 100644
+--- a/common/cix-edk2-platforms/Platform/Radxa/Orion/O6/mem_config/MemConfigBinTool.c
++++ b/common/cix-edk2-platforms/Platform/Radxa/Orion/O6/mem_config/MemConfigBinTool.c
+@@ -53,7 +53,7 @@ MemConfigBinOutprint (
+   fclose(pFile);
+ }
+ 
+-void
++int
+ main (
+   void
+ )
+@@ -91,7 +91,7 @@ main (
+     // Initialize BIOS setup table with 0xFF
+     if (CdcbBlockList[index].guid == GUID_INVALID) {
+       printf("Error: Invalid GUID in entry %d\n", index);
+-      return;
++      return 1;
+     }
+ 
+     // Cal checksum
+@@ -131,4 +131,6 @@ main (
+   }
+   ((MEM_QUICK_CONFIG*)MemCfgBuf)->FeatHash = FeatHash;
+   MemConfigBinOutprint(MemCfgBuf, MemCfgBinSize);
++
++  return 0;
+ }
+diff --git a/common/cix-edk2-platforms/Platform/Radxa/Platforms/CIX/Sky1/Include/RadxaSetupVar.h b/common/cix-edk2-platforms/Platform/Radxa/Platforms/CIX/Sky1/Include/RadxaSetupVar.h
+index eb2f388c..78959e80 100644
+--- a/common/cix-edk2-platforms/Platform/Radxa/Platforms/CIX/Sky1/Include/RadxaSetupVar.h
++++ b/common/cix-edk2-platforms/Platform/Radxa/Platforms/CIX/Sky1/Include/RadxaSetupVar.h
+@@ -1,5 +1,5 @@
+ #ifndef _RADXA_SETUP_VAR_H_
+-#define _RXDXA_SETUP_VAR_H_
++#define _RADXA_SETUP_VAR_H_
+ 
+ #define RADXA_SETUP_VARIABLE_GUID \
+   { 0xeedf122d, 0xa912, 0x43d5, {0xaa, 0x11, 0x14, 0x27, 0x62, 0xdd, 0x96, 0xfa}}
+@@ -23,4 +23,4 @@ typedef struct {
+ 
+ #pragma pack()
+ 
+-#endif
+\ No newline at end of file
++#endif
