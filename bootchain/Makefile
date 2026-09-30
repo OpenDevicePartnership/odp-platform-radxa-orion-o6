@@ -19,11 +19,12 @@ export ODP_PATH_GCC5_PREFIX        := $(ODP_PATH_DOWNLOADS)/gnu-toolchain/bin/aa
 export ODP_PATH_OEM_PRIVATE_KEY    := $(ODP_PATH_PACKAGE_TOOL)/Keys/oem_privatekey.pem
 
 # Build targets are all PHONY and rely on the module's makefiles to determine if a build is necessary
-.PHONY: all clean distclean test stitch-all pre-built bootloader2 bootloader3
+.PHONY: all clean distclean test stitch-all pre-built bootloader2 bootloader3 patch-submodules
 
-# Ordering is specific: Toolchain first, copy the pre-built binaries, build binaries, then final image stitch.
+# Ordering is specific: Toolchain first, patch submodules, copy the pre-built binaries, build binaries, then final image stitch.
 all:
 	$(ODP_PATH_COMMON)/tools/download-gnu-toolchain.sh
+	$(MAKE) patch-submodules
 	$(MAKE) pre-built
 	$(MAKE) -C modules/uefi all
 	$(MAKE) -C modules/tee all
@@ -46,6 +47,12 @@ distclean: clean
 test:
 	$(MAKE) -C modules/uefi test
 	cd $(ODP_PATH_COMMON)/tests/acpi && cargo test
+
+# Apply bootchain-only fixups (e.g. GCC 15.2.rel1 fixes) on top of the
+# upstream Trusted_Execution_Environment and cix-edk2-platforms submodules.
+# Verifies the submodules are at the expected commit before patching.
+patch-submodules:
+	$(CURDIR)/OVERRIDE/apply-submodule-patches.sh
 
 # Bootchain stitch and packaging targets
 stitch-all: bootloader2 bootloader3
