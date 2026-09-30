@@ -1,0 +1,182 @@
+# Fork-only submodule changes
+#
+# Apply from the repository root after initializing the submodules:
+#   git apply submodule-fork-changes.patch
+#
+# Trusted_Execution_Environment base: cc66640f3815da4defc50f72b66ae3bac97cd48a
+# cix-edk2-platforms base:          1a48c6523a3225f3ef01b1c91eb3e3dc0dd1857f
+
+diff --git a/bootchain/modules/tee/op-tee-cix-odp/core/arch/arm/plat-cix/main.c b/bootchain/modules/tee/op-tee-cix-odp/core/arch/arm/plat-cix/main.c
+index 7d28bc64..8af4722f 100644
+--- a/bootchain/modules/tee/op-tee-cix-odp/core/arch/arm/plat-cix/main.c
++++ b/bootchain/modules/tee/op-tee-cix-odp/core/arch/arm/plat-cix/main.c
+@@ -57,6 +57,10 @@ void main_init_gic(void);
+ void main_secondary_init_gic(void);
+ #endif
+ 
++#if defined(CFG_TE_DRIVER)
++void platform_get_te_configs(void **base, int *irq, int *host);
++#endif
++
+ /*
+  *******************************************************************************
+  *                          VARIABLES SUPPLIED BY THIS MODULE
+@@ -123,9 +127,6 @@ void set_cix_version_str(void)
+ TEE_Result tee_otp_get_hw_unique_key(struct tee_hw_unique_key *hwkey)
+ {
+ 	uint32_t len = 0U;
+-	uint32_t ta_flag = 0U;
+-	uint8_t key_data[32] = {0};
+-	uint32_t key_len = 32;
+ 	cix_get_key_info(KEY_ID_DEVICE_KEY, KM_DEVICE_KEY_SIZE, hwkey->data, &len);
+ 
+ 	return TEE_SUCCESS;
+@@ -187,15 +188,12 @@ void platform_get_te_configs(void **base, int *irq, int *host)
+ TEE_Result tee_otp_get_ta_enc_key(uint32_t key_type __maybe_unused,
+ 					 uint8_t *buffer, size_t len)
+ {
+-	size_t key_len = 32;
++	uint32_t rsp_len = (uint32_t)len;
+ 	TEE_Result ret;
+ 
+-	ret = cix_get_key_info(KEY_ID_MODEL_KEY, key_len, buffer, &len);
+-	EMSG_RAW("Cix_en_key: %d\n", key_len);
+-	DHEXDUMP(buffer, 32);
++	ret = cix_get_key_info(KEY_ID_MODEL_KEY, (uint32_t)len, buffer, &rsp_len);
++	EMSG_RAW("Cix_en_key: %u\n", rsp_len);
++	DHEXDUMP(buffer, rsp_len);
+ 
+-	return TEE_SUCCESS;
++	return ret;
+ }
+-
+-
+-
+diff --git a/bootchain/modules/tee/op-tee-cix-odp/core/kernel/tee_ta_manager.c b/bootchain/modules/tee/op-tee-cix-odp/core/kernel/tee_ta_manager.c
+index 041a2771..47b087ab 100644
+--- a/bootchain/modules/tee/op-tee-cix-odp/core/kernel/tee_ta_manager.c
++++ b/bootchain/modules/tee/op-tee-cix-odp/core/kernel/tee_ta_manager.c
+@@ -985,7 +985,7 @@ static uint32_t se_ta_enc_flag = 0U;
+ TEE_Result boot_ta_type_init(void)
+ {
+ 	uint32_t rsp_len = 0U;
+-	cix_get_key_info(KEY_ID_TA_CONFIG_ENABLE, 4U, &se_ta_enc_flag, &rsp_len);
++	cix_get_key_info(KEY_ID_TA_CONFIG_ENABLE, 4U, (unsigned char*)&se_ta_enc_flag, &rsp_len);
+ 
+ 	return TEE_SUCCESS;
+ }
+diff --git a/bootchain/modules/tee/op-tee-cix-odp/lib/libmbedtls/mbedtls/library/entropy.c b/bootchain/modules/tee/op-tee-cix-odp/lib/libmbedtls/mbedtls/library/entropy.c
+index f6f0c4b9..20b5eee3 100644
+--- a/bootchain/modules/tee/op-tee-cix-odp/lib/libmbedtls/mbedtls/library/entropy.c
++++ b/bootchain/modules/tee/op-tee-cix-odp/lib/libmbedtls/mbedtls/library/entropy.c
+@@ -57,15 +57,19 @@
+ 
+ #define ENTROPY_MAX_LOOP    256     /**< Maximum amount to loop before error */
+ 
+-static unsigned long int next = 1;
+-
+ /* Return next random integer */
++int rand(void);
+ 
+ int rand(void)
+ {
+-	int rc, olen;
+-	mbedtls_hardware_poll(NULL, &rc, sizeof(rc), &olen);
+-	return rc;
++	int rc;
++	unsigned char buf[sizeof(rc)];
++	size_t olen;
++
++	mbedtls_hardware_poll(NULL, buf, sizeof(buf), &olen);
++	memcpy(&rc, buf, sizeof(rc));
++
++    return rc;
+ }
+ 
+ void mbedtls_entropy_init( mbedtls_entropy_context *ctx )
+diff --git a/bootchain/modules/tee/op-tee-cix-odp/lib/libutee/tee_api_operations.c b/bootchain/modules/tee/op-tee-cix-odp/lib/libutee/tee_api_operations.c
+index 03387740..ed1c80fc 100644
+--- a/bootchain/modules/tee/op-tee-cix-odp/lib/libutee/tee_api_operations.c
++++ b/bootchain/modules/tee/op-tee-cix-odp/lib/libutee/tee_api_operations.c
+@@ -1051,11 +1051,10 @@ void TEE_GetOperationBufferOffs(TEE_OperationHandle operation,size_t* buffer_off
+ 	if (operation == TEE_HANDLE_NULL)
+                 TEE_Panic(0);
+ 
+-        __utee_check_out_annotation(operation, sizeof(*operation));
+-	buffer_offs = operation->buffer_offs;
++        __utee_check_out_annotation(buffer_offs, sizeof(*buffer_offs));
++	*buffer_offs = operation->buffer_offs;
+ }
+ 
+-
+ TEE_Result TEE_CipherDoFinal(TEE_OperationHandle operation,
+ 			     const void *srcData, uint32_t srcLen,
+ 			     void *destData, uint32_t *destLen)
+diff --git a/bootchain/modules/tee/op-tee-cix-odp/ta/avb/entry.c b/bootchain/modules/tee/op-tee-cix-odp/ta/avb/entry.c
+index 4496eda7..7dca68b3 100644
+--- a/bootchain/modules/tee/op-tee-cix-odp/ta/avb/entry.c
++++ b/bootchain/modules/tee/op-tee-cix-odp/ta/avb/entry.c
+@@ -392,7 +392,6 @@ static TEE_Result write_vbmeta_public_key(uint32_t pt,
+                 EMSG("Can't create vbmeta public key, res = 0x%x", res);
+ 
+         TEE_CloseObject(h);
+-out:
+         TEE_Free(value);
+ 
+         return res;
+@@ -411,7 +410,7 @@ static TEE_Result read_vbmeta_public_key(uint32_t pt,
+ 	TEE_ObjectHandle h = TEE_HANDLE_NULL;
+ 	uint32_t value_sz = 0;
+ 	char *value = NULL;
+-	size_t count = 0;
++	uint32_t count = 0;
+ 
+ 	if (pt != exp_pt)
+ 		return TEE_ERROR_BAD_PARAMETERS;
+diff --git a/common/cix-edk2-platforms/Platform/Radxa/Orion/O6/mem_config/MemConfigBinTool.c b/common/cix-edk2-platforms/Platform/Radxa/Orion/O6/mem_config/MemConfigBinTool.c
+index 2be5b515..39ce4920 100644
+--- a/common/cix-edk2-platforms/Platform/Radxa/Orion/O6/mem_config/MemConfigBinTool.c
++++ b/common/cix-edk2-platforms/Platform/Radxa/Orion/O6/mem_config/MemConfigBinTool.c
+@@ -53,7 +53,7 @@ MemConfigBinOutprint (
+   fclose(pFile);
+ }
+ 
+-void
++int
+ main (
+   void
+ )
+@@ -91,7 +91,7 @@ main (
+     // Initialize BIOS setup table with 0xFF
+     if (CdcbBlockList[index].guid == GUID_INVALID) {
+       printf("Error: Invalid GUID in entry %d\n", index);
+-      return;
++      return 1;
+     }
+ 
+     // Cal checksum
+@@ -131,4 +131,6 @@ main (
+   }
+   ((MEM_QUICK_CONFIG*)MemCfgBuf)->FeatHash = FeatHash;
+   MemConfigBinOutprint(MemCfgBuf, MemCfgBinSize);
++
++  return 0;
+ }
+diff --git a/common/cix-edk2-platforms/Platform/Radxa/Platforms/CIX/Sky1/Include/RadxaSetupVar.h b/common/cix-edk2-platforms/Platform/Radxa/Platforms/CIX/Sky1/Include/RadxaSetupVar.h
+index eb2f388c..78959e80 100644
+--- a/common/cix-edk2-platforms/Platform/Radxa/Platforms/CIX/Sky1/Include/RadxaSetupVar.h
++++ b/common/cix-edk2-platforms/Platform/Radxa/Platforms/CIX/Sky1/Include/RadxaSetupVar.h
+@@ -1,5 +1,5 @@
+ #ifndef _RADXA_SETUP_VAR_H_
+-#define _RXDXA_SETUP_VAR_H_
++#define _RADXA_SETUP_VAR_H_
+ 
+ #define RADXA_SETUP_VARIABLE_GUID \
+   { 0xeedf122d, 0xa912, 0x43d5, {0xaa, 0x11, 0x14, 0x27, 0x62, 0xdd, 0x96, 0xfa}}
+@@ -23,4 +23,4 @@ typedef struct {
+ 
+ #pragma pack()
+ 
+-#endif
+\ No newline at end of file
++#endif
