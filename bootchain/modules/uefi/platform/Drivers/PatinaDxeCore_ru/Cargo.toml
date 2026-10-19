@@ -25,5 +25,7 @@
   opt-level = 0
 
 [features]
-  default = ["compatibility_mode_allowed"]
+  default = ["compatibility_mode_allowed", "uart_logging"]
   compatibility_mode_allowed = ["patina_dxe_core/compatibility_mode_allowed"]
+  # Installs the UART logger, the release build disables it to suppress debug messages
+  uart_logging = []

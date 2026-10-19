@@ -62,6 +62,16 @@ The infrastructure also supports two compilation targets, debug (default) and re
 | `make` *(or `make target=debug`)* | Builds a debug flavor of the repository code. |
 | `make target=release` | Builds a release flavor of the repository code. |
 
+Both targets compile the same debug-configured code.  The release target only disables UART debug output in TF-A and UEFI:
+
+| Component | Debug | Release |
+| --- | --- | --- |
+| TF-A (BL31) | Log messages at `LOG_LEVEL=40` (INFO) and crash register dumps | `LOG_LEVEL=0` and `CRASH_REPORTING=0`. A backtrace is still printed if BL31 panics, because the CIX platform code requires `ENABLE_BACKTRACE` |
+| UEFI (EDK II) | `DEBUG()` messages and the serial console over the UART | `SerialPortLib` is mapped to the null instance, so neither debug messages nor the serial console use the UART. `DEBUG_PRINT_ENABLED` is cleared in `PcdDebugPropertyMask` |
+| UEFI (Patina DXE Core) | UART logger enabled | `uart_logging` cargo feature disabled, so no logger is installed |
+
+Module intermediates for each target are kept in separate `build/mod/<module>/<target>` directories so switching targets does not reuse stale objects.  Pre-built binaries (e.g. OP-TEE, StandaloneMM, and the CIX-provided firmwares) are not affected by the target.
+
 ## Build Outputs
 
 A successful build places all artifacts in the `build/` directory created next to this README.  The final firmware image is:

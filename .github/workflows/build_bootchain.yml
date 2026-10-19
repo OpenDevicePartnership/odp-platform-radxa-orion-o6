@@ -78,21 +78,15 @@ jobs:
 
     steps:
       - name: Clone Repository
-        # TODO: Remove 'if' when the release build is implemented (Task #26)
-        if: matrix.build_target != 'release'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
           ref: ${{ inputs.git_ref || github.ref }}
           submodules: recursive
 
       - name: Build Firmware
-        # TODO: Remove 'if' when the release build is implemented (Task #26)
-        if: matrix.build_target != 'release'
         run: make -C bootchain all target=${BUILD_TARGET}
 
       - name: Stage artifact
-        # TODO: Remove 'if' when the release build is implemented (Task #26)
-        if: matrix.build_target != 'release'
         env:
           GIT_REF: ${{ inputs.git_ref || github.sha }}
         run: |
@@ -103,8 +97,6 @@ jobs:
           cp -r bootchain/build/bootchain "staging/bootchain-modules-${BUILD_TARGET}"
 
       - name: Upload artifact
-        # TODO: Remove 'if' when the release build is implemented (Task #26)
-        if: matrix.build_target != 'release'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: bootchain-${{ matrix.build_target }}

@@ -8,6 +8,18 @@ ifndef ODP_PATH_BUILD_OUTPUT
 $(error This makefile must be invoked from the root makefile)
 endif
 
+# Per-target build directory, TF-A does not rebuild objects when only command line options change
+TFA_BUILD_BASE := $(ODP_PATH_BUILD_OUTPUT)/mod/tf-a/$(ODP_BUILD_TARGET)
+
+# Release builds remove UART debug output: log messages and crash register dumps.  ENABLE_BACKTRACE is left at
+# its default because the CIX platform code calls backtrace()/get_el_str() unconditionally, a backtrace is only
+# printed when BL31 panics.
+ifeq ($(ODP_BUILD_TARGET),release)
+TFA_TARGET_FLAGS := LOG_LEVEL=0 CRASH_REPORTING=0
+else
+TFA_TARGET_FLAGS :=
+endif
+
 # Build Targets
 .PHONY: all
 
@@ -17,7 +29,7 @@ all:
 		PLAT=sky1 \
 		SPD=opteed \
 		DEBUG=1 \
-		BUILD_BASE=$(ODP_PATH_BUILD_OUTPUT)/mod/tf-a \
+		BUILD_BASE=$(TFA_BUILD_BASE) \
 		CIX_BOARD=evb \
 		SMP=1 \
 		TRUSTED_BOARD_BOOT=1 \
@@ -25,8 +37,9 @@ all:
 		ARM_ROTPK_LOCATION=devel_rsa \
 		ROT_KEY=plat/arm/board/common/rotpk/arm_rotprivk_rsa.pem \
 		LDFLAGS="--no-warn-rwx-segments" \
+		$(TFA_TARGET_FLAGS) \
 		bl31
 
 	mkdir -p $(ODP_PATH_BINS_OUTPUT)
-	cp -f $(ODP_PATH_BUILD_OUTPUT)/mod/tf-a/sky1/debug/bl31.bin $(ODP_PATH_BINS_OUTPUT)/
-	cp -f $(ODP_PATH_BUILD_OUTPUT)/mod/tf-a/sky1/debug/bl31/bl31.elf $(ODP_PATH_BINS_OUTPUT)/
+	cp -f $(TFA_BUILD_BASE)/sky1/debug/bl31.bin $(ODP_PATH_BINS_OUTPUT)/
+	cp -f $(TFA_BUILD_BASE)/sky1/debug/bl31/bl31.elf $(ODP_PATH_BINS_OUTPUT)/

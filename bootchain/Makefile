@@ -5,6 +5,14 @@
 
 SHELL := /bin/bash
 
+# Build target selection: 'make target=debug' (default) or 'make target=release'.  Child makefiles consume
+# ODP_BUILD_TARGET to select per-target options, release builds disable the TF-A and UEFI UART debug output.
+target ?= debug
+ifneq ($(filter-out debug release,$(target))$(words $(target)),1)
+$(error Invalid target '$(target)', valid values are 'debug' or 'release')
+endif
+export ODP_BUILD_TARGET            := $(target)
+
 # Defines used by this and all child makefiles
 export ODP_PATH_BUILD_OUTPUT       ?= $(CURDIR)/build
 export ODP_PATH_BINS_OUTPUT        := $(ODP_PATH_BUILD_OUTPUT)/bootchain
