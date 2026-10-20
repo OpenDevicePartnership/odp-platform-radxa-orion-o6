@@ -13,8 +13,7 @@ $(error Invalid target '$(target)', valid values are 'debug' or 'release')
 endif
 export ODP_BUILD_TARGET            := $(target)
 
-# Defines used by this and all child makefiles.  Stitch inputs and the final image are kept per build target so
-# debug and release outputs never overwrite each other.
+# Defines used by this and all child makefiles.
 export ODP_PATH_BUILD_OUTPUT       ?= $(CURDIR)/build
 export ODP_PATH_TARGET_OUTPUT      := $(ODP_PATH_BUILD_OUTPUT)/$(ODP_BUILD_TARGET)
 export ODP_PATH_BINS_OUTPUT        := $(ODP_PATH_TARGET_OUTPUT)/bootchain
@@ -70,7 +69,9 @@ stitch-all: bootloader2 bootloader3
 	cd $(ODP_PATH_BINS_OUTPUT) && \
 	$(ODP_PATH_PACKAGE_TOOL)/cix_package_tool \
 		-c $(ODP_PATH_COMMON)/spi_flash_config_all.json \
-		-o $(ODP_PATH_TARGET_OUTPUT)/odp_orion_o6_bootchain.bin
+		-o $(ODP_PATH_BINS_OUTPUT)/odp_orion_o6_bootchain.bin
+	cp -f $(ODP_PATH_BINS_OUTPUT)/odp_orion_o6_bootchain.bin \
+		$(ODP_PATH_BUILD_OUTPUT)/odp_orion_o6_$(ODP_BUILD_TARGET)_bootchain.bin
 
 pre-built:
 	mkdir -p $(ODP_PATH_BINS_OUTPUT)

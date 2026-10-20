@@ -93,7 +93,7 @@ jobs:
           set -euo pipefail
           suffix="${BUILD_TARGET}-${GIT_REF}"
           mkdir -p staging
-          cp "bootchain/build/${BUILD_TARGET}/odp_orion_o6_bootchain.bin" "staging/odp_orion_o6_bootchain-${suffix}.bin"
+          cp "bootchain/build/odp_orion_o6_${BUILD_TARGET}_bootchain.bin" "staging/odp_orion_o6_bootchain-${suffix}.bin"
           cp -r "bootchain/build/${BUILD_TARGET}/bootchain" "staging/bootchain-modules-${BUILD_TARGET}"
 
       - name: Upload artifact

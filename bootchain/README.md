@@ -27,7 +27,7 @@ The makefiles do rely on environment support, so the fastest way to get set up i
    ./common/tools/enter-container.sh
    ```
 
-5) Once in the container, run `make` from the `/workspace/bootchain` directory.  This builds the debug bootchain and writes all artifacts to `/workspace/bootchain/build/`, with the final firmware binary at `/workspace/bootchain/build/debug/odp_orion_o6_bootchain.bin`.
+5) Once in the container, run `make` from the `/workspace/bootchain` directory.  This builds the debug bootchain and writes all artifacts to `/workspace/bootchain/build/`, with the final firmware binary at `/workspace/bootchain/build/odp_orion_o6_debug_bootchain.bin`.
 
    ``` bash
    cd /workspace/bootchain
@@ -68,19 +68,19 @@ Both targets compile the same debug-configured code.  The release target only di
 | --- | --- | --- |
 | TF-A (BL31) | Log messages at `LOG_LEVEL=40` (INFO) and crash register dumps | `LOG_LEVEL=0` and `CRASH_REPORTING=0`. A backtrace is still printed if BL31 panics, because the CIX platform code requires `ENABLE_BACKTRACE` |
 | UEFI (EDK II) | `DEBUG()` messages and the serial console over the UART | `SerialPortLib` is mapped to the null instance, so neither debug messages nor the serial console use the UART. `DEBUG_PRINT_ENABLED` is cleared in `PcdDebugPropertyMask` |
-| UEFI (Patina DXE Core) | UART logger enabled | `uart_logging` cargo feature disabled, so no logger is installed |
+| UEFI (Patina DXE Core) | UART logger enabled | `uart_logging` cargo feature disabled, so no logger is installed, but still builds a debug flavor of Rust code to produce symbols. |
 
-Intermediates for the modules affected by the target (TF-A and UEFI, including Patina) are kept in separate `build/mod/<module>/<target>` directories so switching targets does not reuse stale objects.  Modules not affected by the target (OP-TEE, memory/PM config, and secure services) share a single build directory, and the pre-built binaries (e.g. StandaloneMM and the CIX-provided firmwares) are identical for both targets.
+Every module is built in the target's own `build/<target>/` folder, so switching targets never reuses stale objects and one target never overwrites the other.
 
 ## Build Outputs
 
-A successful build places all artifacts in the `build/` directory created next to this README.  Final outputs are written to a `build/<target>/` folder (`build/debug/` or `build/release/`), so building one target does not overwrite the other:
+A successful build places all artifacts in the `build/` directory created next to this README:
 
 | File | Description |
 | --- | --- |
-| `build/<target>/odp_orion_o6_bootchain.bin` | Full SPI-NOR flash image containing all bootchain firmware components. |
+| `build/odp_orion_o6_<target>_bootchain.bin` | Full SPI-NOR flash image containing all bootchain firmware components. |
 | `build/<target>/bootchain/` | Module binaries, signing certificates, and FIP images used to stitch the final image.  Useful for debugging individual modules. |
-| `build/mod/` | Per-module build intermediates. |
+| `build/<target>/{tf-a,uefi,tee,mem_config,pm_config}/` | Per-module build intermediates. |
 
 Inside the release zip published by the `publish_boot_stack.yml` workflow, the final image is renamed during staging and appears as `odp_orion_o6_bootchain-debug-vYYYY.MM.DD.bin` and `odp_orion_o6_bootchain-release-vYYYY.MM.DD.bin` (one for each build target), where `vYYYY.MM.DD` is the release tag.  The release zip also includes the corresponding `bootchain-modules-debug/` and `bootchain-modules-release/` per-module subdirectories alongside each `.bin`.
 

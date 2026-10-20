@@ -4,12 +4,12 @@
 #
 
 # Guard: This makefile must be invoked from the root makefile
-ifndef ODP_PATH_BUILD_OUTPUT
+ifndef ODP_PATH_TARGET_OUTPUT
 $(error This makefile must be invoked from the root makefile)
 endif
 
 # Per-target build directory, TF-A does not rebuild objects when only command line options change
-TFA_BUILD_BASE := $(ODP_PATH_BUILD_OUTPUT)/mod/tf-a/$(ODP_BUILD_TARGET)
+TFA_BUILD_BASE := $(ODP_PATH_TARGET_OUTPUT)/tf-a
 
 # Release builds remove UART debug output: log messages and crash register dumps.  ENABLE_BACKTRACE is left at
 # its default because the CIX platform code calls backtrace()/get_el_str() unconditionally, a backtrace is only

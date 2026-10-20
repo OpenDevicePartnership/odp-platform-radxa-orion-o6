@@ -4,12 +4,12 @@
 #
 
 # Guard: This makefile must be invoked from the root makefile
-ifndef ODP_PATH_BUILD_OUTPUT
+ifndef ODP_PATH_TARGET_OUTPUT
 $(error This makefile must be invoked from the root makefile)
 endif
 
 # Defines specific to this makefile, outputs are separated per build target so debug and release never mix
-UEFI_OUT_DIR               := $(ODP_PATH_BUILD_OUTPUT)/mod/uefi/$(ODP_BUILD_TARGET)
+UEFI_OUT_DIR               := $(ODP_PATH_TARGET_OUTPUT)/uefi
 RUST_OUT_DIR               := $(UEFI_OUT_DIR)/Rust
 SHELL                      := /bin/bash
 export WORKSPACE           := $(CURDIR)
