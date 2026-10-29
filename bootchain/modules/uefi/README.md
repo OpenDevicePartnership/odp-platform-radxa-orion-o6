@@ -32,8 +32,9 @@ make -C modules/uefi
 | --- | --- |
 | Architecture | AArch64 |
 | Toolchain | GCC5 |
-| Build Type | DEBUG (for both build targets) |
-| UART Output | `target=debug`: enabled; `target=release`: disabled (`-D ODP_UART_OUTPUT_ENABLE=FALSE` selects the null `SerialPortLib`, Patina built without the `uart_logging` feature) |
+| Build Type | `target=debug`: DEBUG; `target=release`: RELEASE |
+| Debug Output | `target=debug`: enabled; `target=release`: EDK II `DEBUG()` and `ASSERT()` compiled out via `MDEPKG_NDEBUG`, Patina built without the `uart_logging` feature |
+| Serial Console | Platform UART library retained for both build targets |
 | Platform DSC | `platform/O6.dsc` |
 | Variable Store | SPI flash |
 | Secure MM | StandaloneMM (via OP-TEE) |

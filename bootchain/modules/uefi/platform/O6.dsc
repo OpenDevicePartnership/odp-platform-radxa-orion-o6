@@ -144,11 +144,6 @@
 # ODP: Platform specific setting for changing the debug output level
   DEFINE DEBUG_PRINT_ERROR_LEVEL    = 0x800000CF
 
-# ODP: UART output (debug messages and serial console), enable if not defined
-!ifndef ODP_UART_OUTPUT_ENABLE
-  DEFINE ODP_UART_OUTPUT_ENABLE     = TRUE
-!endif
-
 # ODP: Platform override for Sky1Common.dsc
 !include platform/OVERRIDE/Platform/CIX/Sky1/Sky1Common.dsc.inc
 !include Platform/Radxa/RadxaCommon.dsc.inc
@@ -172,11 +167,6 @@
   TrngLib|Silicon/CIX/Sky1/Library/TrngLib/TrngLib.inf
   RngLib|Silicon/CIX/Sky1/Library/RngLib/RngLib.inf
   DtbUpdateLibSi|Platform/CIX/Sky1/Library/DtbUpdateLibSi/DtbUpdateLib.inf
-
-# ODP: Force NULL serial port lib if debug is disabled.
-!if $(ODP_UART_OUTPUT_ENABLE) == FALSE
-  SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
-!endif
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   EfiResetSystemLib|Platform/Radxa/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
@@ -316,12 +306,6 @@
 # Override some PCD define for platform requirement
 #
 ################################################################################
-!if $(ODP_UART_OUTPUT_ENABLE) == FALSE
-[PcdsPatchableInModule]
-  # ODP: Keep the DEBUG build properties, clear DEBUG_PROPERTY_DEBUG_PRINT_ENABLED (BIT1)
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2d
-!endif
-
 [PcdsFixedAtBuild.common]
   gCixPlatformTokenSpaceGuid.PcdSiliconDtbUpdateFileName|L"sky1-orion-o6.dtb"
   gCixPlatformTokenSpaceGuid.PcdSiliconDtbUpdateEnable|TRUE

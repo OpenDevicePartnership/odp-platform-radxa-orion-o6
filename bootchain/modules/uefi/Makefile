@@ -16,12 +16,12 @@ export WORKSPACE           := $(CURDIR)
 export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMON)/cix-edk2-platforms:$(ODP_PATH_COMMON)/cix-edk2-non-osi:$(RUST_OUT_DIR)
 export GCC5_AARCH64_PREFIX := $(ODP_PATH_GCC5_PREFIX)
 
-# Release builds disable UART output from EDK2 (null SerialPortLib) and the Patina DXE Core (no UART logger)
+# Select the EDK II build target; release builds also disable the Patina UART logger.
 ifeq ($(ODP_BUILD_TARGET),release)
-UART_OUTPUT_ENABLE         := FALSE
+UEFI_BUILD_TARGET          := RELEASE
 PATINA_CARGO_FEATURES      := --no-default-features --features compatibility_mode_allowed
 else
-UART_OUTPUT_ENABLE         := TRUE
+UEFI_BUILD_TARGET          := DEBUG
 PATINA_CARGO_FEATURES      :=
 endif
 
@@ -47,7 +47,7 @@ all: PatinaDxeCore_ru
 		-a AARCH64 \
 		-t GCC5 \
 		-p platform/O6.dsc \
-		-b DEBUG \
+		-b $(UEFI_BUILD_TARGET) \
 		-D BOARD_NAME=evb \
 		-D PATH_BUILD_OUTPUT=$(UEFI_OUT_DIR) \
 		-D BUILD_DATE=$$(date +%VM%y%m%d%H%M%SN) \
@@ -57,11 +57,10 @@ all: PatinaDxeCore_ru
 		-D FASTBOOT_LOAD=nvme \
 		-D VARIABLE_TYPE=SPI \
 		-D STANDARD_MM=TRUE \
-		-D SYSTEM_LOADER=common \
-		-D ODP_UART_OUTPUT_ENABLE=$(UART_OUTPUT_ENABLE)
+		-D SYSTEM_LOADER=common
 
 	mkdir -p $(ODP_PATH_BINS_OUTPUT)
-	cp $(UEFI_OUT_DIR)/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(ODP_PATH_BINS_OUTPUT)/
+	cp $(UEFI_OUT_DIR)/$(UEFI_BUILD_TARGET)_GCC5/FV/SKY1_BL33_UEFI.fd $(ODP_PATH_BINS_OUTPUT)/
 
 # Build targets for each rust module, will verify formatting and check for warnings as errors
 PatinaDxeCore_ru:
