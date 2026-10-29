@@ -13,7 +13,11 @@
 #   INF MdeModulePkg/Core/Dxe/DxeMain.inf
 # !endif
   FILE DXE_CORE = 23C9322F-2AF2-476A-BC4C-26BC88266C71 {
+!if $(TARGET) == RELEASE
+    SECTION PE32 = Drivers/PatinaDxeCore_ru/aarch64-unknown-uefi/release/dxe_core.efi
+!else
     SECTION PE32 = Drivers/PatinaDxeCore_ru/aarch64-unknown-uefi/debug/dxe_core.efi
+!endif
     SECTION UI = "DxeCore"
   }
 

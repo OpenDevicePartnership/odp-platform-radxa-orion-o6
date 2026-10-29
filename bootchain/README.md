@@ -27,7 +27,7 @@ The makefiles do rely on environment support, so the fastest way to get set up i
    ./common/tools/enter-container.sh
    ```
 
-5) Once in the container, run `make` from the `/workspace/bootchain` directory.  This builds the bootchain and writes all artifacts, including the final firmware binary, to `/workspace/bootchain/build/`.
+5) Once in the container, run `make` from the `/workspace/bootchain` directory.  This builds the debug bootchain and writes all artifacts to `/workspace/bootchain/build/`, with the final firmware binary at `/workspace/bootchain/build/odp_orion_o6_debug_bootchain.bin`.
 
    ``` bash
    cd /workspace/bootchain
@@ -62,14 +62,25 @@ The infrastructure also supports two compilation targets, debug (default) and re
 | `make` *(or `make target=debug`)* | Builds a debug flavor of the repository code. |
 | `make target=release` | Builds a release flavor of the repository code. |
 
+The release target selects an EDK II RELEASE build and disables UART debug logging in TF-A and the Patina DXE Core:
+
+| Component | Debug | Release |
+| --- | --- | --- |
+| TF-A (BL31) | Log messages at `LOG_LEVEL=40` (INFO) and crash register dumps | `LOG_LEVEL=0` and `CRASH_REPORTING=0`. A backtrace is still printed if BL31 panics, because the CIX platform code requires `ENABLE_BACKTRACE` |
+| UEFI (EDK II) | DEBUG build with `DEBUG()` messages and the serial console over the UART | RELEASE build with `MDEPKG_NDEBUG` and `NDEBUG`, compiling out `DEBUG()` and `ASSERT()`. Standard RELEASE debug properties apply; the platform UART library and serial console remain available |
+| UEFI (Patina DXE Core) | Cargo dev profile with UART logging enabled | Cargo release profile with logging compiled out via `log/release_max_level_off`; debug symbols retained |
+
+Every module is built in the target's own `build/<target>/` folder, so switching targets never reuses stale objects and one target never overwrites the other.
+
 ## Build Outputs
 
-A successful build places all artifacts in the `build/` directory created next to this README.  The final firmware image is:
+A successful build places all artifacts in the `build/` directory created next to this README:
 
 | File | Description |
 | --- | --- |
-| `build/odp_orion_o6_bootchain.bin` | Full SPI-NOR flash image containing all bootchain firmware components. |
-| `build/bootchain/` | Per-module intermediate artifacts (one sub-folder per child module) used to stitch the final image.  Useful for debugging individual modules. |
+| `build/odp_orion_o6_<target>_bootchain.bin` | Full SPI-NOR flash image containing all bootchain firmware components. |
+| `build/<target>/bootchain/` | Module binaries, signing certificates, and FIP images used to stitch the final image.  Useful for debugging individual modules. |
+| `build/<target>/{tf-a,uefi,tee,mem_config,pm_config}/` | Per-module build intermediates. |
 
 Inside the release zip published by the `publish_boot_stack.yml` workflow, the final image is renamed during staging and appears as `odp_orion_o6_bootchain-debug-vYYYY.MM.DD.bin` and `odp_orion_o6_bootchain-release-vYYYY.MM.DD.bin` (one for each build target), where `vYYYY.MM.DD` is the release tag.  The release zip also includes the corresponding `bootchain-modules-debug/` and `bootchain-modules-release/` per-module subdirectories alongside each `.bin`.
 

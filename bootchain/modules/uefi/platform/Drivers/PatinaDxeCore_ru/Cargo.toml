@@ -10,7 +10,7 @@
   license = "MIT"
 
 [dependencies]
-  log = "^0.4"
+  log = { version = "^0.4", features = ["release_max_level_off"] }
   heapless = "0.9.1"
 
 [target.'cfg(target_os = "uefi")'.dependencies]
@@ -20,6 +20,10 @@
 
 [profile.dev]
   opt-level = "s"
+
+[profile.release]
+  opt-level = "s"
+  debug = true
 
 [profile.test]
   opt-level = 0
