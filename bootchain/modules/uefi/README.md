@@ -33,7 +33,7 @@ make -C modules/uefi
 | Architecture | AArch64 |
 | Toolchain | GCC5 |
 | Build Type | `target=debug`: DEBUG; `target=release`: RELEASE |
-| Debug Output | `target=debug`: enabled; `target=release`: EDK II `DEBUG()` and `ASSERT()` compiled out via `MDEPKG_NDEBUG`, Patina built without the `uart_logging` feature |
+| Debug Output | `target=debug`: enabled; `target=release`: EDK II `DEBUG()` and `ASSERT()` compiled out via `MDEPKG_NDEBUG`, Patina logging compiled out via `log/release_max_level_off` |
 | Serial Console | Platform UART library retained for both build targets |
 | Platform DSC | `platform/O6.dsc` |
 | Variable Store | SPI flash |
@@ -44,6 +44,9 @@ make -C modules/uefi
 The build includes Rust-based DXE drivers (e.g., `PatinaDxeCore_ru`). Rust code
 is checked for formatting (`cargo fmt`) and warnings-as-errors (`cargo clippy`)
 before compilation.
+Debug builds use Cargo's dev profile; release builds use `--release` with size
+optimization and debug symbols retained. The firmware packages the matching
+profile's DXE Core binary.
 
 ## Additional Targets
 

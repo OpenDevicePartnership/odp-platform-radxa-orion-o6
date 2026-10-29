@@ -16,13 +16,13 @@ export WORKSPACE           := $(CURDIR)
 export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMON)/cix-edk2-platforms:$(ODP_PATH_COMMON)/cix-edk2-non-osi:$(RUST_OUT_DIR)
 export GCC5_AARCH64_PREFIX := $(ODP_PATH_GCC5_PREFIX)
 
-# Select the EDK II build target; release builds also disable the Patina UART logger.
+# Select matching EDK II and Cargo build profiles.
 ifeq ($(ODP_BUILD_TARGET),release)
 UEFI_BUILD_TARGET          := RELEASE
-PATINA_CARGO_FEATURES      := --no-default-features --features compatibility_mode_allowed
+PATINA_CARGO_FLAGS         := --release
 else
 UEFI_BUILD_TARGET          := DEBUG
-PATINA_CARGO_FEATURES      :=
+PATINA_CARGO_FLAGS         :=
 endif
 
 # Build Targets
@@ -65,8 +65,8 @@ all: PatinaDxeCore_ru
 # Build targets for each rust module, will verify formatting and check for warnings as errors
 PatinaDxeCore_ru:
 	cd platform/Drivers/PatinaDxeCore_ru && cargo fmt -- --check
-	cd platform/Drivers/PatinaDxeCore_ru && cargo clippy $(PATINA_CARGO_FEATURES) --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru -- -D warnings
-	cd platform/Drivers/PatinaDxeCore_ru && cargo build $(PATINA_CARGO_FEATURES) --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru
+	cd platform/Drivers/PatinaDxeCore_ru && cargo clippy $(PATINA_CARGO_FLAGS) --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru -- -D warnings
+	cd platform/Drivers/PatinaDxeCore_ru && cargo build $(PATINA_CARGO_FLAGS) --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru
 
 # Specific clean to remove remnants from tools that don't have a way to put remnants in the Build directory
 distclean:

@@ -8,7 +8,6 @@
 #![no_main]
 
 use core::{ffi::c_void, panic::PanicInfo};
-#[cfg(feature = "uart_logging")]
 use patina::serial::uart::UartPl011;
 use patina_dxe_core::*;
 use patina_ffs_extractors::CompositeSectionExtractor;
@@ -24,15 +23,13 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 //
-// Simple logger implementation using UART, without a registered logger the log macros are no-ops
+// Simple logger implementation using UART
 //
 
-#[cfg(feature = "uart_logging")]
 struct SimpleLogger {
     uart: UartPl011,
 }
 
-#[cfg(feature = "uart_logging")]
 impl SimpleLogger {
     const fn new() -> Self {
         Self {
@@ -42,7 +39,6 @@ impl SimpleLogger {
     }
 }
 
-#[cfg(feature = "uart_logging")]
 impl log::Log for SimpleLogger {
     fn enabled(&self, _metadata: &log::Metadata) -> bool {
         true
@@ -63,7 +59,6 @@ impl log::Log for SimpleLogger {
     fn flush(&self) {}
 }
 
-#[cfg(feature = "uart_logging")]
 static LOGGER: SimpleLogger = SimpleLogger::new();
 
 //
@@ -106,7 +101,6 @@ static CORE: Core<RadxaO6> = Core::new(CompositeSectionExtractor::new());
 #[cfg_attr(target_os = "uefi", unsafe(export_name = "efi_main"))]
 pub extern "efiapi" fn _start(physical_hob_list: *const c_void) -> ! {
     // Initialize the logger, ignore errors since they can't be logged
-    #[cfg(feature = "uart_logging")]
     let _ = log::set_logger(&LOGGER).map(|()| log::set_max_level(log::LevelFilter::Info));
     log::info!("DXE Core Platform Binary Entry");
 

@@ -68,7 +68,7 @@ The release target selects an EDK II RELEASE build and disables UART debug loggi
 | --- | --- | --- |
 | TF-A (BL31) | Log messages at `LOG_LEVEL=40` (INFO) and crash register dumps | `LOG_LEVEL=0` and `CRASH_REPORTING=0`. A backtrace is still printed if BL31 panics, because the CIX platform code requires `ENABLE_BACKTRACE` |
 | UEFI (EDK II) | DEBUG build with `DEBUG()` messages and the serial console over the UART | RELEASE build with `MDEPKG_NDEBUG` and `NDEBUG`, compiling out `DEBUG()` and `ASSERT()`. Standard RELEASE debug properties apply; the platform UART library and serial console remain available |
-| UEFI (Patina DXE Core) | UART logger enabled | `uart_logging` cargo feature disabled, so no logger is installed, but still builds a debug flavor of Rust code to produce symbols. |
+| UEFI (Patina DXE Core) | Cargo dev profile with UART logging enabled | Cargo release profile with logging compiled out via `log/release_max_level_off`; debug symbols retained |
 
 Every module is built in the target's own `build/<target>/` folder, so switching targets never reuses stale objects and one target never overwrites the other.
 
