@@ -4,16 +4,26 @@
 #
 
 # Guard: This makefile must be invoked from the root makefile
-ifndef ODP_PATH_BUILD_OUTPUT
+ifndef ODP_PATH_TARGET_OUTPUT
 $(error This makefile must be invoked from the root makefile)
 endif
 
-# Defines specific to this makefile
-RUST_OUT_DIR               := $(ODP_PATH_BUILD_OUTPUT)/mod/uefi/Rust
+# Defines specific to this makefile, outputs are separated per build target so debug and release never mix
+UEFI_OUT_DIR               := $(ODP_PATH_TARGET_OUTPUT)/uefi
+RUST_OUT_DIR               := $(UEFI_OUT_DIR)/Rust
 SHELL                      := /bin/bash
 export WORKSPACE           := $(CURDIR)
 export PACKAGES_PATH       := $(CURDIR)/edk2:$(CURDIR)/platform:$(ODP_PATH_COMMON)/cix-edk2-platforms:$(ODP_PATH_COMMON)/cix-edk2-non-osi:$(RUST_OUT_DIR)
 export GCC5_AARCH64_PREFIX := $(ODP_PATH_GCC5_PREFIX)
+
+# Select matching EDK II and Cargo build profiles.
+ifeq ($(ODP_BUILD_TARGET),release)
+UEFI_BUILD_TARGET          := RELEASE
+PATINA_CARGO_FLAGS         := --release
+else
+UEFI_BUILD_TARGET          := DEBUG
+PATINA_CARGO_FLAGS         :=
+endif
 
 # Build Targets
 .PHONY: all PatinaDxeCore_ru distclean test
@@ -37,9 +47,9 @@ all: PatinaDxeCore_ru
 		-a AARCH64 \
 		-t GCC5 \
 		-p platform/O6.dsc \
-		-b DEBUG \
+		-b $(UEFI_BUILD_TARGET) \
 		-D BOARD_NAME=evb \
-		-D PATH_BUILD_OUTPUT=$(ODP_PATH_BUILD_OUTPUT)/mod/uefi \
+		-D PATH_BUILD_OUTPUT=$(UEFI_OUT_DIR) \
 		-D BUILD_DATE=$$(date +%VM%y%m%d%H%M%SN) \
 		-D COMMIT_HASH=$$(git rev-parse --short=12 HEAD) \
 		-D SMP_ENABLE=1 \
@@ -50,13 +60,13 @@ all: PatinaDxeCore_ru
 		-D SYSTEM_LOADER=common
 
 	mkdir -p $(ODP_PATH_BINS_OUTPUT)
-	cp $(ODP_PATH_BUILD_OUTPUT)/mod/uefi/DEBUG_GCC5/FV/SKY1_BL33_UEFI.fd $(ODP_PATH_BINS_OUTPUT)/
+	cp $(UEFI_OUT_DIR)/$(UEFI_BUILD_TARGET)_GCC5/FV/SKY1_BL33_UEFI.fd $(ODP_PATH_BINS_OUTPUT)/
 
 # Build targets for each rust module, will verify formatting and check for warnings as errors
 PatinaDxeCore_ru:
 	cd platform/Drivers/PatinaDxeCore_ru && cargo fmt -- --check
-	cd platform/Drivers/PatinaDxeCore_ru && cargo clippy --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru -- -D warnings
-	cd platform/Drivers/PatinaDxeCore_ru && cargo build --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru
+	cd platform/Drivers/PatinaDxeCore_ru && cargo clippy $(PATINA_CARGO_FLAGS) --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru -- -D warnings
+	cd platform/Drivers/PatinaDxeCore_ru && cargo build $(PATINA_CARGO_FLAGS) --target-dir $(RUST_OUT_DIR)/Drivers/PatinaDxeCore_ru
 
 # Specific clean to remove remnants from tools that don't have a way to put remnants in the Build directory
 distclean:

@@ -56,6 +56,24 @@ pub fn format_log_message(level: &str, args: &core::fmt::Arguments<'_>) -> heapl
 mod tests {
     use super::*;
 
+    #[test]
+    fn static_log_level_matches_build_profile() {
+        let expected = if cfg!(debug_assertions) { log::LevelFilter::Trace } else { log::LevelFilter::Off };
+        assert_eq!(log::STATIC_MAX_LEVEL, expected);
+    }
+
+    #[cfg(not(debug_assertions))]
+    #[test]
+    fn release_logging_does_not_evaluate_arguments() {
+        let evaluated = core::cell::Cell::new(false);
+        log::set_max_level(log::LevelFilter::Trace);
+        log::error!("{}", {
+            evaluated.set(true);
+            "release log argument"
+        });
+        assert!(!evaluated.get());
+    }
+
     // -------------------------------------------------------
     // Constant validation
     // -------------------------------------------------------

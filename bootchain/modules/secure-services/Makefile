@@ -4,12 +4,12 @@
 #
 
 # Guard: This makefile must be invoked from the root makefile
-ifndef ODP_PATH_BUILD_OUTPUT
+ifndef ODP_PATH_TARGET_OUTPUT
 $(error This makefile must be invoked from the root makefile)
 endif
 
-EC_RUST_BIN := $(ODP_PATH_BUILD_OUTPUT)/orion-o6-ec-sp.bin
-EC_RUST_DTS := $(ODP_PATH_BUILD_OUTPUT)/orion-o6-ec-sp.dts
+EC_RUST_BIN := $(ODP_PATH_TARGET_OUTPUT)/orion-o6-ec-sp.bin
+EC_RUST_DTS := $(ODP_PATH_TARGET_OUTPUT)/orion-o6-ec-sp.dts
 EC_SECURE_DTS := platform/linker/orion-o6-ec-sp.dts
 
 # Optional cargo features (e.g. test-bypass-locality-check for e2e tests)
@@ -43,7 +43,7 @@ $(EC_RUST_BIN): $(EC_RUST_DTS) check-cargo-binutils
 # Copy DTS file to build directory
 # ------------------------------------------------------------
 $(EC_RUST_DTS): $(EC_SECURE_DTS)
-	mkdir -p $(ODP_PATH_BUILD_OUTPUT)
+	mkdir -p $(ODP_PATH_TARGET_OUTPUT)
 	cp $(EC_SECURE_DTS) $(EC_RUST_DTS)
 
 clean:

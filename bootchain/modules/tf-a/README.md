@@ -27,7 +27,8 @@ make -C modules/tf-a
 | --- | --- |
 | Platform | `sky1` |
 | SPD (Secure Payload) | `opteed` (OP-TEE dispatcher) |
-| Debug | Enabled |
+| Debug | Enabled (`DEBUG=1`) for both build targets |
+| UART Logging | `target=debug`: default `LOG_LEVEL`; `target=release`: `LOG_LEVEL=0`, `CRASH_REPORTING=0` |
 | Trusted Board Boot | Enabled (ROTPK: development RSA key) |
 | SMP | Enabled |
 
