@@ -63,7 +63,6 @@ assign letter="S"
 create partition msr size=16
 
 create partition primary
-shrink minimum=1024
 format quick fs=ntfs label="Windows"
 assign letter="W"
 
