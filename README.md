@@ -57,11 +57,11 @@ Most documentation in this repository will be provided within the code files the
 
 The build output for each tagged version is published as a [GitHub Release](https://github.com/OpenDevicePartnership/odp-platform-radxa-orion-o6/releases) that can be used to boot and evaluate the platform without building locally. Each release bundles build artifacts into a single zip archive named `odp-orion-o6-vYYYY.MM.DD.zip` (where `vYYYY.MM.DD` is the release tag) that includes both debug and release variants when applicable.
 
-The zip archive will contain an OS `.wim` file which is the Windows image to be used on the NVMe drive.  Please refer to the OS image [README](./os_image/README.md) document for how to format and write the image to the NVMe drive.  When using the archived file, the *Creating an Installation WIM Image* step in that README can be skipped.
+The zip archive includes a prebuilt ODP WinVOS (Microsoft Validation OS) `.wim` image, so no local OS image build is needed.  To get set up quickly, follow the [OS image guide](./os_image/README.md), starting with [Partition and Format the NVMe Drive](./os_image/README.md#partition-and-format-the-nvme-drive).
 
 The zip archive also contains `.bin` bootchain files (debug and release variants) that contain all firmware necessary to boot the system.  Pick either the release variant (silent boot) or the debug variant (boot messages on the serial console), then follow the [SPI-NOR Flashing](./bootchain/README.md#spi-nor-flashing) notes, which point to Radxa's offline-programmer workflow for the actual remove/program/reinstall steps.  If you flashed the debug variant, see [Serial Debug Logs](./bootchain/README.md#serial-debug-logs) for how to view the boot output.
 
-Once both images are written, the system can be powered on and should result in booting into the Windows desktop.
+Once the bootchain is flashed and the prepared NVMe drive is installed, power on the system to boot into the selected OS image.
 
 ## Building
 
