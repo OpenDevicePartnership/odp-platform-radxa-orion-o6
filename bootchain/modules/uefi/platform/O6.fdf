@@ -10,6 +10,9 @@
 #
 ##
 
+#
+# ODP: Define the FD
+#
 [FD.SKY1_BL33_UEFI]
   BaseAddress   = 0x84400000|gArmTokenSpaceGuid.PcdFdBaseAddress
   Size          = 0x00200000|gArmTokenSpaceGuid.PcdFdSize
@@ -17,11 +20,52 @@
   BlockSize     = 0x00001000
   NumBlocks     = 0x200
 
-# Entire FV size
+  #
+  # ODP: FVMAIN_COMPACT is the only thing in the FD
+  #
   0x00000000|0x00200000
   gArmTokenSpaceGuid.PcdFvBaseAddress|gArmTokenSpaceGuid.PcdFvSize
   FV = FVMAIN_COMPACT
 
+#
+# ODP: Define FVMAIN_COMPACT
+#
+[FV.FVMAIN_COMPACT]
+  FvAlignment        = 16
+  ERASE_POLARITY     = 1
+  MEMORY_MAPPED      = TRUE
+  STICKY_WRITE       = TRUE
+  LOCK_CAP           = TRUE
+  LOCK_STATUS        = TRUE
+  WRITE_DISABLED_CAP = TRUE
+  WRITE_ENABLED_CAP  = TRUE
+  WRITE_STATUS       = TRUE
+  WRITE_LOCK_CAP     = TRUE
+  WRITE_LOCK_STATUS  = TRUE
+  READ_DISABLED_CAP  = TRUE
+  READ_ENABLED_CAP   = TRUE
+  READ_STATUS        = TRUE
+  READ_LOCK_CAP      = TRUE
+  READ_LOCK_STATUS   = TRUE
+
+  #
+  # ODP: PeiUniCore is the setup to load the DXE core after TF-A handoff.
+  #
+  INF Platform/CIX/Sky1/PrePi/PeiUniCore.inf
+  INF Platform/CIX/Sky1/Drivers/FwVersionDxe/FwVersionDxe.inf
+
+  #
+  # ODP: The rest of the DXE drivers are in a compressed child FV the PeiUniCore will extract and load.
+  #
+  FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FVMAIN
+    }
+  }
+
+#
+# ODP: Define FvMain
+#
 [FV.FvMain]
   FvNameGuid         = 9a15aa37-d555-4a4e-b541-86391ff68164
   BlockSize          = 0x40
@@ -43,11 +87,12 @@
   READ_LOCK_CAP      = TRUE
   READ_LOCK_STATUS   = TRUE
 
-  # ODP: The drivers using RuleOverride = COMPILE_TRUE_DEPEX are ones that were originally included
-  #      in the APRIORI section.  Patina does not support an APRIORI, so as a workaround the drivers
-  #      are forced to have a TRUE DEPEX and are placed at the beginning of the FV to be loaded first.
+  #
+  # ODP: The following drivers were originally in the apriori.  Patina does not support an APRIORI, so as a workaround
+  #      until the driver's depex can be confirmed correct, the rule override COMPILE_TRUE_DEPEX forces the depencency
+  #      expression to TRUE and by putting the drivers at the top of the FV, they are loaded first and in order.
+  #
   INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
-  # ODP: Patina replaces: ArmPkg/Drivers/CpuDxe/CpuDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
   INF RuleOverride = BINARY_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/PowerDxe/PowerDxe.inf
@@ -58,7 +103,6 @@
   INF RuleOverride = BINARY_TRUE_DEPEX Platform/CIX/Sky1/Drivers/MmCommunicationDxe/ArmMmCommunication.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
-  # ODP: Patina replaces: ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
@@ -66,7 +110,9 @@
   INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformSetupVariableInitDxe/PlatformSetupVariableInitDxe.inf
   INF RuleOverride = COMPILE_TRUE_DEPEX Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
 
-  # Pre-compiled DXE core
+  #
+  # ODP: The DXE core is compiled separately using the Rust toolchain.
+  #
   FILE DXE_CORE = 23C9322F-2AF2-476A-BC4C-26BC88266C71 {
 !if $(TARGET) == RELEASE
     SECTION PE32 = Drivers/PatinaDxeCore_ru/aarch64-unknown-uefi/release/dxe_core.efi
@@ -76,114 +122,136 @@
     SECTION UI = "DxeCore"
   }
 
-  INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/RngDxe/RngDxe.inf
-  INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/TypecPhyDxe/TypecPhyDxe.inf
-  INF Platform/CIX/Sky1/Drivers/PdDxe/PdDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/CdnspDxe/CdnspDxe.inf
-  INF Platform/CIX/Sky1/Drivers/UsbDeviceControlDxe/UsbDeviceControlDxe.inf
+  #
+  # ODP: Orion platform drivers
+  #
+  INF Platform/Radxa/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  INF Platform/Radxa/Drivers/Logo/LogoDxe.inf
+  INF Platform/Radxa/Drivers/RTL8126/RtkUndiDxe.inf
+  INF Platform/Radxa/Orion/O6/DeviceTree/DeviceTree.inf
+  INF RuleOverride = ACPITABLE2 Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/AcpiPlatfomTables.inf
+  INF Platform/Radxa/Orion/O6/Drivers/PlatformSmbios/PlatformSmbios.inf
+
+  #
+  # ODP: CIX Silicon drivers
+  #
   INF Platform/CIX/Sky1/Application/Fastboot/Fastboot.inf
+  INF Platform/CIX/Sky1/Drivers/AcpiSocDxe/AcpiSocDxe.inf
+  INF RuleOverride = ACPITABLE Platform/CIX/Sky1/Drivers/AcpiSocTables/AcpiSocTables.inf
+  INF Platform/CIX/Sky1/Drivers/CapsuleUpdateDxe/CapsuleUpdateDxe.inf
+  INF Platform/CIX/Sky1/Drivers/CixSmbiosDxe/CixSmbiosDxe.inf
+  INF Platform/CIX/Sky1/Drivers/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
+  INF Platform/CIX/Sky1/Drivers/DtbUpdateDxeSi/DtbUpdateDxe.inf
+  INF Platform/CIX/Sky1/Drivers/DynamicTableManagerDxe/DynamicTableManagerDxe.inf
+  INF Platform/CIX/Sky1/Drivers/EcPlatformDxe/EcPlatformDxe.inf
+  INF Platform/CIX/Sky1/Drivers/FirmwareUpdateDxe/FwUpdateProtocolDxe.inf
+  INF Platform/CIX/Sky1/Drivers/FwVersionDxe/FwVersionProtocolTest.inf
+  INF Platform/CIX/Sky1/Drivers/I2cHidDeviceDxe/I2cHidDeviceDxe.inf
+  INF Platform/CIX/Sky1/Drivers/I2cHidKeyboard/I2cHidKeyboard.inf
+  INF Platform/CIX/Sky1/Drivers/I2cHidServiceDriver/I2cHidServiceDriver.inf
   INF Platform/CIX/Sky1/Drivers/LaunchFastbootDxe/LaunchFastbootDxe.inf
-  INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
-  INF MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
+  INF Platform/CIX/Sky1/Drivers/NvmExpressDxe/NvmExpressDxe.inf
+  INF Platform/CIX/Sky1/Drivers/Pci/PciBusDxe/PciBusDxe.inf
+  INF Platform/CIX/Sky1/Drivers/PdDxe/PdDxe.inf
+  INF Platform/CIX/Sky1/Drivers/PowerButtonDxe/PowerButtonDxe.inf
+  INF Platform/CIX/Sky1/Drivers/SecureBootDxe/SecureBootDxe.inf
+  INF Platform/CIX/Sky1/Drivers/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
+  INF Platform/CIX/Sky1/Drivers/Tcg2Acpi/Tcg2Acpi.inf
+  INF Platform/CIX/Sky1/Drivers/Tcg2Config/Tcg2ConfigDxe.inf
+  INF Platform/CIX/Sky1/Drivers/TPMVariableDxe/TPMVariableDxe.inf
+  INF Platform/CIX/Sky1/Drivers/UsbDeviceControlDxe/UsbDeviceControlDxe.inf
+  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
+  INF Platform/Radxa/Platforms/CIX/Sky1/Drivers/FirmwareConfigUpdateDxe/FirmwareConfigUpdateDxe.inf
+  INF Platform/Radxa/Platforms/CIX/Sky1/Drivers/PlatformConfigDxe/PlatformConfigDxe.inf
+  INF Platform/Radxa/Platforms/CIX/Sky1/Drivers/RadxaSetupVariableInitDxe/RadxaSetupVariableInitDxe.inf
+  INF Platform/Radxa/Platforms/CIX/Sky1/Drivers/SeConfigUpdateDxe/SeConfigUpdateDxe.inf
+  INF Platform/Radxa/Platforms/CIX/Sky1/Drivers/SystemInfoDxe/SystemInfoDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/CdnspDxe/CdnspDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/I2cDxe/I2cDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/PcieInitDxe/PcieInitDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/RngDxe/RngDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/SpiDxe/SpiDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/TypecPhyDxe/TypecPhyDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/Usb20HostDxe/Usb20HostDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/Usb32HostDxe/Usb32HostDxe.inf
+  INF Silicon/CIX/Sky1/Drivers/UsbCHostDxe/UsbCHostDxe.inf
+
+  #
+  # ODP: EDKII provided DXE drivers
+  #
+
+  INF ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
+  INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
+
+  INF DynamicTablesPkg/Drivers/DynamicTableFactoryDxe/DynamicTableFactoryDxe.inf
+
+  INF EmbeddedPkg/Drivers/ConsolePrefDxe/ConsolePrefDxe.inf
+  INF EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf
+  INF EmbeddedPkg/Drivers/NonCoherentIoMmuDxe/NonCoherentIoMmuDxe.inf
+  INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
+  INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
+  INF EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
+
+  INF Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
+
+  INF FatPkg/EnhancedFatDxe/Fat.inf
+
+  INF FILE_GUID = 351c9808-4b53-4363-9314-d339386e5685 FmpDevicePkg/FmpDxe/FmpDxe.inf
+
+  INF MdeModulePkg/Application/UiApp/UiApp.inf
+  INF MdeModulePkg/Application/VariableInfo/VariableInfo.inf
+  INF MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+  INF MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
   INF MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
+  INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
+  INF MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+  INF MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+  INF MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
   INF MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
   INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
-  INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
   INF MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
   INF MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/UsbCHostDxe/UsbCHostDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/Usb32HostDxe/Usb32HostDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/Usb20HostDxe/Usb20HostDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/PcieInitDxe/PcieInitDxe.inf
-  INF SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
-  INF SecurityPkg/VariableAuthenticated/SecureBootDefaultKeysDxe/SecureBootDefaultKeysDxe.inf
-  INF Platform/CIX/Sky1/Drivers/SecureBootDxe/SecureBootDxe.inf
-  INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
-  INF EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
-  INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
-  INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
-  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+  INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  INF MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
+  INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+  INF MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
+  INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
   INF MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
   INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
   INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
   INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
-  INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
-  INF EmbeddedPkg/Drivers/ConsolePrefDxe/ConsolePrefDxe.inf
-  INF Platform/CIX/Sky1/Drivers/PowerButtonDxe/PowerButtonDxe.inf
-  INF MdeModulePkg/Universal/EbcDxe/EbcDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/I2cDxe/I2cDxe.inf
-  INF Platform/CIX/Sky1/Drivers/EcPlatformDxe/EcPlatformDxe.inf
-  INF Platform/CIX/Sky1/Drivers/I2cHidKeyboard/I2cHidKeyboard.inf
-  INF Platform/CIX/Sky1/Drivers/I2cHidServiceDriver/I2cHidServiceDriver.inf
-  INF Platform/CIX/Sky1/Drivers/I2cHidDeviceDxe/I2cHidDeviceDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/SpiDxe/SpiDxe.inf
-  INF Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
-  INF platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
+  INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
   INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
   INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
-  INF FatPkg/EnhancedFatDxe/Fat.inf
-  INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
-  INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-  INF RuleOverride = ACPITABLE Platform/CIX/Sky1/Drivers/AcpiSocTables/AcpiSocTables.inf
-  INF Platform/CIX/Sky1/Drivers/AcpiSocDxe/AcpiSocDxe.inf
-  INF Platform/CIX/Sky1/Drivers/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
-  INF DynamicTablesPkg/Drivers/DynamicTableFactoryDxe/DynamicTableFactoryDxe.inf
-  INF Platform/CIX/Sky1/Drivers/DynamicTableManagerDxe/DynamicTableManagerDxe.inf
-  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
-  INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
-  INF Platform/CIX/Sky1/Drivers/CixSmbiosDxe/CixSmbiosDxe.inf
-  INF ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
-  INF MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
-  INF Platform/CIX/Sky1/Drivers/Pci/PciBusDxe/PciBusDxe.inf
-  INF EmbeddedPkg/Drivers/NonCoherentIoMmuDxe/NonCoherentIoMmuDxe.inf
-  INF Platform/CIX/Sky1/Drivers/NvmExpressDxe/NvmExpressDxe.inf
-  INF MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-  INF Platform/CIX/Sky1/Drivers/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
-  INF Platform/CIX/Sky1/Drivers/CapsuleUpdateDxe/CapsuleUpdateDxe.inf
-  INF Platform/CIX/Sky1/Drivers/FirmwareUpdateDxe/FwUpdateProtocolDxe.inf
-  INF Platform/CIX/Sky1/Drivers/FwVersionDxe/FwVersionProtocolTest.inf
-  INF MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
-  INF MdeModulePkg/Application/UiApp/UiApp.inf
-  INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
-  INF MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
-  INF MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
-  INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
-  INF Platform/CIX/Sky1/Drivers/TPMVariableDxe/TPMVariableDxe.inf
-  INF SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf
-  INF Platform/CIX/Sky1/Drivers/Tcg2Acpi/Tcg2Acpi.inf
-  INF Platform/CIX/Sky1/Drivers/Tcg2Config/Tcg2ConfigDxe.inf
-  INF Platform/Radxa/Drivers/Logo/LogoDxe.inf
-  INF Platform/Radxa/Platforms/CIX/Sky1/Drivers/SystemInfoDxe/SystemInfoDxe.inf
-  INF Platform/Radxa/Platforms/CIX/Sky1/Drivers/PlatformConfigDxe/PlatformConfigDxe.inf
-  INF Platform/Radxa/Platforms/CIX/Sky1/Drivers/RadxaSetupVariableInitDxe/RadxaSetupVariableInitDxe.inf
-  INF Platform/Radxa/Platforms/CIX/Sky1/Drivers/FirmwareConfigUpdateDxe/FirmwareConfigUpdateDxe.inf
-  INF Platform/Radxa/Platforms/CIX/Sky1/Drivers/SeConfigUpdateDxe/SeConfigUpdateDxe.inf
-  INF EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf
-  INF MdeModulePkg/Application/VariableInfo/VariableInfo.inf
   INF MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
-  INF Emulator/X86EmulatorDxe/X86EmulatorDxe.inf
-  INF MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
-  INF MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
-  INF MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
-  INF MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
-  INF MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
+  INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+  INF MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
+  INF MdeModulePkg/Universal/EbcDxe/EbcDxe.inf
+  INF MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
   INF MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
-  INF FILE_GUID = 351c9808-4b53-4363-9314-d339386e5685 FmpDevicePkg/FmpDxe/FmpDxe.inf
-  INF Platform/CIX/Sky1/Drivers/DtbUpdateDxeSi/DtbUpdateDxe.inf
-  INF RuleOverride = ACPITABLE2 Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/AcpiPlatfomTables.inf
-  INF Platform/Radxa/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
-  INF ShellPkg/Application/Shell/Shell.inf
-  INF Platform/Radxa/Orion/O6/Drivers/PlatformSmbios/PlatformSmbios.inf
-  INF Platform/Radxa/Drivers/RTL8126/RtkUndiDxe.inf
-  INF Platform/Radxa/Orion/O6/DeviceTree/DeviceTree.inf
+  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+  INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
+  INF MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
+  INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
+  INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
+  INF MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
+  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
+  INF SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf
+  INF SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
+  INF SecurityPkg/VariableAuthenticated/SecureBootDefaultKeysDxe/SecureBootDefaultKeysDxe.inf
+
+  INF ShellPkg/Application/Shell/Shell.inf
+
+  #
+  # ODP: Pre-compiled binaries
+  #
   FILE DRIVER = 27E5BA77-5839-400b-A7DA-5F5D78F0C539 {
     SECTION PE32 = Platform/CIX/Sky1/Drivers/AmdGop/Arm64Gop_1_68.efi
     SECTION UI = "AmdGop"
   }
-
   FILE FREEFORM = 85254ea7-4759-4fc4-82d4-5eed5fb0a4a0 {
     SECTION RAW = Platform/CIX/Sky1/Drivers/SecureBootDxe/PK.cer
     SECTION UI = "PK Default"
@@ -208,36 +276,12 @@
     SECTION UI = "Pkcs7TestRoot"
   }
   FILE FREEFORM  = 8943387b-c4ad-3199-42a9-dabc5b411615 {
-    SECTION RAW = Platform/CIX/Sky1/Bin/ntroot.cer            //root pubkey
+    SECTION RAW = Platform/CIX/Sky1/Bin/ntroot.cer
   }
 
-[FV.FVMAIN_COMPACT]
-  FvAlignment        = 16
-  ERASE_POLARITY     = 1
-  MEMORY_MAPPED      = TRUE
-  STICKY_WRITE       = TRUE
-  LOCK_CAP           = TRUE
-  LOCK_STATUS        = TRUE
-  WRITE_DISABLED_CAP = TRUE
-  WRITE_ENABLED_CAP  = TRUE
-  WRITE_STATUS       = TRUE
-  WRITE_LOCK_CAP     = TRUE
-  WRITE_LOCK_STATUS  = TRUE
-  READ_DISABLED_CAP  = TRUE
-  READ_ENABLED_CAP   = TRUE
-  READ_STATUS        = TRUE
-  READ_LOCK_CAP      = TRUE
-  READ_LOCK_STATUS   = TRUE
-
-  INF Platform/CIX/Sky1/PrePi/PeiUniCore.inf
-  INF Platform/CIX/Sky1/Drivers/FwVersionDxe/FwVersionDxe.inf
-
-  FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {
-    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
-      SECTION FV_IMAGE = FVMAIN
-    }
-  }
-
+#
+# ODP: General compilation rules
+#
 
 [Rule.Common.SEC]
   FILE SEC = $(NAMED_GUID) RELOCS_STRIPPED FIXED {
@@ -344,7 +388,9 @@
     RAW BIN                |.bin
   }
 
-# ODP: The following rules are to allow overriding the DEPEX binary in an FFS file to use a TRUE expression
+#
+# ODP: Rules specifically to force a TRUE depex in an FFS file
+#
 
 [Rule.Common.DXE_DRIVER.COMPILE_TRUE_DEPEX]
   FILE DRIVER = $(NAMED_GUID) {

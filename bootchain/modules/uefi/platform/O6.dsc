@@ -16,297 +16,308 @@
   PLATFORM_GUID                  = 53cfca21-0399-4802-a3c0-e86437a42183
   PLATFORM_VERSION               = 1.0
   DSC_SPECIFICATION              = 0x0001001A
-  OUTPUT_DIRECTORY               = $(PATH_BUILD_OUTPUT)  # ODP: Allow environment variable to set remnants folder
+  OUTPUT_DIRECTORY               = $(PATH_BUILD_OUTPUT)
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
-  FLASH_DEFINITION               = platform/O6.fdf       # ODP: Use ODP flavor of the 06 DSC/FDF pair
+  FLASH_DEFINITION               = platform/O6.fdf
   PCD_DYNAMIC_AS_DYNAMICEX       = TRUE
   BUILD_NUMBER                   = 0x00000004
 
 [LibraryClasses]
-  RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
-  DebugLib|Platform/CIX/Sky1/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
-  PostCodeLib|Silicon/CIX/Sky1/Library/CixBasePostCodeLibMmio/BasePostCodeLibMmio.inf
-  DebugPrintErrorLevelLib|MdePkg/Library/BaseDebugPrintErrorLevelLib/BaseDebugPrintErrorLevelLib.inf
-  BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
-  SafeIntLib|MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
+  CacheMaintenanceLib|ArmPkg/Library/ArmCacheMaintenanceLib/ArmCacheMaintenanceLib.inf
+  ArmGenericTimerCounterLib|ArmPkg/Library/ArmGenericTimerPhyCounterLib/ArmGenericTimerPhyCounterLib.inf
+  ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
+  ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
+  EfiResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
+  ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
+  NULL|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
+  PeCoffExtraActionLib|ArmPkg/Library/DebugPeCoffExtraActionLib/DebugPeCoffExtraActionLib.inf
+
+  ArmPlatformStackLib|ArmPlatformPkg/Library/ArmPlatformStackLib/ArmPlatformStackLib.inf
+  PL011UartLib|ArmPlatformPkg/Library/PL011UartLib/PL011UartLib.inf
+
+  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
+  IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
+  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
+
+  AcpiHelperLib|DynamicTablesPkg/Library/Common/AcpiHelperLib/AcpiHelperLib.inf
+  TableHelperLib|DynamicTablesPkg/Library/Common/TableHelperLib/TableHelperLib.inf
+
+  AcpiLib|EmbeddedPkg/Library/AcpiLib/AcpiLib.inf
+  FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
+  DmaLib|EmbeddedPkg/Library/NonCoherentDmaLib/NonCoherentDmaLib.inf
+  TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
+
   BmpSupportLib|MdeModulePkg/Library/BaseBmpSupportLib/BaseBmpSupportLib.inf
-  SynchronizationLib|MdePkg/Library/BaseSynchronizationLib/BaseSynchronizationLib.inf
-  PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
-  PeCoffGetEntryPointLib|MdePkg/Library/BasePeCoffGetEntryPointLib/BasePeCoffGetEntryPointLib.inf
-  PeCoffLib|MdePkg/Library/BasePeCoffLib/BasePeCoffLib.inf
-  IoLib|MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
-  UefiDecompressLib|MdePkg/Library/BaseUefiDecompressLib/BaseUefiDecompressLib.inf
-  UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
-  UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf
-  HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
-  UefiRuntimeServicesTableLib|MdePkg/Library/UefiRuntimeServicesTableLib/UefiRuntimeServicesTableLib.inf
-  DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
-  UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
-  DxeServicesTableLib|MdePkg/Library/DxeServicesTableLib/DxeServicesTableLib.inf
-  DxeServicesLib|MdePkg/Library/DxeServicesLib/DxeServicesLib.inf
-  UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
-  UefiApplicationEntryPoint|MdePkg/Library/UefiApplicationEntryPoint/UefiApplicationEntryPoint.inf
+  BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
+  CustomizedDisplayLib|MdeModulePkg/Library/CustomizedDisplayLib/CustomizedDisplayLib.inf
+  DebugAgentLib|MdeModulePkg/Library/DebugAgentLibNull/DebugAgentLibNull.inf
+  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
+  PerformanceLib|MdeModulePkg/Library/DxePerformanceLib/DxePerformanceLib.inf
+  ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf
+  SecurityManagementLib|MdeModulePkg/Library/DxeSecurityManagementLib/DxeSecurityManagementLib.inf
+  FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
+  NonDiscoverableDeviceRegistrationLib|MdeModulePkg/Library/NonDiscoverableDeviceRegistrationLib/NonDiscoverableDeviceRegistrationLib.inf
+  UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
   HiiLib|MdeModulePkg/Library/UefiHiiLib/UefiHiiLib.inf
   UefiHiiServicesLib|MdeModulePkg/Library/UefiHiiServicesLib/UefiHiiServicesLib.inf
   SortLib|MdeModulePkg/Library/UefiSortLib/UefiSortLib.inf
-  UefiRuntimeLib|MdePkg/Library/UefiRuntimeLib/UefiRuntimeLib.inf
-  OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
-  PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
-  BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
-  NULL|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
-  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
-  CacheMaintenanceLib|ArmPkg/Library/ArmCacheMaintenanceLib/ArmCacheMaintenanceLib.inf
-  DmaLib|EmbeddedPkg/Library/NonCoherentDmaLib/NonCoherentDmaLib.inf
-  TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
-  ArmPlatformStackLib|ArmPlatformPkg/Library/ArmPlatformStackLib/ArmPlatformStackLib.inf
-  ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
-  ArmGenericTimerCounterLib|ArmPkg/Library/ArmGenericTimerPhyCounterLib/ArmGenericTimerPhyCounterLib.inf
-  MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
-  PL011UartClockLib|Silicon/CIX/Sky1/Library/PL011UartClockLib/PL011UartClockLib.inf
-  PL011UartLib|ArmPlatformPkg/Library/PL011UartLib/PL011UartLib.inf
-  SerialPortLib|Silicon/CIX/Sky1/Library/PL011SerialPortLib/PL011SerialPortLib.inf
-  TimerLib|Silicon/CIX/Sky1/Library/ArmArchTimerLib/ArmArchTimerLib.inf
-  PeCoffExtraActionLib|ArmPkg/Library/DebugPeCoffExtraActionLib/DebugPeCoffExtraActionLib.inf
-  DebugAgentLib|MdeModulePkg/Library/DebugAgentLibNull/DebugAgentLibNull.inf
-  FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
-  PartitionLib|Platform/CIX/Sky1/Library/PartitionLib/PartitionLib.inf
-  FlashUpdateLib|Platform/CIX/Sky1/Library/FlashUpdateLib/FlashUpdateLib.inf
-  OpteeLib|Platform/CIX/Sky1/Library/OpteeLib/OpteeLib.inf
-  StmmInfoLib|Platform/CIX/Sky1/Library/StmmInfoLib/StmmInfoLib.inf
-  SecureBootVariableLib|SecurityPkg/Library/SecureBootVariableLib/SecureBootVariableLib.inf
-  SecureBootVariableProvisionLib|SecurityPkg/Library/SecureBootVariableProvisionLib/SecureBootVariableProvisionLib.inf
-  PlatformSecureLib|OvmfPkg/Library/PlatformSecureLib/PlatformSecureLib.inf
-  PlatformPKProtectionLib|SecurityPkg/Library/PlatformPKProtectionLibVarPolicy/PlatformPKProtectionLibVarPolicy.inf
   VariablePolicyHelperLib|MdeModulePkg/Library/VariablePolicyHelperLib/VariablePolicyHelperLib.inf
-  CustomizedDisplayLib|MdeModulePkg/Library/CustomizedDisplayLib/CustomizedDisplayLib.inf
-  ConfigParamsDataBlockLib|Silicon/CIX/Sky1/Library/ConfigParamsDataBlockLib/ConfigParamsDataBlockLib.inf
-  PlatformConfigParamsDataBlockLib|Platform/CIX/Sky1/Library/PlatformConfigParamsDataBlockLib/PlatformConfigParamsDataBlockLib.inf
-  PinMuxLib|Silicon/CIX/Sky1/Library/PinMuxLib/PinMuxLib.inf
-  PinMuxTableLib|Silicon/CIX/Sky1/Library/PinMuxTableNullLib/PinMuxTableNullLib.inf
-  GpioLib|Silicon/CIX/Sky1/Library/GpioLib/GpioLib.inf
-  GpioTableLib|Silicon/CIX/Sky1/Library/GpioTableNullLib/GpioTableNullLib.inf
-  FchDmaLib|Silicon/CIX/Sky1/Library/FchDmaLib/FchDmaLib.inf
-  FchTimerLib|Silicon/CIX/Sky1/Library/FchTimerLib/FchTimerLib.inf
-  OpnLib|Silicon/CIX/Sky1/Library/OpnLib/OpnLib.inf
-  SpiLib|Silicon/CIX/Sky1/Library/SpiLib/SpiLib.inf
-  I2cLib|Silicon/CIX/Sky1/Library/I2cLib/I2cLib.inf
-  EcLib|Platform/CIX/Sky1/Library/Ite5570EcLib/Ite5570EcLib.inf
-  ConfigParamsHookLib|Silicon/CIX/Sky1/Library/ConfigParamsHookNullLib/ConfigParamsHookNullLib.inf
-  NorFlashLib|Silicon/CIX/Sky1/Library/NorFlashLib/NorFlashStmmRuntimeLib.inf
-  PciHostBridgeLib|Silicon/CIX/Sky1/Library/PciHostBridgeLib/PciHostBridgeLib.inf
-  PciSegmentLib|Silicon/CIX/Sky1/Library/PciSegmentLib/PciSegmentLib.inf
-  PlatformPcieLib|Silicon/CIX/Sky1/Library/PlatformPcieLib/PlatformPcieLib.inf
-  DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
-  ArmMtlLib|Silicon/CIX/Sky1/Library/CixMtlLib/CixMtlLib.inf
-  DtbCommonLib|Platform/CIX/Sky1/Library/DtbCommonLib/DtbCommonLib.inf
-  ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
-  ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
-  ArmPlatformLib|platform/Library/PlatformLib/PlatformLib.inf # ArmPlatformLib|Platform/CIX/Sky1/Library/PlatformLib/PlatformLib.inf
-  UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
-  BootLogoLib|MdeModulePkg/Library/BootLogoLib/BootLogoLib.inf
-  PlatformBootManagerLib|Platform/CIX/Sky1/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
-  FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
-  AcpiLib|EmbeddedPkg/Library/AcpiLib/AcpiLib.inf
-  SocInitLib|Silicon/CIX/Sky1/Library/SocInitLib/SocInitLib.inf
-  FirmwareParseLib|Silicon/CIX/Sky1/Library/FirmwareParseLib/FirmwareParseLib.inf
-  HwMutexLib|Silicon/CIX/Sky1/Library/HwMutexLib/HwMutexLib.inf
-  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
-  EdkiiSystemCapsuleLib|Platform/CIX/Sky1/Library/EdkiiSystemCapsuleLib/EdkiiSystemCapsuleLib.inf
-  FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
-  RebootReasonLib|Silicon/CIX/Sky1/Library/RebootReasonLib/RebootReasonLib.inf
-  CsuPmIpcLib|Silicon/CIX/Sky1/Library/CsuPmIpcLib/CsuPmIpcLib.inf
-  ShMemLib|Silicon/CIX/Sky1/Library/ShMemLib/ShMemLib.inf
-  MailBoxLib|Silicon/CIX/Sky1/Library/MailBoxLib/MailBoxLib.inf
-  AcpiHelperLib|DynamicTablesPkg/Library/Common/AcpiHelperLib/AcpiHelperLib.inf
+
+  DebugPrintErrorLevelLib|MdePkg/Library/BaseDebugPrintErrorLevelLib/BaseDebugPrintErrorLevelLib.inf
+  IoLib|MdePkg/Library/BaseIoLibIntrinsic/BaseIoLibIntrinsic.inf
+  BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
+  BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
+  OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
+  PeCoffGetEntryPointLib|MdePkg/Library/BasePeCoffGetEntryPointLib/BasePeCoffGetEntryPointLib.inf
+  PeCoffLib|MdePkg/Library/BasePeCoffLib/BasePeCoffLib.inf
+  PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
+  SafeIntLib|MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
+  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
+  SynchronizationLib|MdePkg/Library/BaseSynchronizationLib/BaseSynchronizationLib.inf
+  UefiDecompressLib|MdePkg/Library/BaseUefiDecompressLib/BaseUefiDecompressLib.inf
+  HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
+  PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+  DxeServicesLib|MdePkg/Library/DxeServicesLib/DxeServicesLib.inf
+  DxeServicesTableLib|MdePkg/Library/DxeServicesTableLib/DxeServicesTableLib.inf
+  RegisterFilterLib|MdePkg/Library/RegisterFilterLibNull/RegisterFilterLibNull.inf
+  UefiApplicationEntryPoint|MdePkg/Library/UefiApplicationEntryPoint/UefiApplicationEntryPoint.inf
+  UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
+  DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
+  UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
+  FileHandleLib|MdePkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
+  UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
+  MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
+  UefiRuntimeLib|MdePkg/Library/UefiRuntimeLib/UefiRuntimeLib.inf
+  UefiRuntimeServicesTableLib|MdePkg/Library/UefiRuntimeServicesTableLib/UefiRuntimeServicesTableLib.inf
+  UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf
+
+  NetLib|NetworkPkg/Library/DxeNetLib/DxeNetLib.inf
+
+  PlatformSecureLib|OvmfPkg/Library/PlatformSecureLib/PlatformSecureLib.inf
+
   AmlLib|Platform/CIX/Sky1/Library/Acpi/CIX/AmlLib/AmlLib.inf
-  TableHelperLib|DynamicTablesPkg/Library/Common/TableHelperLib/TableHelperLib.inf
-  CixSipLib|Silicon/CIX/Sky1/Library/CixSipLib/CixSipLib.inf
-  UsbLib|Silicon/CIX/Sky1/Library/UsbLib/UsbLib.inf
-  CpuInfoLib|Silicon/CIX/Sky1/Library/CpuInfoLib/CpuInfoLib.inf
-  HwHarvestLib|Silicon/CIX/Sky1/Library/HwHarvestLib/HwHarvestLib.inf
-  CixS3IoLib|Platform/CIX/Sky1/Library/CixS3IoLib/CixS3IoLib.inf
-  OemMiscLib|Platform/CIX/Sky1/Library/SmbiosMiscLib/SmbiosMiscLib.inf
+  DebugLib|Platform/CIX/Sky1/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+  BaseHidParseReportLib|Platform/CIX/Sky1/Library/BaseHidParseReportLib/BaseHidParseReportLib.inf
   CixFwBootPerfLib|Platform/CIX/Sky1/Library/CixFwBootPerfLib/CixFwBootPerfLib.inf
-  EfiResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
-  OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLib.inf
-  IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
-  BaseCryptLib|CryptoPkg/Library/BaseCryptLib/BaseCryptLib.inf
-  Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
-  Tcg2PhysicalPresenceLib|Platform/CIX/Sky1/Library/DxeTcg2PhysicalPresenceLib/DxeTcg2PhysicalPresenceLib.inf
-  Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
-  TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
-  Tpm2DeviceLib|Platform/CIX/Sky1/Library/Tpm2DeviceLib/Tpm2DeviceLib.inf
-  DTpmDeviceLib|Platform/CIX/Sky1/Library/DTpmDeviceLib/DTpmDeviceLib.inf
-  FTpmDeviceLib|Platform/CIX/Sky1/Library/FTpmDeviceLibNull/FTpmDeviceLibNull.inf
   CixGPNVLib|Platform/CIX/Sky1/Library/CixGPNVLib/CixGPNVLib.inf
-  PerformanceLib|MdeModulePkg/Library/DxePerformanceLib/DxePerformanceLib.inf
-  ReportStatusCodeLib|MdeModulePkg/Library/DxeReportStatusCodeLib/DxeReportStatusCodeLib.inf
+  CixS3IoLib|Platform/CIX/Sky1/Library/CixS3IoLib/CixS3IoLib.inf
+  DTpmDeviceLib|Platform/CIX/Sky1/Library/DTpmDeviceLib/DTpmDeviceLib.inf
+  DtbCommonLib|Platform/CIX/Sky1/Library/DtbCommonLib/DtbCommonLib.inf
+  DtbUpdateLibSi|Platform/CIX/Sky1/Library/DtbUpdateLibSi/DtbUpdateLib.inf
+  Tcg2PhysicalPresenceLib|Platform/CIX/Sky1/Library/DxeTcg2PhysicalPresenceLib/DxeTcg2PhysicalPresenceLib.inf
+  EdkiiSystemCapsuleLib|Platform/CIX/Sky1/Library/EdkiiSystemCapsuleLib/EdkiiSystemCapsuleLib.inf
+  FTpmDeviceLib|Platform/CIX/Sky1/Library/FTpmDeviceLibNull/FTpmDeviceLibNull.inf
+  FlashUpdateLib|Platform/CIX/Sky1/Library/FlashUpdateLib/FlashUpdateLib.inf
+  EcLib|Platform/CIX/Sky1/Library/Ite5570EcLib/Ite5570EcLib.inf
+  OpteeLib|Platform/CIX/Sky1/Library/OpteeLib/OpteeLib.inf
+  PartitionLib|Platform/CIX/Sky1/Library/PartitionLib/PartitionLib.inf
+  PlatformBootManagerLib|Platform/CIX/Sky1/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
+  PlatformConfigParamsDataBlockLib|Platform/CIX/Sky1/Library/PlatformConfigParamsDataBlockLib/PlatformConfigParamsDataBlockLib.inf
+  OemMiscLib|Platform/CIX/Sky1/Library/SmbiosMiscLib/SmbiosMiscLib.inf
+  StmmInfoLib|Platform/CIX/Sky1/Library/StmmInfoLib/StmmInfoLib.inf
+  Tpm2DeviceLib|Platform/CIX/Sky1/Library/Tpm2DeviceLib/Tpm2DeviceLib.inf
+  PlatformBootHookLib|Platform/CIX/Sky1/Merak/Library/PlatformBootHookLib/PlatformBootHookLib.inf
+  ArmPlatformLib|platform/Library/PlatformLib/PlatformLib.inf
+  RealTimeClockLib|Platform/Radxa/Library/Hym8563RealTimeClockLib/Hym8563RealTimeClockLib.inf
   PdEcLib|Platform/Radxa/Library/PdEcLibNull/PdEcLibNull.inf
   PlatformConfigParamsHookLib|Platform/Radxa/Orion/O6/Library/PlatformConfigParamsHookLib/PlatformConfigParamsHookLib.inf
   PlatformEnvHookLib|Platform/Radxa/Orion/O6/Library/PlatformEnvHookLib/PlatformEnvHookLib.inf
-  RealTimeClockLib|Platform/Radxa/Library/Hym8563RealTimeClockLib/Hym8563RealTimeClockLib.inf
-  PlatformBootHookLib|Platform/CIX/Sky1/Merak/Library/PlatformBootHookLib/PlatformBootHookLib.inf
-  TrngLib|Silicon/CIX/Sky1/Library/TrngLib/TrngLib.inf
+
+  TpmMeasurementLib|SecurityPkg/Library/DxeTpmMeasurementLib/DxeTpmMeasurementLib.inf
+  FmpAuthenticationLib|SecurityPkg/Library/FmpAuthenticationLibPkcs7/FmpAuthenticationLibPkcs7.inf
+  PlatformPKProtectionLib|SecurityPkg/Library/PlatformPKProtectionLibVarPolicy/PlatformPKProtectionLibVarPolicy.inf
+  SecureBootVariableLib|SecurityPkg/Library/SecureBootVariableLib/SecureBootVariableLib.inf
+  SecureBootVariableProvisionLib|SecurityPkg/Library/SecureBootVariableProvisionLib/SecureBootVariableProvisionLib.inf
+  Tcg2PpVendorLib|SecurityPkg/Library/Tcg2PpVendorLibNull/Tcg2PpVendorLibNull.inf
+  Tpm2CommandLib|SecurityPkg/Library/Tpm2CommandLib/Tpm2CommandLib.inf
+
+  TimerLib|Silicon/CIX/Sky1/Library/ArmArchTimerLib/ArmArchTimerLib.inf
+  PostCodeLib|Silicon/CIX/Sky1/Library/CixBasePostCodeLibMmio/BasePostCodeLibMmio.inf
+  ArmMtlLib|Silicon/CIX/Sky1/Library/CixMtlLib/CixMtlLib.inf
+  CixSipLib|Silicon/CIX/Sky1/Library/CixSipLib/CixSipLib.inf
+  ConfigParamsDataBlockLib|Silicon/CIX/Sky1/Library/ConfigParamsDataBlockLib/ConfigParamsDataBlockLib.inf
+  ConfigParamsHookLib|Silicon/CIX/Sky1/Library/ConfigParamsHookNullLib/ConfigParamsHookNullLib.inf
+  CpuInfoLib|Silicon/CIX/Sky1/Library/CpuInfoLib/CpuInfoLib.inf
+  CsuPmIpcLib|Silicon/CIX/Sky1/Library/CsuPmIpcLib/CsuPmIpcLib.inf
+  DisplayLib|Silicon/CIX/Sky1/Library/DisplayLib/DisplayLib.inf
+  FchDmaLib|Silicon/CIX/Sky1/Library/FchDmaLib/FchDmaLib.inf
+  FchTimerLib|Silicon/CIX/Sky1/Library/FchTimerLib/FchTimerLib.inf
+  FirmwareParseLib|Silicon/CIX/Sky1/Library/FirmwareParseLib/FirmwareParseLib.inf
+  GpioLib|Silicon/CIX/Sky1/Library/GpioLib/GpioLib.inf
+  GpioTableLib|Silicon/CIX/Sky1/Library/GpioTableNullLib/GpioTableNullLib.inf
+  HwHarvestLib|Silicon/CIX/Sky1/Library/HwHarvestLib/HwHarvestLib.inf
+  HwMutexLib|Silicon/CIX/Sky1/Library/HwMutexLib/HwMutexLib.inf
+  I2cLib|Silicon/CIX/Sky1/Library/I2cLib/I2cLib.inf
+  MailBoxLib|Silicon/CIX/Sky1/Library/MailBoxLib/MailBoxLib.inf
+  NorFlashLib|Silicon/CIX/Sky1/Library/NorFlashLib/NorFlashStmmRuntimeLib.inf
+  OpnLib|Silicon/CIX/Sky1/Library/OpnLib/OpnLib.inf
+  SerialPortLib|Silicon/CIX/Sky1/Library/PL011SerialPortLib/PL011SerialPortLib.inf
+  PL011UartClockLib|Silicon/CIX/Sky1/Library/PL011UartClockLib/PL011UartClockLib.inf
+  PciHostBridgeLib|Silicon/CIX/Sky1/Library/PciHostBridgeLib/PciHostBridgeLib.inf
+  PciSegmentLib|Silicon/CIX/Sky1/Library/PciSegmentLib/PciSegmentLib.inf
+  PinMuxLib|Silicon/CIX/Sky1/Library/PinMuxLib/PinMuxLib.inf
+  PinMuxTableLib|Silicon/CIX/Sky1/Library/PinMuxTableNullLib/PinMuxTableNullLib.inf
+  PlatformPcieLib|Silicon/CIX/Sky1/Library/PlatformPcieLib/PlatformPcieLib.inf
+  RebootReasonLib|Silicon/CIX/Sky1/Library/RebootReasonLib/RebootReasonLib.inf
   RngLib|Silicon/CIX/Sky1/Library/RngLib/RngLib.inf
-  DtbUpdateLibSi|Platform/CIX/Sky1/Library/DtbUpdateLibSi/DtbUpdateLib.inf
-  NetLib|NetworkPkg/Library/DxeNetLib/DxeNetLib.inf
-  SecurityManagementLib|MdeModulePkg/Library/DxeSecurityManagementLib/DxeSecurityManagementLib.inf
-  FileHandleLib|MdePkg/Library/UefiFileHandleLib/UefiFileHandleLib.inf
-  NonDiscoverableDeviceRegistrationLib|MdeModulePkg/Library/NonDiscoverableDeviceRegistrationLib/NonDiscoverableDeviceRegistrationLib.inf
-  BaseHidParseReportLib|Platform/CIX/Sky1/Library/BaseHidParseReportLib/BaseHidParseReportLib.inf
+  ShMemLib|Silicon/CIX/Sky1/Library/ShMemLib/ShMemLib.inf
+  SocInitLib|Silicon/CIX/Sky1/Library/SocInitLib/SocInitLib.inf
+  SpiLib|Silicon/CIX/Sky1/Library/SpiLib/SpiLib.inf
+  TrngLib|Silicon/CIX/Sky1/Library/TrngLib/TrngLib.inf
+  UsbLib|Silicon/CIX/Sky1/Library/UsbLib/UsbLib.inf
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
+  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibFmp/DxeRuntimeCapsuleLib.inf
   DebugLib|MdePkg/Library/DxeRuntimeDebugLibSerialPort/DxeRuntimeDebugLibSerialPort.inf
+  EcLib|Platform/CIX/Sky1/Library/Ite5570EcLib/Ite5570EcRuntimeLib.inf
+  EfiResetSystemLib|Platform/Radxa/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
+  GpioLib|Silicon/CIX/Sky1/Library/GpioLib/GpioRuntimeLib.inf
   HwMutexLib|Silicon/CIX/Sky1/Library/HwMutexLib/HwMutexRuntimeLib.inf
   PinMuxLib|Silicon/CIX/Sky1/Library/PinMuxLib/PinMuxRuntimeLib.inf
-  GpioLib|Silicon/CIX/Sky1/Library/GpioLib/GpioRuntimeLib.inf
-  CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibFmp/DxeRuntimeCapsuleLib.inf
-  EfiResetSystemLib|Platform/Radxa/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
-  EcLib|Platform/CIX/Sky1/Library/Ite5570EcLib/Ite5570EcRuntimeLib.inf
 
 [PcdsFeatureFlag]
-  gEmbeddedTokenSpaceGuid.PcdPrePiProduceMemoryTypeInformationHob|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdTurnOffUsbLegacySupport|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdEnableVariableRuntimeCache|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdVariableCollectStatistics|TRUE
+  gEmbeddedTokenSpaceGuid.PcdPrePiProduceMemoryTypeInformationHob|TRUE
 
 [PcdsDynamicExDefault.common.DEFAULT]
-  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
   gEfiMdeModulePkgTokenSpaceGuid.PcdSystemFmpCapsuleImageTypeIdGuid|{0x08, 0x98, 0x1c, 0x35, 0x53, 0x4b, 0x63, 0x43, 0x93, 0x14, 0xd3, 0x39, 0x38, 0x6e, 0x56, 0x85}
+  gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareImageDescriptor|{0x0}|VOID*|0x100
   gEfiSignedCapsulePkgTokenSpaceGuid.PcdEdkiiSystemFirmwareFileGuid|{0xcf, 0x4f, 0x2e, 0x64, 0xf7, 0x2d, 0x15, 0x44, 0x8b, 0x70, 0xa0, 0x39, 0x09, 0xc5, 0x7b, 0x55}
 
 [PcdsFixedAtBuild]
-  gEfiMdePkgTokenSpaceGuid.PcdPostCodePropertyMask|0x08
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x800000CF
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesData|0x450
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|1200
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesCode|1500
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesData|13000
-  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderCode|0x1000
-  gEfiMdePkgTokenSpaceGuid.PcdUefiVariableDefaultPlatformLangCodes|"en-US"
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision|0x00000003
-  gArmPlatformTokenSpaceGuid.PcdCoreCount|12
-  gArmTokenSpaceGuid.PcdArmPrimaryCore|0x400  #core4
-  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x40000
-  gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
   gArmPlatformTokenSpaceGuid.PcdArmLcdDdrFrameBufferBase|0x84800000
   gArmPlatformTokenSpaceGuid.PcdArmLcdDdrFrameBufferSize|0x00800000
-  gCixPlatformTokenSpaceGuid.PcdReservedAndroidBase|0x140000000
-  gCixPlatformTokenSpaceGuid.PcdReservedAndroidSize|0x120000000
+  gArmPlatformTokenSpaceGuid.PcdCoreCount|12
+  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0x40000
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgInterrupt|330
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase|0x040D0000
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartBaudRate|115200
+  gArmPlatformTokenSpaceGuid.PcdWatchdogCount|1
+  gArmPlatformTokenSpaceGuid.PL011UartClkInHz|100000000 #100Mhz 100000000 #25Mhz 25000000
+  gArmPlatformTokenSpaceGuid.PL011UartInterrupt|330
+  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|1000000000 #1Ghz 1000000000 #1Mhz 1000000
+  gArmTokenSpaceGuid.PcdArmPrimaryCore|0x400  #core4
+  gArmTokenSpaceGuid.PcdGenericWatchdogControlBase|0x16003000
+  gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum|408
+  gArmTokenSpaceGuid.PcdGenericWatchdogRefreshBase|0x16008000
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x0e010000    #0x0e001000
   gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x0e090000 #0x0e081000
-  gArmPlatformTokenSpaceGuid.PcdWatchdogCount|1
-  gArmTokenSpaceGuid.PcdGenericWatchdogControlBase|0x16003000
-  gArmTokenSpaceGuid.PcdGenericWatchdogRefreshBase|0x16008000
-  gArmTokenSpaceGuid.PcdGenericWatchdogEl2IntrNum|408
-  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartBaudRate|115200
-  gArmPlatformTokenSpaceGuid.PL011UartClkInHz|100000000 #100Mhz 100000000 #25Mhz 25000000
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|1000000000 #1Ghz 1000000000 #1Mhz 1000000
-  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultReceiveFifoDepth|0
-  gArmPlatformTokenSpaceGuid.PL011UartInterrupt|330
-  gEfiMdeModulePkgTokenSpaceGuid.PcdDiskIoDataBufferBlockNum|1024
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0306
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
-  gArmTokenSpaceGuid.PcdProcessorManufacturer|L"Cix Technology Group Co., Ltd."
   gArmTokenSpaceGuid.PcdProcessorAssetTag|L" "
+  gArmTokenSpaceGuid.PcdProcessorManufacturer|L"Cix Technology Group Co., Ltd."
   gArmTokenSpaceGuid.PcdProcessorPartNumber|L" "
-  gCixTokenSpaceGuid.PcdCixProcessorVersion|L"CIX P1 CD8180"
-  gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4
-  gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile|{ 0x21, 0xaa, 0x2c, 0x46, 0x14, 0x76, 0x03, 0x45, 0x83, 0x6e, 0x8a, 0xb6, 0xf4, 0x66, 0x23, 0x31 }
-  gCixTokenSpaceGuid.PcdNorFlashNvramAddr|0x00380000
-  gCixTokenSpaceGuid.PcdNorFlashNvramSize|0x28000
-  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|44
-  gCixTokenSpaceGuid.PcdSystemTableSelect|0x00
-!if $(TARGET) == RELEASE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"9.0.3"
-!else
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"9.0.3-$(COMMIT_HASH)-debug:$(BUILD_DATE)"
-!endif
-  gRadxaTokenSpaceGuid.PcdEdk2CixCommitHash|L"$(COMMIT_HASH)"
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x040D0000 #0x091e1000 #0x0a051000
-  gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase|0x040D0000
-  gArmPlatformTokenSpaceGuid.PcdSerialDbgInterrupt|330
-  gEmbeddedTokenSpaceGuid.PcdDefaultDtPref|FALSE
-  gEfiMdePkgTokenSpaceGuid.PcdPerformanceLibraryPropertyMask|1
-  gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x07
-  gFmpDevicePkgTokenSpaceGuid.PcdFmpDeviceImageTypeIdGuid|{GUID("351c9808-4b53-4363-9314-d339386e5685")}
-  gCixPlatformTokenSpaceGuid.PcdSiliconDtbUpdateFileName|L"sky1-orion-o6.dtb"
-  gCixPlatformTokenSpaceGuid.PcdSiliconDtbUpdateEnable|TRUE
-  gCixTokenSpaceGuid.PcdPcieRootPort0Enable|TRUE
-  gCixTokenSpaceGuid.PcdPcieRootPort1Enable|TRUE
-  gCixTokenSpaceGuid.PcdPcieRootPort2Enable|TRUE
-  gCixTokenSpaceGuid.PcdPcieRootPort3Enable|TRUE
-  gCixTokenSpaceGuid.PcdPcieRootPort4Enable|TRUE
-  gCixTokenSpaceGuid.PcdPcieRootPort0PeResetPin|2
-  gCixTokenSpaceGuid.PcdPcieRootPort1PeResetPin|4
-  gCixTokenSpaceGuid.PcdPcieRootPort2PeResetPin|5
-  gCixTokenSpaceGuid.PcdPcieRootPort3PeResetPin|3
-  gCixTokenSpaceGuid.PcdPcieRootPort4PeResetPin|6
-  gCixTokenSpaceGuid.PcdI2c2BusFreq|100000
-  gCixTokenSpaceGuid.PcdI2c3En|TRUE
-  gCixTokenSpaceGuid.PcdI2c3Runtime|TRUE          # For RTC runtime service
-  gCixTokenSpaceGuid.PcdI2c3BusFreq|100000
-  gCixTokenSpaceGuid.PcdI2c4En|TRUE
-  gCixTokenSpaceGuid.PcdI2c4BusFreq|100000
-  gCixTokenSpaceGuid.PcdI2c5En|TRUE
-  gCixTokenSpaceGuid.PcdI2c5BusFreq|100000
-  gCixTokenSpaceGuid.PcdI2c6En|TRUE
-  gCixTokenSpaceGuid.PcdI2c6BusFreq|50000
-  gCixTokenSpaceGuid.PcdI2c0En|TRUE
-  gCixTokenSpaceGuid.PcdI2c0BusFreq|100000
-  gCixTokenSpaceGuid.PcdI2c1En|TRUE
-  gCixTokenSpaceGuid.PcdI2c1BusFreq|100000
-  gCixTokenSpaceGuid.PcdI2c7En|TRUE
-  gCixTokenSpaceGuid.PcdI2c7BusFreq|100000
-  gCixTokenSpaceGuid.PcdI2cCtrlEn|0xF7
+  gArmTokenSpaceGuid.PcdSystemMemoryBase|0x80000000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x400000000
+  gArmTokenSpaceGuid.PcdSystemProductName|L"Radxa Orion O6"
+  gCixPlatformTokenSpaceGuid.PcdAcpiGpio0IoMask|0x20000000 # vbus for usb port6-7
+  gCixPlatformTokenSpaceGuid.PcdAcpiGpio3IoMask|0x00018000 # pwm/edp en pin output
+  gCixPlatformTokenSpaceGuid.PcdAcpiPrefPmProf|0x01  # Desktop
+  gCixPlatformTokenSpaceGuid.PcdAcpiSpcrEnable|TRUE
+  gCixPlatformTokenSpaceGuid.PcdActiveTpmInterfaceType|0x01
+  gCixPlatformTokenSpaceGuid.PcdDTPMSpiChipSelect|0x1   # 1:Slave Select 0   2:Slave Select 1
+  gCixPlatformTokenSpaceGuid.PcdDTPMSupport|TRUE
+  gCixPlatformTokenSpaceGuid.PcdEcAcpiI2cEn|TRUE
+  gCixPlatformTokenSpaceGuid.PcdPdDevAlertPins|{ 9, 0xFF, 9, 0xFF }
   gCixPlatformTokenSpaceGuid.PcdPdDevI2cBuses|{ 0x1, 0xFF, 0x1, 0xFF }
   gCixPlatformTokenSpaceGuid.PcdPdDevI2cSlaveAddresses|{ 0x30, 0xFF, 0x31, 0xFF }
-  gCixPlatformTokenSpaceGuid.PcdPdDevAlertPins|{ 9, 0xFF, 9, 0xFF }
+  gCixPlatformTokenSpaceGuid.PcdReservedAndroidBase|0x140000000
+  gCixPlatformTokenSpaceGuid.PcdReservedAndroidSize|0x120000000
+  gCixPlatformTokenSpaceGuid.PcdSiliconDtbUpdateEnable|TRUE
+  gCixPlatformTokenSpaceGuid.PcdSiliconDtbUpdateFileName|L"sky1-orion-o6.dtb"
   gCixPlatformTokenSpaceGuid.PcdTypecPortDefaultModes|{ 1, 4, 1, 4}
+  gCixTokenSpaceGuid.PcdAcpiCppcType|0x02
+  gCixTokenSpaceGuid.PcdAcpiCpuLpiState|0x1
+  gCixTokenSpaceGuid.PcdAcpiCsiDmaEnable|FALSE
+  gCixTokenSpaceGuid.PcdAcpiUart0Enable|FALSE
+  gCixTokenSpaceGuid.PcdCixProcessorVersion|L"CIX P1 CD8180"
+  gCixTokenSpaceGuid.PcdCpuCore2En|FALSE
+  gCixTokenSpaceGuid.PcdCpuCore3En|FALSE
+  gCixTokenSpaceGuid.PcdCpuCore4En|FALSE
+  gCixTokenSpaceGuid.PcdCpuCore5En|FALSE
+  gCixTokenSpaceGuid.PcdDPPriority0|1 # highest priority
+  gCixTokenSpaceGuid.PcdDPPriority1|4 #
+  gCixTokenSpaceGuid.PcdDPPriority2|0 #
+  gCixTokenSpaceGuid.PcdDPPriority4|2 # lowest priority
+  gCixTokenSpaceGuid.PcdI2c0BusFreq|100000
+  gCixTokenSpaceGuid.PcdI2c0En|TRUE
+  gCixTokenSpaceGuid.PcdI2c1BusFreq|100000
+  gCixTokenSpaceGuid.PcdI2c1En|TRUE
+  gCixTokenSpaceGuid.PcdI2c2BusFreq|100000
+  gCixTokenSpaceGuid.PcdI2c3BusFreq|100000
+  gCixTokenSpaceGuid.PcdI2c3En|TRUE
+  gCixTokenSpaceGuid.PcdI2c3Runtime|TRUE     # For RTC runtime service
+  gCixTokenSpaceGuid.PcdI2c4BusFreq|100000
+  gCixTokenSpaceGuid.PcdI2c4En|TRUE
+  gCixTokenSpaceGuid.PcdI2c5BusFreq|100000
+  gCixTokenSpaceGuid.PcdI2c5En|TRUE
+  gCixTokenSpaceGuid.PcdI2c6BusFreq|50000
+  gCixTokenSpaceGuid.PcdI2c6En|TRUE
+  gCixTokenSpaceGuid.PcdI2c7BusFreq|100000
+  gCixTokenSpaceGuid.PcdI2c7En|TRUE
+  gCixTokenSpaceGuid.PcdI2cCtrlEn|0xF7
+  gCixTokenSpaceGuid.PcdIspCamera0Power|0x00
+  gCixTokenSpaceGuid.PcdIspCamera1Power|0x00
+  gCixTokenSpaceGuid.PcdIspCamera2Power|0x00
+  gCixTokenSpaceGuid.PcdIspCamera3Power|0x00
+  gCixTokenSpaceGuid.PcdNorFlashNvramAddr|0x00380000
+  gCixTokenSpaceGuid.PcdNorFlashNvramSize|0x28000
+  gCixTokenSpaceGuid.PcdPcieRootPort0Enable|TRUE
+  gCixTokenSpaceGuid.PcdPcieRootPort0PeResetPin|2
+  gCixTokenSpaceGuid.PcdPcieRootPort1Enable|TRUE
+  gCixTokenSpaceGuid.PcdPcieRootPort1PeResetPin|4
+  gCixTokenSpaceGuid.PcdPcieRootPort2Enable|TRUE
+  gCixTokenSpaceGuid.PcdPcieRootPort2PeResetPin|5
+  gCixTokenSpaceGuid.PcdPcieRootPort3Enable|TRUE
+  gCixTokenSpaceGuid.PcdPcieRootPort3PeResetPin|3
+  gCixTokenSpaceGuid.PcdPcieRootPort4Enable|TRUE
+  gCixTokenSpaceGuid.PcdPcieRootPort4PeResetPin|6
+  gCixTokenSpaceGuid.PcdSpi0En|TRUE
+  gCixTokenSpaceGuid.PcdSystemTableSelect|0x00
+  gCixTokenSpaceGuid.PcdUsb2Control0Enable|TRUE
+  gCixTokenSpaceGuid.PcdUsb2Control1Enable|TRUE
+  gCixTokenSpaceGuid.PcdUsb2Control2Enable|TRUE
+  gCixTokenSpaceGuid.PcdUsb2Control3Enable|TRUE
   gCixTokenSpaceGuid.PcdUsb3Control0Enable|TRUE
   gCixTokenSpaceGuid.PcdUsb3Control1Enable|TRUE
   gCixTokenSpaceGuid.PcdUsbCControl0Enable|TRUE
   gCixTokenSpaceGuid.PcdUsbCControl1Enable|TRUE
   gCixTokenSpaceGuid.PcdUsbCControl2Enable|TRUE
-  gCixTokenSpaceGuid.PcdUsb2Control0Enable|TRUE
-  gCixTokenSpaceGuid.PcdUsb2Control1Enable|TRUE
-  gCixTokenSpaceGuid.PcdUsb2Control2Enable|TRUE
-  gCixTokenSpaceGuid.PcdUsb2Control3Enable|TRUE
-  gArmTokenSpaceGuid.PcdSystemMemorySize|0x400000000
-  gEfiNetworkPkgTokenSpaceGuid.PcdNetworkStackSupport|FALSE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile|{ 0x21, 0xaa, 0x2c, 0x46, 0x14, 0x76, 0x03, 0x45, 0x83, 0x6e, 0x8a, 0xb6, 0xf4, 0x66, 0x23, 0x31 }
+  gEfiMdeModulePkgTokenSpaceGuid.PcdDiskIoDataBufferBlockNum|1024
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision|0x00000003
+!if $(TARGET) == RELEASE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"9.0.3"
+!else
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"9.0.3-$(COMMIT_HASH)-debug:$(BUILD_DATE)"
+!endif
+  gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x040D0000 #0x091e1000 #0x0a051000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0306
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x800000CF
+  gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4
+  gEfiMdePkgTokenSpaceGuid.PcdPerformanceLibraryPropertyMask|1
+  gEfiMdePkgTokenSpaceGuid.PcdPostCodePropertyMask|0x08
+  gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x07
+  gEfiMdePkgTokenSpaceGuid.PcdUartDefaultReceiveFifoDepth|0
+  gEfiMdePkgTokenSpaceGuid.PcdUefiVariableDefaultPlatformLangCodes|"en-US"
   gEfiNetworkPkgTokenSpaceGuid.PcdIPv4HttpSupport|TRUE
   gEfiNetworkPkgTokenSpaceGuid.PcdIPv6HttpSupport|TRUE
-  gCixTokenSpaceGuid.PcdSpi0En|TRUE
-  gCixTokenSpaceGuid.PcdIspCamera0Power|0x00
-  gCixTokenSpaceGuid.PcdIspCamera1Power|0x00
-  gCixTokenSpaceGuid.PcdIspCamera2Power|0x00
-  gCixTokenSpaceGuid.PcdIspCamera3Power|0x00
-  gCixPlatformTokenSpaceGuid.PcdEcAcpiI2cEn|TRUE
-  gCixPlatformTokenSpaceGuid.PcdAcpiGpio0IoMask|0x20000000 # vbus for usb port6-7
-  gCixPlatformTokenSpaceGuid.PcdAcpiGpio3IoMask|0x00018000 # pwm/edp en pin output
-  gArmTokenSpaceGuid.PcdSystemProductName|L"Radxa Orion O6"
+  gEfiNetworkPkgTokenSpaceGuid.PcdNetworkStackSupport|FALSE
+  gEmbeddedTokenSpaceGuid.PcdDefaultDtPref|FALSE
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesCode|1500
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiBootServicesData|13000
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiLoaderCode|0x1000
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|1200
+  gEmbeddedTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesData|0x450
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|44
+  gFmpDevicePkgTokenSpaceGuid.PcdFmpDeviceImageTypeIdGuid|{GUID("351c9808-4b53-4363-9314-d339386e5685")}
   gHym8563RealTimeClockLibTokenSpaceGuid.PcdI2cBusFrequency|100000
-  gCixTokenSpaceGuid.PcdDPPriority0|1 # highest priority
-  gCixTokenSpaceGuid.PcdDPPriority1|4 #
-  gCixTokenSpaceGuid.PcdDPPriority2|0 #
-  gCixTokenSpaceGuid.PcdDPPriority4|2 # lowest priority
-  gCixPlatformTokenSpaceGuid.PcdAcpiPrefPmProf|0x01  # Desktop
-  gCixTokenSpaceGuid.PcdAcpiCsiDmaEnable|FALSE
-  gCixTokenSpaceGuid.PcdCpuCore2En|FALSE
-  gCixTokenSpaceGuid.PcdCpuCore3En|FALSE
-  gCixTokenSpaceGuid.PcdCpuCore4En|FALSE
-  gCixTokenSpaceGuid.PcdCpuCore5En|FALSE
-  gCixTokenSpaceGuid.PcdAcpiCpuLpiState|0x1
-  gCixTokenSpaceGuid.PcdAcpiCppcType|0x02
-  gCixPlatformTokenSpaceGuid.PcdAcpiSpcrEnable|TRUE
-  gCixPlatformTokenSpaceGuid.PcdDTPMSupport|TRUE
-  gCixPlatformTokenSpaceGuid.PcdDTPMSpiChipSelect|0x1   # 1:Slave Select 0   2:Slave Select 1
-  gCixPlatformTokenSpaceGuid.PcdActiveTpmInterfaceType|0x01
-  gCixTokenSpaceGuid.PcdAcpiUart0Enable|FALSE
+  gRadxaTokenSpaceGuid.PcdEdk2CixCommitHash|L"$(COMMIT_HASH)"
 
 [PcdsPatchableInModule]
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialClockRate|500000000
@@ -317,8 +328,8 @@
 !endif
 
 [PcdsDynamicHii.common.DEFAULT]
-  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|5
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootDiscoveryPolicy|L"BootDiscoveryPolicy"|gBootDiscoveryPolicyMgrFormsetGuid|0
+  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|5
 
 [PcdsDynamicDefault]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize|0x28000
@@ -327,169 +338,37 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|0x00380000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase64|(0x00380000 + 0x28000)
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64|(0x00380000 + 0x28000 + 0x28000)
-  gEmbeddedTokenSpaceGuid.PcdDmaDeviceLimit|0x47fffffff
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1920
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|1080
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|800
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|600
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{0x5a, 0xf2, 0x6b, 0x28, 0xc3, 0xc2, 0x8c, 0x40, 0xb3, 0xb4, 0x25, 0xe6, 0x75, 0x8b, 0x73, 0x17}
+  gEmbeddedTokenSpaceGuid.PcdDmaDeviceLimit|0x47fffffff
 
 [Components]
-  MdeModulePkg/Universal/PCD/Dxe/Pcd.inf {
-    <LibraryClasses>
-      PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
-  }
-  MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
-  Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
-  Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
-  Silicon/CIX/Sky1/Drivers/SocDxe/SocDxe.inf
-  Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
-  Platform/CIX/Sky1/Drivers/MmCommunicationDxe/ArmMmCommunication.inf {
-    <LibraryClasses>
-      NULL|StandaloneMmPkg/Library/VariableMmDependency/VariableMmDependency.inf
-  }
-  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
-  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf {
-    <LibraryClasses>
-      MmUnblockMemoryLib|MdePkg/Library/MmUnblockMemoryLib/MmUnblockMemoryLibNull.inf
-  }
-  Silicon/CIX/Sky1/Drivers/PcieInitDxe/PcieInitDxe.inf
-  MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf {
-    <LibraryClasses>
-      NULL|SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.inf
-  }
-  SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
-  Platform/CIX/Sky1/Drivers/SecureBootDxe/SecureBootDxe.inf
-  SecurityPkg/VariableAuthenticated/SecureBootDefaultKeysDxe/SecureBootDefaultKeysDxe.inf
-  Silicon/CIX/Sky1/Drivers/RngDxe/RngDxe.inf
-  MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
-  MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
-  EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
-  EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
-  EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
-  MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
-  MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
-  MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
-  MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
-  MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
-  EmbeddedPkg/Drivers/ConsolePrefDxe/ConsolePrefDxe.inf
-  MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+  ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
-  Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
-  MdeModulePkg/Universal/EbcDxe/EbcDxe.inf
-  MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
-  MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
-  MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
-  FatPkg/EnhancedFatDxe/Fat.inf
-  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-  Platform/CIX/Sky1/Drivers/AcpiSocTables/AcpiSocTables.inf
-  Platform/CIX/Sky1/Drivers/AcpiSocDxe/AcpiSocDxe.inf
+  ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
+
   DynamicTablesPkg/Drivers/DynamicTableFactoryDxe/DynamicTableFactoryDxe.inf {
     <LibraryClasses>
       NULL|Platform/CIX/Sky1/Library/Acpi/CIX/AcpiMadtLibCIX/AcpiMadtLibCIX.inf
       NULL|Platform/CIX/Sky1/Library/Acpi/CIX/AcpiSsdtCpuTopologyLibCIX/SsdtCpuTopologyLibCIX.inf
       NULL|Platform/CIX/Sky1/Library/Acpi/CIX/AcpiPpttLibCIX/AcpiPpttLibCIX.inf
   }
-  Platform/CIX/Sky1/Drivers/DynamicTableManagerDxe/DynamicTableManagerDxe.inf
-  Platform/CIX/Sky1/Drivers/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
-  Platform/CIX/Sky1/Drivers/S3SaveStateDxe/S3SaveStateDxe.inf
-  MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
-  ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
-  Platform/CIX/Sky1/Drivers/CixSmbiosDxe/CixSmbiosDxe.inf
-  Silicon/CIX/Sky1/Drivers/I2cDxe/I2cDxe.inf
-  Platform/CIX/Sky1/Drivers/EcPlatformDxe/EcPlatformDxe.inf
-  Platform/CIX/Sky1/Drivers/I2cHidKeyboard/I2cHidKeyboard.inf
-  Platform/CIX/Sky1/Drivers/I2cHidServiceDriver/I2cHidServiceDriver.inf
-  Platform/CIX/Sky1/Drivers/I2cHidDeviceDxe/I2cHidDeviceDxe.inf
-  Silicon/CIX/Sky1/Drivers/SpiDxe/SpiDxe.inf
-  Silicon/CIX/Sky1/Drivers/TypecPhyDxe/TypecPhyDxe.inf
-  Platform/CIX/Sky1/Drivers/PdDxe/PdDxe.inf {
-    <LibraryClasses>
-      PdLib|Platform/CIX/Sky1/Library/Rts5453hPdLib/Rts5453hPdLib.inf
-      RedriverLib|Platform/CIX/Sky1/Library/PI3DPX1207RedriverLib/PI3DPX1207RedriverLib.inf
-  }
-  Platform/CIX/Sky1/Drivers/UsbDeviceControlDxe/UsbDeviceControlDxe.inf
-  Platform/CIX/Sky1/Application/Fastboot/Fastboot.inf
-  Silicon/CIX/Sky1/Drivers/CdnspDxe/CdnspDxe.inf {
-    <LibraryClasses>
-      UncachedMemoryAllocationLib|Silicon/CIX/Sky1/Library/UncachedMemoryAllocationLib/UncachedMemoryAllocationLib.inf
-  }
-  Platform/CIX/Sky1/Drivers/LaunchFastbootDxe/LaunchFastbootDxe.inf
-  MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
-  MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
-  MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
-  MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
-  MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
-  MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
-  MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
-  MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
-  Silicon/CIX/Sky1/Drivers/UsbCHostDxe/UsbCHostDxe.inf
-  Silicon/CIX/Sky1/Drivers/Usb32HostDxe/Usb32HostDxe.inf
-  Silicon/CIX/Sky1/Drivers/Usb20HostDxe/Usb20HostDxe.inf
-  ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
-  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
-  Platform/CIX/Sky1/Drivers/Pci/PciBusDxe/PciBusDxe.inf
-  EmbeddedPkg/Drivers/NonCoherentIoMmuDxe/NonCoherentIoMmuDxe.inf
-  Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
-  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
-  Platform/CIX/Sky1/Drivers/NvmExpressDxe/NvmExpressDxe.inf
-  Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
-  Silicon/CIX/Sky1/Drivers/ResetDxe/ResetDxe.inf
-  Silicon/CIX/Sky1/Drivers/ClockDxe/ClockDxe.inf
-  Silicon/CIX/Sky1/Drivers/PowerDxe/PowerDxe.inf
-  MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
-  MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
-  MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
-  MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
-  MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
-  MdeModulePkg/Application/UiApp/UiApp.inf {
-    <LibraryClasses>
-      NULL|MdeModulePkg/Library/BootDiscoveryPolicyUiLib/BootDiscoveryPolicyUiLib.inf
-      NULL|MdeModulePkg/Library/DeviceManagerUiLib/DeviceManagerUiLib.inf
-      NULL|MdeModulePkg/Library/BootManagerUiLib/BootManagerUiLib.inf
-      NULL|MdeModulePkg/Library/BootMaintenanceManagerUiLib/BootMaintenanceManagerUiLib.inf
-  }
-  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
-  Platform/CIX/Sky1/Drivers/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
-  Platform/CIX/Sky1/Drivers/CapsuleUpdateDxe/CapsuleUpdateDxe.inf
-  Platform/CIX/Sky1/Drivers/FirmwareUpdateDxe/FwUpdateProtocolDxe.inf
-  Platform/CIX/Sky1/Drivers/FwVersionDxe/FwVersionDxe.inf
-  Platform/CIX/Sky1/Drivers/FwVersionDxe/FwVersionProtocolTest.inf
-  Platform/CIX/Sky1/Drivers/PowerButtonDxe/PowerButtonDxe.inf
-  Platform/CIX/Sky1/Drivers/Tcg2Acpi/Tcg2Acpi.inf
-  Platform/CIX/Sky1/Drivers/TPMVariableDxe/TPMVariableDxe.inf
-  SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf {
-    <LibraryClasses>
-      HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterDxe.inf
-      NULL|SecurityPkg/Library/Tpm2DeviceLibDTpm/Tpm2InstanceLibDTpm.inf
-      NULL|SecurityPkg/Library/HashInstanceLibSha1/HashInstanceLibSha1.inf
-      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
-      NULL|SecurityPkg/Library/HashInstanceLibSha384/HashInstanceLibSha384.inf
-  }
-  Platform/CIX/Sky1/Drivers/Tcg2Config/Tcg2ConfigDxe.inf
-  MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
-  Platform/Radxa/Drivers/Logo/LogoDxe.inf
-  Platform/Radxa/Platforms/CIX/Sky1/Drivers/SystemInfoDxe/SystemInfoDxe.inf
-  Platform/CIX/Sky1/Drivers/PlatformSetupVariableInitDxe/PlatformSetupVariableInitDxe.inf
-  Platform/Radxa/Platforms/CIX/Sky1/Drivers/PlatformConfigDxe/PlatformConfigDxe.inf
-  Platform/Radxa/Platforms/CIX/Sky1/Drivers/RadxaSetupVariableInitDxe/RadxaSetupVariableInitDxe.inf
-  Platform/Radxa/Platforms/CIX/Sky1/Drivers/FirmwareConfigUpdateDxe/FirmwareConfigUpdateDxe.inf
-  Platform/Radxa/Platforms/CIX/Sky1/Drivers/SeConfigUpdateDxe/SeConfigUpdateDxe.inf
+
+  EmbeddedPkg/Drivers/ConsolePrefDxe/ConsolePrefDxe.inf
   EmbeddedPkg/Drivers/DtPlatformDxe/DtPlatformDxe.inf {
     <LibraryClasses>
       DtPlatformDtbLoaderLib|EmbeddedPkg/Library/DxeDtPlatformDtbLoaderLibDefault/DxeDtPlatformDtbLoaderLibDefault.inf
   }
-  MdeModulePkg/Application/VariableInfo/VariableInfo.inf
-  MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
-  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
-  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
-  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
-  MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
-  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf {
-    <LibraryClasses>
-      LockBoxLib|MdeModulePkg/Library/LockBoxNullLib/LockBoxNullLib.inf
-  }
-  MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
+  EmbeddedPkg/Drivers/NonCoherentIoMmuDxe/NonCoherentIoMmuDxe.inf
+  EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
+  EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
+  EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
+
+  FatPkg/EnhancedFatDxe/Fat.inf
+
   FmpDevicePkg/FmpDxe/FmpDxe.inf {
     <Defines>
       FILE_GUID = 351c9808-4b53-4363-9314-d339386e5685
@@ -505,6 +384,107 @@
       FmpDeviceLib|FmpDevicePkg/Library/FmpDeviceLibNull/FmpDeviceLibNull.inf
   }
 
+  MdeModulePkg/Application/UiApp/UiApp.inf {
+    <LibraryClasses>
+      NULL|MdeModulePkg/Library/BootDiscoveryPolicyUiLib/BootDiscoveryPolicyUiLib.inf
+      NULL|MdeModulePkg/Library/DeviceManagerUiLib/DeviceManagerUiLib.inf
+      NULL|MdeModulePkg/Library/BootManagerUiLib/BootManagerUiLib.inf
+      NULL|MdeModulePkg/Library/BootMaintenanceManagerUiLib/BootMaintenanceManagerUiLib.inf
+  }
+  MdeModulePkg/Application/VariableInfo/VariableInfo.inf
+  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+  MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
+  MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
+  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+  MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
+  MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
+  MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
+  MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
+  MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
+  MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf {
+    <LibraryClasses>
+      LockBoxLib|MdeModulePkg/Library/LockBoxNullLib/LockBoxNullLib.inf
+  }
+  MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+  MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
+  MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
+  MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
+  MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
+  MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
+  MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
+  MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
+  MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
+  MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
+  MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
+  MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+  MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
+  MdeModulePkg/Universal/EbcDxe/EbcDxe.inf
+  MdeModulePkg/Universal/EsrtDxe/EsrtDxe.inf
+  MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
+  MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+  MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
+  MdeModulePkg/Universal/PCD/Dxe/Pcd.inf {
+    <LibraryClasses>
+      PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
+  }
+  MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
+  MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf {
+    <LibraryClasses>
+      NULL|SecurityPkg/Library/DxeImageVerificationLib/DxeImageVerificationLib.inf
+  }
+  MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
+  MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
+  MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
+  MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf {
+    <LibraryClasses>
+      MmUnblockMemoryLib|MdePkg/Library/MmUnblockMemoryLib/MmUnblockMemoryLibNull.inf
+  }
+
+  Platform/CIX/Sky1/Application/Fastboot/Fastboot.inf
+  Platform/CIX/Sky1/Drivers/AcpiSocDxe/AcpiSocDxe.inf
+  Platform/CIX/Sky1/Drivers/AcpiSocTables/AcpiSocTables.inf
+  Platform/CIX/Sky1/Drivers/ArmScmiDxe/ArmScmiDxe.inf
+  Platform/CIX/Sky1/Drivers/CapsuleUpdateDxe/CapsuleUpdateDxe.inf
+  Platform/CIX/Sky1/Drivers/CixSmbiosDxe/CixSmbiosDxe.inf
+  Platform/CIX/Sky1/Drivers/ConfigurationManagerDxe/ConfigurationManagerDxe.inf
+  Platform/CIX/Sky1/Drivers/DtbUpdateDxeSi/DtbUpdateDxe.inf
+  Platform/CIX/Sky1/Drivers/DynamicTableManagerDxe/DynamicTableManagerDxe.inf
+  Platform/CIX/Sky1/Drivers/EcPlatformDxe/EcPlatformDxe.inf
+  Platform/CIX/Sky1/Drivers/FirmwareUpdateDxe/FwUpdateProtocolDxe.inf
+  Platform/CIX/Sky1/Drivers/FwVersionDxe/FwVersionDxe.inf
+  Platform/CIX/Sky1/Drivers/FwVersionDxe/FwVersionProtocolTest.inf
+  Platform/CIX/Sky1/Drivers/I2cHidDeviceDxe/I2cHidDeviceDxe.inf
+  Platform/CIX/Sky1/Drivers/I2cHidKeyboard/I2cHidKeyboard.inf
+  Platform/CIX/Sky1/Drivers/I2cHidServiceDriver/I2cHidServiceDriver.inf
+  Platform/CIX/Sky1/Drivers/LaunchFastbootDxe/LaunchFastbootDxe.inf
+  Platform/CIX/Sky1/Drivers/MmCommunicationDxe/ArmMmCommunication.inf {
+    <LibraryClasses>
+      NULL|StandaloneMmPkg/Library/VariableMmDependency/VariableMmDependency.inf
+  }
+  Platform/CIX/Sky1/Drivers/NvmExpressDxe/NvmExpressDxe.inf
+  Platform/CIX/Sky1/Drivers/Pci/PciBusDxe/PciBusDxe.inf
+  Platform/CIX/Sky1/Drivers/PdDxe/PdDxe.inf {
+    <LibraryClasses>
+      PdLib|Platform/CIX/Sky1/Library/Rts5453hPdLib/Rts5453hPdLib.inf
+      RedriverLib|Platform/CIX/Sky1/Library/PI3DPX1207RedriverLib/PI3DPX1207RedriverLib.inf
+  }
+  Platform/CIX/Sky1/Drivers/PlatformConfigParamsManageDxe/PlatformConfigParamsManageDxe.inf
+  Platform/CIX/Sky1/Drivers/PlatformDxe/PlatformDxe.inf
+  Platform/CIX/Sky1/Drivers/PlatformSetupVariableInitDxe/PlatformSetupVariableInitDxe.inf
+  Platform/CIX/Sky1/Drivers/PowerButtonDxe/PowerButtonDxe.inf
+  Platform/CIX/Sky1/Drivers/S3SaveStateDxe/S3SaveStateDxe.inf
+  Platform/CIX/Sky1/Drivers/SecureBootDxe/SecureBootDxe.inf
+  Platform/CIX/Sky1/Drivers/SystemFirmwareUpdate/SystemFirmwareReportDxe.inf
+  Platform/CIX/Sky1/Drivers/TPMVariableDxe/TPMVariableDxe.inf
+  Platform/CIX/Sky1/Drivers/Tcg2Acpi/Tcg2Acpi.inf
+  Platform/CIX/Sky1/Drivers/Tcg2Config/Tcg2ConfigDxe.inf
+  Platform/CIX/Sky1/Drivers/UsbDeviceControlDxe/UsbDeviceControlDxe.inf
   Platform/CIX/Sky1/PrePi/PeiUniCore.inf {
     <LibraryClasses>
       PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
@@ -518,6 +498,31 @@
       MemoryAllocationLib|EmbeddedPkg/Library/PrePiMemoryAllocationLib/PrePiMemoryAllocationLib.inf
       PerformanceLib|MdePkg/Library/BasePerformanceLibNull/BasePerformanceLibNull.inf
   }
+  
+  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
+  platform/OVERRIDE/Silicon/CIX/Sky1/Drivers/NorFlashStmmRuntimeDxe/NorFlashStmmRuntimeDxe.inf
+
+  Platform/Radxa/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  Platform/Radxa/Drivers/Logo/LogoDxe.inf
+  Platform/Radxa/Orion/O6/DeviceTree/DeviceTree.inf
+  Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/AcpiPlatfomTables.inf
+  Platform/Radxa/Orion/O6/Drivers/PlatformSmbios/PlatformSmbios.inf
+  Platform/Radxa/Platforms/CIX/Sky1/Drivers/FirmwareConfigUpdateDxe/FirmwareConfigUpdateDxe.inf
+  Platform/Radxa/Platforms/CIX/Sky1/Drivers/PlatformConfigDxe/PlatformConfigDxe.inf
+  Platform/Radxa/Platforms/CIX/Sky1/Drivers/RadxaSetupVariableInitDxe/RadxaSetupVariableInitDxe.inf
+  Platform/Radxa/Platforms/CIX/Sky1/Drivers/SeConfigUpdateDxe/SeConfigUpdateDxe.inf
+  Platform/Radxa/Platforms/CIX/Sky1/Drivers/SystemInfoDxe/SystemInfoDxe.inf
+
+  SecurityPkg/Tcg/Tcg2Dxe/Tcg2Dxe.inf {
+    <LibraryClasses>
+      HashLib|SecurityPkg/Library/HashLibBaseCryptoRouter/HashLibBaseCryptoRouterDxe.inf
+      NULL|SecurityPkg/Library/Tpm2DeviceLibDTpm/Tpm2InstanceLibDTpm.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha1/HashInstanceLibSha1.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha256/HashInstanceLibSha256.inf
+      NULL|SecurityPkg/Library/HashInstanceLibSha384/HashInstanceLibSha384.inf
+  }
+  SecurityPkg/VariableAuthenticated/SecureBootConfigDxe/SecureBootConfigDxe.inf
+  SecurityPkg/VariableAuthenticated/SecureBootDefaultKeysDxe/SecureBootDefaultKeysDxe.inf
 
   ShellPkg/Application/Shell/Shell.inf {
     <LibraryClasses>
@@ -538,11 +543,26 @@
       gEfiMdePkgTokenSpaceGuid.PcdUefiLibMaxPrintBufferSize|8000
       gEfiShellPkgTokenSpaceGuid.PcdShellFileOperationSize|0x200000
   }
-  Platform/CIX/Sky1/Drivers/DtbUpdateDxeSi/DtbUpdateDxe.inf
-  Platform/Radxa/Orion/O6/Drivers/AcpiPlatfomTables/AcpiPlatfomTables.inf
-  Platform/Radxa/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
-  Platform/Radxa/Orion/O6/Drivers/PlatformSmbios/PlatformSmbios.inf
-  Platform/Radxa/Orion/O6/DeviceTree/DeviceTree.inf
+
+  Silicon/CIX/Sky1/Drivers/CdnspDxe/CdnspDxe.inf {
+    <LibraryClasses>
+      UncachedMemoryAllocationLib|Silicon/CIX/Sky1/Library/UncachedMemoryAllocationLib/UncachedMemoryAllocationLib.inf
+  }
+  Silicon/CIX/Sky1/Drivers/ClockDxe/ClockDxe.inf
+  Silicon/CIX/Sky1/Drivers/ConfigParamsManageDxe/ConfigParamsManageDxe.inf
+  Silicon/CIX/Sky1/Drivers/DpuDxe/DpuDxe.inf
+  Silicon/CIX/Sky1/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
+  Silicon/CIX/Sky1/Drivers/I2cDxe/I2cDxe.inf
+  Silicon/CIX/Sky1/Drivers/PcieInitDxe/PcieInitDxe.inf
+  Silicon/CIX/Sky1/Drivers/PowerDxe/PowerDxe.inf
+  Silicon/CIX/Sky1/Drivers/ResetDxe/ResetDxe.inf
+  Silicon/CIX/Sky1/Drivers/RngDxe/RngDxe.inf
+  Silicon/CIX/Sky1/Drivers/SocDxe/SocDxe.inf
+  Silicon/CIX/Sky1/Drivers/SpiDxe/SpiDxe.inf
+  Silicon/CIX/Sky1/Drivers/TypecPhyDxe/TypecPhyDxe.inf
+  Silicon/CIX/Sky1/Drivers/Usb20HostDxe/Usb20HostDxe.inf
+  Silicon/CIX/Sky1/Drivers/Usb32HostDxe/Usb32HostDxe.inf
+  Silicon/CIX/Sky1/Drivers/UsbCHostDxe/UsbCHostDxe.inf
 
 [BuildOptions]
   GCC:*_*_*_CC_FLAGS              = -fno-common
