@@ -89,7 +89,7 @@
 
   #
   # ODP: The following drivers were originally in the apriori.  Patina does not support an APRIORI, so as a workaround
-  #      until the driver's depex can be confirmed correct, the rule override COMPILE_TRUE_DEPEX forces the depencency
+  #      until the driver's depex can be confirmed correct, the rule override COMPILE_TRUE_DEPEX forces the dependency
   #      expression to TRUE and by putting the drivers at the top of the FV, they are loaded first and in order.
   #
   INF RuleOverride = COMPILE_TRUE_DEPEX MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
